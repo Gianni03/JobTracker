@@ -10,6 +10,18 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Colores extraídos de tu diseño original */
+  --color-primary: #007bff;      /* Azul principal */
+  --color-secondary: #6c757d;    /* Gris secundario */
+  --color-burnt-peach: #f96e46;  /* El naranja que vimos en tu HTML */
+  
+  /* Colores para los gráficos (Charts) */
+  --color-chart-1: #f96e46;
+  --color-chart-2: #00e8fc;
+  --color-chart-3: #f9c846;
+
+  /* Fuentes */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
