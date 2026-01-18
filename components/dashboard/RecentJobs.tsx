@@ -1,6 +1,27 @@
-import { recentJobs } from "@/lib/data-mock";
 
-export function RecentJobs() {
+interface Job {
+  id: string;
+  company: string;
+  position: string;
+  status: string;
+  date: string;
+}
+
+export function RecentJobs({ jobs }: { jobs: Job[] }) {
+
+  if(jobs.length === 0) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-gray-50">
+          <h3 className="text-lg font-bold text-gray-800">Postulaciones Recientes</h3>
+        </div>
+        <div className="p-6 text-center text-gray-500">
+          No hay postulaciones recientes
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="p-6 border-b border-gray-50">
@@ -17,7 +38,7 @@ export function RecentJobs() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {recentJobs.map((job) => (
+            {jobs.map((job) => (
               <tr key={job.id} className="hover:bg-gray-50/50 transition-colors group">
                 <td className="px-6 py-4 font-medium text-gray-900">{job.company}</td>
                 <td className="px-6 py-4 text-gray-600">{job.position}</td>

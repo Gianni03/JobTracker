@@ -1,6 +1,8 @@
 "use client"; // Esto indica que este componente tiene interacción (clicks)
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, 
@@ -13,14 +15,21 @@ import {
 
 export function Sidebar() {
   const pathname = usePathname(); // Para saber en qué página estamos y resaltarla
+  const router = useRouter();
 
   // Definimos los items del menú en un array para no repetir código
   const menuItems = [
-    { name: "Dashboard", href: "/", icon: LayoutDashboard },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Mis Postulaciones", href: "/jobs", icon: Briefcase },
     { name: "Entrevistas", href: "/interviews", icon: FileText }, // Placeholder
     { name: "Estadísticas", href: "/stats", icon: BarChart3 },    // Placeholder
   ];
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  };
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between z-50 transition-all  md:flex">
@@ -61,7 +70,7 @@ export function Sidebar() {
 
       {/* Footer / User Settings */}
       <div className="p-4 border-t border-gray-100">
-        <button className="flex items-center gap-3 w-full px-4 py-3 text-gray-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors">
+        <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-3 text-gray-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors">
           <LogOut size={20} />
           <span>Cerrar Sesión</span>
         </button>
