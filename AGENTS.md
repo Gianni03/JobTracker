@@ -6,7 +6,7 @@ Migración de un prototipo UXMagic (HTML/CSS/JS) a una Web App funcional en Reac
 
 ## 2. Tech Stack Objetivo
 
-- **Framework:** Next.js 14+ (App Router).
+- **Framework:** Next.js 15 (App Router).
 - **Lenguaje:** TypeScript (Tipado estricto progresivo).
 - **Estilos:** Tailwind CSS v4 + Variables CSS nativas (híbrido).
 - **Iconos:** Lucide React.
@@ -18,7 +18,7 @@ Migración de un prototipo UXMagic (HTML/CSS/JS) a una Web App funcional en Reac
 
 ## 3. Estructura de Carpetas
 
-- `/app`: Rutas de la aplicación (Pages). 
+- `/app`: Rutas de la aplicación (Pages).
   - `app/(public)`: Rutas abiertas (Landing, Login). Sin Sidebar.
   - `app/(dashboard)`: Rutas protegidas. Incluye `DashboardLayout` con Sidebar.
   - `page.tsx`: Landing / Dashboard principal.
@@ -30,6 +30,7 @@ Migración de un prototipo UXMagic (HTML/CSS/JS) a una Web App funcional en Reac
 - `/lib`: Lógica de negocio y clientes (Supabase client).
 
 ## 4. Estructura de Navegación (Final)
+
 - `/` -> Landing Page (Pública).
 - `/login` -> Login (Público).
 - `/dashboard` -> Dashboard principal (Privado).
@@ -70,6 +71,12 @@ Basado en el objeto `jobsDatabase` del script original:
 - [x] Configuración de Base de Datos Supabase.
 - [x] Migración técnica a @supabase/ssr completada.
 - [x] proxy de protección de rutas funcionando.
+- [x] dashboard page ya trae data de la base de datos.
+- [x] CRUD Básico completado:
+    - [x] **Create:** Formulario funcional en `/jobs/new`.
+    - [x] **Read:** Tabla dinámica en `/dashboard`.
+    - [x] **Update:** Ruta dinámica `/jobs/[id]` para editar.
+    - [x] **Delete:** Función de borrado con confirmación.
 - [ ] Integración de Lógica.
 
 ## 9. Glosario para el Desarrollador (Tú)

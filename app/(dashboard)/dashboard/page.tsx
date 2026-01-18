@@ -19,16 +19,11 @@ export default async function Home() {
     redirect('/login');
   }
 
-  const { data: jobs, error } = await supabase
+  const { data: jobs } = await supabase
     .from('jobs')
-    .select('*')
-    .eq('user_id', user?.id)
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error('Error al obtener las postulaciones:', error);
-    return <div>Error al cargar las postulaciones</div>;
-  }
+    .select('id, company, position, status, date') // Solo traemos lo necesario para la tabla
+    .eq('user_id', user.id)
+    .order('date', { ascending: false });
 
   return (
     <div className="space-y-8">
