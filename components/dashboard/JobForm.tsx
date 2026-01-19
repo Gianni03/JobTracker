@@ -13,7 +13,7 @@ interface JobData {
   status: string;
   date: string;
   interview_stage: string;
-  salary_asked?: number | string;
+  salary_expected?: number | string;
   company_budget_salary?: number | string;
   salary_offered?: number | string;
   contact_person?: string;
@@ -45,7 +45,7 @@ export default function JobForm({ initialData }: { initialData?: JobData }) {
     status: formData.get("status"),
     date: formData.get("date"),
     interview_stage: formData.get("interview_stage"),
-    salary_asked: formData.get("salary_asked") || null,
+    salary_expected: formData.get("salary_expected") || null,
     company_budget_salary: formData.get("company_budget_salary") || null,
     salary_offered: formData.get("salary_offered") || null,
     contact_person: formData.get("contact_person"),
@@ -150,7 +150,7 @@ export default function JobForm({ initialData }: { initialData?: JobData }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs text-gray-500">Sueldo Pretendido</label>
-            <input type="number" name="salary_asked" defaultValue={initialData?.salary_asked} className="w-full p-2 border rounded-lg" placeholder="0" />
+            <input type="number" name="salary_expected" defaultValue={initialData?.salary_expected} className="w-full p-2 border rounded-lg" placeholder="0" />
           </div>
           <div>
             <label className="block text-xs text-gray-500">Sueldo Presupuestado</label>

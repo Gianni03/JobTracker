@@ -43,8 +43,8 @@ Basado en el objeto `jobsDatabase` del script original:
 - **Users:** (Manejado por Supabase Auth)
 - **Jobs:**
   - id, user_id (FK), company, position, status (applied, interview, offer, rejected, ghosted)
-  - date_applied, platform, link, contact_person, reach_method
-  - salary_asked, salary_offered, notes, feedback
+  - date_applied (date), platform, link, contact_person, reach_method
+  - salary_asked, salary_offered, company_budget_salary, notes (general, interview), feedback
 - **Interviews:** (Relación 1:N con Jobs) - _Fase 2_
 
 ## 6. Componentes Clave a Migrar
@@ -73,11 +73,28 @@ Basado en el objeto `jobsDatabase` del script original:
 - [x] proxy de protección de rutas funcionando.
 - [x] dashboard page ya trae data de la base de datos.
 - [x] CRUD Básico completado:
-    - [x] **Create:** Formulario funcional en `/jobs/new`.
-    - [x] **Read:** Tabla dinámica en `/dashboard`.
-    - [x] **Update:** Ruta dinámica `/jobs/[id]` para editar.
-    - [x] **Delete:** Función de borrado con confirmación.
+  - [x] **Create:** Formulario funcional en `/jobs/new`.
+  - [x] **Read:** Tabla dinámica en `/dashboard`.
+  - [x] **Update:** Ruta dinámica `/jobs/[id]` para editar.
+  - [x] **Delete:** Función de borrado con confirmación.
+- [x] CRUD Básico Sincronizado:
+  - [x] Base de datos actualizada con nuevas columnas (feedback, budget, etc).
+  - [x] Formulario extendido con todos los campos del diseño original.
+- [x] Lógica de Guardado/Edición: Funcionando sin errores de esquema.
+- [x] Limpiar la tabla del Dashboard para mostrar solo lo esencial.
+- [x] UI/UX: Reemplazar `confirm()` nativo por una librería estética.
+- [ ] Navegación: Limpiar Sidebar y conectar rutas finales.
 - [ ] Integración de Lógica.
+- ## Overhaul del Dashboard
+- [x] Sincronización de métricas reales (Supabase -> UI).
+- [x] Estructura de tabla alineada con diseño Legacy.
+- [x] Implementación de filtros (Buscador y Estado).
+- [x] Paginación de resultados.
+- ## Pulido de Interfaz (Look & Feel)
+- [x] Dashboard: Aplicación de paleta Burnt Peach (#f96e46).
+- [x] Tabla: Implementación de paginación y columnas dinámicas.
+- [ ] Formulario: Estilización avanzada (Glassmorphism / Premium UI).
+- [ ] Responsive: Ajuste fino para dispositivos móviles.
 
 ## 9. Glosario para el Desarrollador (Tú)
 

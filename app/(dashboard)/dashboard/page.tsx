@@ -1,7 +1,5 @@
-import { StatCard } from '@/components/dashboard/StatCard';
+import { StatsCards } from '@/components/dashboard/StatsCards';
 import { RecentJobs } from '@/components/dashboard/RecentJobs';
-
-import { stats } from '@/lib/data-mock';
 
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
@@ -36,15 +34,8 @@ export default async function Home() {
       </div>
 
       {/* Grid de Tarjetas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((s) => (
-          <StatCard
-            key={s.label}
-            label={s.label}
-            value={s.value}
-            color={s.color}
-          />
-        ))}
+      <div className="p-8">
+        <StatsCards jobs={jobs || []} />
       </div>
 
       <Link
