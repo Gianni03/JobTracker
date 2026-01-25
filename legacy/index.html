@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JobTracker Platform - Redesigned with New Color Palette & Fixed Sidebar - Exported from UXMagic Copilot">
+    <title>JobTracker Platform - Redesigned with New Color Palette & Fixed Sidebar</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Additional meta tags for better SEO and performance -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="color-scheme" content="light dark">
+    <meta name="author" content="UXMagic Copilot">
+</head>
+<body>
+    
+
+    <!-- Landing Page -->
+    <div id="landingPage" class="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+        <!-- Header -->
+        <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-lg bg-burnt-peach flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="briefcase" class="lucide lucide-briefcase w-6 h-6 text-white"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-charcoal dark:text-white">JobTracker</h1>
+                </div>
+                <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="moon" class="lucide lucide-moon w-5 h-5"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex items-center justify-center px-6 py-12">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Side - Information -->
+                <div class="space-y-8">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-bold text-charcoal dark:text-white mb-4 leading-tight">Gestiona tus postulaciones laborales de forma inteligente</h2>
+                        <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">Realiza seguimiento de cada aplicación, analiza tus estadísticas, prepárate para entrevistas y mantén toda tu información organizada en un solo lugar.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="list-checks" class="lucide lucide-list-checks w-6 h-6 text-burnt-peach"><path d="M13 5h8"></path><path d="M13 12h8"></path><path d="M13 19h8"></path><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-charcoal dark:text-white mb-1">Seguimiento Completo</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Registra cada postulación con detalles de empresa, puesto, salarios y estado del proceso.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bar-chart-3" class="lucide lucide-bar-chart-3 w-6 h-6 text-electric-aqua"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-charcoal dark:text-white mb-1">Estadísticas Detalladas</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Visualiza tu progreso con gráficos interactivos y métricas de conversión.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="book-open" class="lucide lucide-book-open w-6 h-6 text-tuscan-sun"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-charcoal dark:text-white mb-1">Recursos de Preparación</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Accede a guías y recursos para prepararte para tus entrevistas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-6 pt-4">
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-burnt-peach">100%</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Gratis</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-electric-aqua">Privado</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Tus datos</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-tuscan-sun">24/7</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Acceso</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Login/Signup -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-gray-700">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-charcoal dark:text-white mb-2">Comienza ahora</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Crea tu cuenta o inicia sesión para continuar</p>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="flex space-x-2 mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                        <button onclick="showAuthTab('login')" id="loginTab" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition bg-white dark:bg-gray-800 text-burnt-peach shadow-sm">Iniciar Sesión</button>
+                        <button onclick="showAuthTab('signup')" id="signupTab" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition text-gray-600 dark:text-gray-400">Crear Cuenta</button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="loginForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Email</label>
+                            <input type="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="tu@email.com" style="height: 44px;">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Contraseña</label>
+                            <input type="password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="••••••••" style="height: 44px;">
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-burnt-peach focus:ring-burnt-peach">
+                                <span class="ml-2 text-gray-600 dark:text-gray-400">Recordarme</span>
+                            </label>
+                            <a href="#" class="text-burnt-peach hover:underline">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        
+                        <button type="button" onclick="showDashboard()" class="w-full bg-burnt-peach hover:bg-opacity-90 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-lg hover:shadow-xl">Iniciar Sesión</button>
+                    </form>
+
+                    <!-- Signup Form -->
+                    <form id="signupForm" class="hidden space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Nombre</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="Juan" style="height: 44px;">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Apellido</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="Pérez" style="height: 44px;">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Email</label>
+                            <input type="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="tu@email.com" style="height: 44px;">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Contraseña</label>
+                            <input type="password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="••••••••" style="height: 44px;">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Confirmar Contraseña</label>
+                            <input type="password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="••••••••" style="height: 44px;">
+                        </div>
+
+                        <div class="flex items-start">
+                            <input type="checkbox" class="mt-1 rounded border-gray-300 text-burnt-peach focus:ring-burnt-peach">
+                            <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Acepto los términos y condiciones y la política de privacidad</span>
+                        </div>
+                        
+                        <button type="button" onclick="showDashboard()" class="w-full bg-burnt-peach hover:bg-opacity-90 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-lg hover:shadow-xl">Crear Cuenta</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden flex">
+        <!-- Fixed Sidebar -->
+        <aside class="w-70 bg-charcoal flex flex-col transition-colors duration-300 fixed left-0 top-0 bottom-0 overflow-y-auto" style="width: 280px;">
+            <div class="p-4 border-b border-gray-700">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-lg bg-burnt-peach flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="briefcase" class="lucide lucide-briefcase w-6 h-6 text-white"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">JobTracker</h2>
+                </div>
+            </div>
+            
+            <nav class="flex-1 p-4 space-y-3">
+                <a href="#" onclick="showPage('dashboard')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:bg-slate-100 hover:bg-opacity-10 transition active" style="border-radius: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="layout-dashboard" class="lucide lucide-layout-dashboard w-5 h-5"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="#" onclick="showPage('statistics')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:bg-slate-100 hover:bg-opacity-10 transition" style="border-radius: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bar-chart-3" class="lucide lucide-bar-chart-3 w-5 h-5"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+                    <span class="font-medium">Estadísticas</span>
+                </a>
+                <a href="#" onclick="showPage('resources')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:bg-slate-100 hover:bg-opacity-10 transition" style="border-radius: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="book-open" class="lucide lucide-book-open w-5 h-5"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                    <span class="font-medium">Recursos</span>
+                </a>
+                <a href="#" onclick="showPage('feedback')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:bg-slate-100 hover:bg-opacity-10 transition" style="border-radius: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-square" class="lucide lucide-message-square w-5 h-5"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg>
+                    <span class="font-medium">Feedback</span>
+                </a>
+                <a href="#" onclick="showPage('settings')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:bg-slate-100 hover:bg-opacity-10 transition" style="border-radius: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="settings" class="lucide lucide-settings w-5 h-5"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span class="font-medium">Configuración</span>
+                </a>
+            </nav>
+            
+            <div class="p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3 px-4 py-3">
+                    <div class="w-10 h-10 rounded-full bg-burnt-peach flex items-center justify-center text-white font-semibold">JD</div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-white">Juan Pérez</p>
+                        <p class="text-xs text-gray-400">juan@email.com</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 mt-3">
+                    <button onclick="toggleDarkMode()" class="flex-1 flex items-center justify-center space-x-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="moon" class="lucide lucide-moon w-4 h-4"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-auto" style="margin-left: 280px; background-color: #F8FAFC;">
+            <!-- Donate Bar -->
+            <div class="bg-tuscan-sun flex items-center justify-between px-8" style="height: 56px;">
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="heart" class="lucide lucide-heart w-4 h-4 text-white"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path></svg>
+                    <p class="text-white font-medium" style="font-size: 14px;">Enjoying JobTracker? Consider supporting us</p>
+                </div>
+                <button onclick="showDonateModal()" class="donate-btn px-6 py-2 bg-white text-charcoal font-semibold rounded-lg shadow-sm hover:shadow-md transition">
+                    Donate
+                </button>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page-content p-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-charcoal dark:text-white mb-2">Dashboard</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Gestiona y realiza seguimiento de todas tus postulaciones</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="briefcase" class="lucide lucide-briefcase w-6 h-6 text-burnt-peach"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                            </div>
+                            <span class="text-3xl font-bold text-charcoal dark:text-white">24</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Postulaciones</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="calendar-check" class="lucide lucide-calendar-check w-6 h-6 text-electric-aqua"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path></svg>
+                            </div>
+                            <span class="text-3xl font-bold text-charcoal dark:text-white">8</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Entrevistas</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trophy" class="lucide lucide-trophy w-6 h-6 text-tuscan-sun"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"></path><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"></path><path d="M18 9h1.5a1 1 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"></path><path d="M6 9H4.5a1 1 0 0 1 0-5H6"></path></svg>
+                            </div>
+                            <span class="text-3xl font-bold text-charcoal dark:text-white">3</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Ofertas</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="lucide lucide-trending-up w-6 h-6 text-burnt-peach"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
+                            </div>
+                            <span class="text-3xl font-bold text-charcoal dark:text-white">33%</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Tasa de Respuesta</p>
+                    </div>
+                </div>
+
+                <!-- Add New Application Button -->
+                <div class="mb-6 flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-charcoal dark:text-white">Mis Postulaciones</h2>
+                    <button onclick="createNewJob()" class="flex items-center space-x-2 px-6 py-3 bg-burnt-peach hover:bg-opacity-90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="plus" class="lucide lucide-plus w-5 h-5"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                        <span>Nueva Postulación</span>
+                    </button>
+                </div>
+
+                <!-- Applications Table -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-charcoal dark:text-gray-300 uppercase tracking-wider">Empresa / Puesto</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-charcoal dark:text-gray-300 uppercase tracking-wider">Estado</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-charcoal dark:text-gray-300 uppercase tracking-wider">Fecha</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-charcoal dark:text-gray-300 uppercase tracking-wider">Salarios</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-charcoal dark:text-gray-300 uppercase tracking-wider">Notas / Feedback</th>
+                                    <th class="px-6 py-4 text-right text-xs font-semibold text-charcoal dark:text-gray-300 uppercase tracking-wider">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr onclick="editJob('google')" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-10 h-10 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                                <span class="text-sm font-bold text-burnt-peach">G</span>
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="font-semibold text-charcoal dark:text-white">Google</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Frontend Developer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col space-y-2">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-electric-aqua bg-opacity-20 text-electric-aqua w-fit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="calendar-check" class="lucide lucide-calendar-check w-3 h-3 mr-1"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path></svg>
+                                                Entrevista 2
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">15 Ene 2024</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm space-y-1">
+                                            <p class="text-gray-600 dark:text-gray-400">Pretendido: <span class="font-semibold text-charcoal dark:text-white">$120k</span></p>
+                                            <p class="text-gray-600 dark:text-gray-400">Expresado: <span class="font-semibold text-charcoal dark:text-white">$115k</span></p>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Ver detalles →</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button onclick="event.stopPropagation(); deleteApplication('google')" class="text-burnt-peach hover:text-opacity-80" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-4 h-4"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr onclick="editJob('microsoft')" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-10 h-10 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                                <span class="text-sm font-bold text-burnt-peach">M</span>
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="font-semibold text-charcoal dark:text-white">Microsoft</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Software Engineer II</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-tuscan-sun bg-opacity-20 text-tuscan-sun">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trophy" class="lucide lucide-trophy w-3 h-3 mr-1"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"></path><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"></path><path d="M18 9h1.5a1 1 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"></path><path d="M6 9H4.5a1 1 0 0 1 0-5H6"></path></svg>
+                                            Oferta
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">10 Ene 2024</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm space-y-1">
+                                            <p class="text-gray-600 dark:text-gray-400">Pretendido: <span class="font-semibold text-charcoal dark:text-white">$135k</span></p>
+                                            <p class="text-gray-600 dark:text-gray-400">Expresado: <span class="font-semibold text-charcoal dark:text-white">$130k</span></p>
+                                            <p class="text-tuscan-sun font-semibold">Oferta: $140k</p>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Ver detalles →</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button onclick="event.stopPropagation(); deleteApplication('microsoft')" class="text-burnt-peach hover:text-opacity-80" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-4 h-4"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr onclick="editJob('netflix')" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-10 h-10 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                                <span class="text-sm font-bold text-burnt-peach">N</span>
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="font-semibold text-charcoal dark:text-white">Netflix</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">UI/UX Designer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col space-y-2">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-electric-aqua bg-opacity-20 text-electric-aqua w-fit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="calendar-check" class="lucide lucide-calendar-check w-3 h-3 mr-1"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path></svg>
+                                                Entrevista 1
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">20 Ene 2024</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm space-y-1">
+                                            <p class="text-gray-600 dark:text-gray-400">Pretendido: <span class="font-semibold text-charcoal dark:text-white">$110k</span></p>
+                                            <p class="text-gray-600 dark:text-gray-400">Expresado: <span class="font-semibold text-charcoal dark:text-white">$105k</span></p>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Ver detalles →</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button onclick="event.stopPropagation(); deleteApplication('netflix')" class="text-burnt-peach hover:text-opacity-80" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-4 h-4"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr onclick="editJob('amazon')" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-10 h-10 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                                <span class="text-sm font-bold text-burnt-peach">A</span>
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="font-semibold text-charcoal dark:text-white">Amazon</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Full Stack Developer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-burnt-peach bg-opacity-20 text-burnt-peach">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x-circle" class="lucide lucide-x-circle w-3 h-3 mr-1"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>
+                                            Rechazado
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">05 Ene 2024</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm space-y-1">
+                                            <p class="text-gray-600 dark:text-gray-400">Pretendido: <span class="font-semibold text-charcoal dark:text-white">$125k</span></p>
+                                            <p class="text-gray-600 dark:text-gray-400">Expresado: <span class="font-semibold text-charcoal dark:text-white">$120k</span></p>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Ver detalles →</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button onclick="event.stopPropagation(); deleteApplication('amazon')" class="text-burnt-peach hover:text-opacity-80" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-4 h-4"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr onclick="editJob('spotify')" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-10 h-10 rounded-lg bg-soft-blush flex items-center justify-center flex-shrink-0">
+                                                <span class="text-sm font-bold text-burnt-peach">S</span>
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="font-semibold text-charcoal dark:text-white">Spotify</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Product Designer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="ghost" class="lucide lucide-ghost w-3 h-3 mr-1"><path d="M9 10h.01"></path><path d="M15 10h.01"></path><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"></path></svg>
+                                            Ghosted
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">28 Dic 2023</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm space-y-1">
+                                            <p class="text-gray-600 dark:text-gray-400">Pretendido: <span class="font-semibold text-charcoal dark:text-white">$105k</span></p>
+                                            <p class="text-gray-600 dark:text-gray-400">Expresado: <span class="font-semibold text-charcoal dark:text-white">$100k</span></p>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Ver detalles →</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button onclick="event.stopPropagation(); deleteApplication('spotify')" class="text-burnt-peach hover:text-opacity-80" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-4 h-4"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Detail/Edit Page -->
+            <div id="jobDetailPage" class="page-content hidden p-8">
+                <!-- Back Button -->
+                <div class="mb-6">
+                    <button onclick="showPage('dashboard')" class="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-charcoal dark:hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-left" class="lucide lucide-arrow-left w-5 h-5"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+                        <span class="font-medium">Volver al Dashboard</span>
+                    </button>
+                </div>
+
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-charcoal dark:text-white mb-2" id="jobDetailTitle">Detalles de Postulación</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Visualiza y edita toda la información de esta postulación</p>
+                </div>
+
+                <form id="jobForm" class="space-y-6">
+                    <!-- Basic Information -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Información Básica</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Empresa *</label>
+                                <input type="text" id="empresa" required="" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="Ej: Google" style="height: 44px;">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Puesto *</label>
+                                <input type="text" id="puesto" required="" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="Ej: Senior Developer" style="height: 44px;">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Estado *</label>
+                                <select id="statusSelect" onchange="handleStatusChange()" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                                    <option value="aplicado">Aplicado</option>
+                                    <option value="entrevista">Entrevista</option>
+                                    <option value="oferta">Oferta</option>
+                                    <option value="rechazado">Rechazado</option>
+                                    <option value="ghosted">Ghosted</option>
+                                </select>
+                            </div>
+
+                            <div id="interviewStageContainer" class="hidden">
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Etapa de Entrevista</label>
+                                <select id="interviewStage" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                                    <option>Entrevista 1</option>
+                                    <option>Entrevista 2</option>
+                                    <option>Entrevista 3</option>
+                                    <option>Entrevista 4</option>
+                                    <option>Entrevista 5</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Fecha de Aplicación *</label>
+                                <input type="date" id="fecha" required="" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Plataforma</label>
+                                <select id="plataforma" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                                    <option>LinkedIn</option>
+                                    <option>Web de la Empresa</option>
+                                    <option>Referido</option>
+                                    <option>Indeed</option>
+                                    <option>Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Link a la Oferta</label>
+                            <input type="url" id="link" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" placeholder="https://..." style="height: 44px;">
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Información de Contacto</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Contact Person</label>
+                                <input type="text" id="contactPerson" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition placeholder-slate-400" placeholder="Nombre del reclutador" style="height: 44px;">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Reach Method</label>
+                                <input type="text" id="reachMethod" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition placeholder-slate-400" placeholder="LinkedIn URL o email" style="height: 44px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Description -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Descripción del Puesto</h3>
+                        <textarea id="descripcion" rows="6" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition resize-none placeholder-slate-400" placeholder="Copia aquí la descripción del puesto..."></textarea>
+                    </div>
+
+                    <!-- Salary Information -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Información Salarial</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Sueldo Pretendido</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">$</span>
+                                    <input type="number" id="sueldoPretendido" class="w-full pl-8 pr-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition placeholder-slate-400" placeholder="120000" style="height: 44px;">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Sueldo Expresado por Empresa</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">$</span>
+                                    <input type="number" id="sueldoExpresado" class="w-full pl-8 pr-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition placeholder-slate-400" placeholder="115000" style="height: 44px;">
+                                </div>
+                            </div>
+
+                            <div id="offerSalaryContainer" class="hidden">
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Sueldo de la Oferta</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">$</span>
+                                    <input type="number" id="sueldoOferta" class="w-full pl-8 pr-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition placeholder-slate-400" placeholder="125000" style="height: 44px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes and Feedback -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Notas y Feedback</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Notas Generales</label>
+                                <textarea id="notasGenerales" rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition resize-none placeholder-slate-400" placeholder="Agrega notas sobre esta postulación..."></textarea>
+                            </div>
+
+                            <div id="interviewNotesContainer" class="hidden">
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Notas de Entrevista</label>
+                                <textarea id="notasEntrevista" rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition resize-none placeholder-slate-400" placeholder="Preguntas realizadas, impresiones, próximos pasos..."></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Feedback Recibido</label>
+                                <textarea id="feedback" rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition resize-none placeholder-slate-400" placeholder="Comentarios del reclutador o empresa..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-4 pt-6">
+                        <button type="button" onclick="showPage('dashboard')" class="px-8 py-3 border border-gray-300 dark:border-gray-600 text-charcoal dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            Cancelar
+                        </button>
+                        <button type="submit" id="submitButton" class="px-8 py-3 bg-burnt-peach hover:bg-opacity-90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Statistics Page -->
+            <div id="statisticsPage" class="page-content hidden p-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-charcoal dark:text-white mb-2">Estadísticas</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Analiza el rendimiento de tus postulaciones</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-4">Distribución por Estado</h3>
+                        <div class="h-80 overflow-hidden">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-4">Postulaciones por Mes</h3>
+                        <div class="h-80 overflow-hidden">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-4">Rango Salarial</h3>
+                        <div class="h-80 overflow-hidden">
+                            <canvas id="salaryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-4">Tasa de Conversión</h3>
+                        <div class="space-y-6 pt-4">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-charcoal dark:text-gray-300">Aplicado → Entrevista</span>
+                                    <span class="text-sm font-bold text-charcoal dark:text-white">33%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                                    <div class="bg-burnt-peach h-3 rounded-full" style="width: 33%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-charcoal dark:text-gray-300">Entrevista → Oferta</span>
+                                    <span class="text-sm font-bold text-charcoal dark:text-white">37%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                                    <div class="bg-electric-aqua h-3 rounded-full" style="width: 37%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-charcoal dark:text-gray-300">Tasa de Respuesta</span>
+                                    <span class="text-sm font-bold text-charcoal dark:text-white">67%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                                    <div class="bg-tuscan-sun h-3 rounded-full" style="width: 67%"></div>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="text-center p-4 bg-soft-blush rounded-lg">
+                                        <p class="text-2xl font-bold text-burnt-peach">12.5%</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tasa de Éxito</p>
+                                    </div>
+                                    <div class="text-center p-4 bg-soft-blush rounded-lg">
+                                        <p class="text-2xl font-bold text-electric-aqua">8 días</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tiempo Promedio</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Page -->
+            <div id="resourcesPage" class="page-content hidden p-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-charcoal dark:text-white mb-2">Recursos de Entrevista</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Prepárate para tus entrevistas con estos recursos</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition">
+                        <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="book-open" class="lucide lucide-book-open w-6 h-6 text-burnt-peach"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-2">Preguntas Técnicas</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Prepárate con las preguntas técnicas más comunes en entrevistas de desarrollo.</p>
+                        <a href="#" class="text-sm font-medium text-burnt-peach hover:underline flex items-center">
+                            Ver recursos
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition">
+                        <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" class="lucide lucide-users w-6 h-6 text-electric-aqua"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-2">Entrevistas Conductuales</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Aprende a responder preguntas sobre tu experiencia y habilidades blandas.</p>
+                        <a href="#" class="text-sm font-medium text-burnt-peach hover:underline flex items-center">
+                            Ver recursos
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition">
+                        <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="code" class="lucide lucide-code w-6 h-6 text-tuscan-sun"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-2">Coding Challenges</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Practica con ejercicios de código y algoritmos para entrevistas técnicas.</p>
+                        <a href="#" class="text-sm font-medium text-burnt-peach hover:underline flex items-center">
+                            Ver recursos
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition">
+                        <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="briefcase" class="lucide lucide-briefcase w-6 h-6 text-burnt-peach"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-2">Negociación Salarial</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Estrategias y consejos para negociar tu salario y beneficios.</p>
+                        <a href="#" class="text-sm font-medium text-burnt-peach hover:underline flex items-center">
+                            Ver recursos
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition">
+                        <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="video" class="lucide lucide-video w-6 h-6 text-electric-aqua"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-2">Entrevistas Remotas</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Tips para destacar en entrevistas por videollamada y pruebas técnicas remotas.</p>
+                        <a href="#" class="text-sm font-medium text-burnt-peach hover:underline flex items-center">
+                            Ver recursos
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition">
+                        <div class="w-12 h-12 rounded-lg bg-soft-blush flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="file-text" class="lucide lucide-file-text w-6 h-6 text-tuscan-sun"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-2">CV y Portfolio</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Crea un CV impactante y un portfolio que destaque tus mejores proyectos.</p>
+                        <a href="#" class="text-sm font-medium text-burnt-peach hover:underline flex items-center">
+                            Ver recursos
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-gradient-to-r from-burnt-peach to-tuscan-sun rounded-xl p-8 text-white">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">¿Necesitas más ayuda?</h3>
+                            <p class="text-white text-opacity-90 mb-6">Accede a nuestra biblioteca completa de recursos y guías detalladas.</p>
+                            <button class="px-6 py-3 bg-white text-burnt-peach font-semibold rounded-lg hover:bg-opacity-90 transition">
+                                Explorar Biblioteca
+                            </button>
+                        </div>
+                        <div class="hidden lg:block">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="graduation-cap" class="lucide lucide-graduation-cap w-24 h-24 text-white opacity-30"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Page -->
+            <div id="feedbackPage" class="page-content hidden p-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-charcoal dark:text-white mb-2">Feedback Recibido</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Revisa los comentarios de reclutadores sobre tus postulaciones</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-soft-blush flex items-center justify-center">
+                                    <span class="text-lg font-bold text-burnt-peach">G</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-charcoal dark:text-white">Google - Senior Frontend Developer</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Recibido hace 2 días</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-electric-aqua bg-opacity-20 text-electric-aqua">
+                                Positivo
+                            </span>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Nos impresionó tu experiencia con React y tu enfoque en la accesibilidad. Tu portfolio demuestra un excelente dominio de las mejores prácticas. Nos gustaría avanzar a la siguiente etapa del proceso.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-soft-blush flex items-center justify-center">
+                                    <span class="text-lg font-bold text-burnt-peach">M</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-charcoal dark:text-white">Microsoft - Software Engineer II</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Recibido hace 5 días</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-electric-aqua bg-opacity-20 text-electric-aqua">
+                                Positivo
+                            </span>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Tu desempeño en la entrevista técnica fue sobresaliente. Nos gustó especialmente tu enfoque para resolver el problema de optimización. Estamos preparando una oferta formal que recibirás en los próximos días.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-soft-blush flex items-center justify-center">
+                                    <span class="text-lg font-bold text-burnt-peach">A</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-charcoal dark:text-white">Amazon - Full Stack Developer</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Recibido hace 1 semana</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-tuscan-sun bg-opacity-20 text-tuscan-sun">
+                                Constructivo
+                            </span>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Apreciamos tu interés en Amazon. Si bien tu experiencia es sólida, buscamos candidatos con más experiencia en arquitectura de microservicios y AWS. Te recomendamos fortalecer estas áreas y volver a postularte en el futuro.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-soft-blush flex items-center justify-center">
+                                    <span class="text-lg font-bold text-burnt-peach">N</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-charcoal dark:text-white">Netflix - UI/UX Designer</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Recibido hace 3 días</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-electric-aqua bg-opacity-20 text-electric-aqua">
+                                Positivo
+                            </span>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">Tu portfolio es impresionante y tu enfoque en diseño centrado en el usuario es exactamente lo que buscamos. Nos gustaría programar una entrevista con el equipo de diseño para conocerte mejor.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page-content hidden p-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-charcoal dark:text-white mb-2">Configuración</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Administra tu perfil y preferencias</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Información Personal</h3>
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Nombre</label>
+                                    <input type="text" value="Juan" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Apellido</label>
+                                    <input type="text" value="Pérez" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Email</label>
+                                <input type="email" value="juan@email.com" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-charcoal dark:text-gray-300 mb-2">Teléfono</label>
+                                <input type="tel" value="+34 600 123 456" class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-charcoal dark:text-white focus:ring-2 focus:ring-electric-aqua focus:border-transparent transition" style="height: 44px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Preferencias</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
+                                <div>
+                                    <p class="font-medium text-charcoal dark:text-white">Notificaciones por Email</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Recibe actualizaciones sobre tus postulaciones</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" checked="" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-electric-aqua peer-focus:ring-opacity-30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-electric-aqua"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
+                                <div>
+                                    <p class="font-medium text-charcoal dark:text-white">Recordatorios de Seguimiento</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Recibe recordatorios para hacer seguimiento</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" checked="" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-electric-aqua peer-focus:ring-opacity-30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-electric-aqua"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between py-3">
+                                <div>
+                                    <p class="font-medium text-charcoal dark:text-white">Estadísticas Semanales</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Recibe un resumen semanal de tu progreso</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-electric-aqua peer-focus:ring-opacity-30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-electric-aqua"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-charcoal dark:text-white mb-6">Seguridad</h3>
+                        <div class="space-y-4">
+                            <button class="w-full md:w-auto px-6 py-3 bg-burnt-peach hover:bg-opacity-90 text-white font-semibold rounded-lg transition">
+                                Cambiar Contraseña
+                            </button>
+                            <button class="w-full md:w-auto px-6 py-3 bg-charcoal hover:bg-opacity-90 text-white font-semibold rounded-lg transition ml-0 md:ml-3 mt-3 md:mt-0">
+                                Cerrar Sesión
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button class="px-8 py-3 bg-burnt-peach hover:bg-opacity-90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+
+        let currentJobMode = 'create';
+        let currentJobId = null;
+
+        const jobsDatabase = {
+            'google': {
+                empresa: 'Google',
+                puesto: 'Senior Frontend Developer',
+                status: 'entrevista',
+                interviewStage: 'Entrevista 2',
+                fecha: '2024-01-15',
+                plataforma: 'LinkedIn',
+                link: 'https://careers.google.com/jobs/123456',
+                contactPerson: 'María García',
+                reachMethod: 'https://linkedin.com/in/mariagarcia',
+                descripcion: 'Buscamos un desarrollador senior con experiencia en React, TypeScript y arquitectura de aplicaciones web modernas.',
+                sueldoPretendido: '120000',
+                sueldoExpresado: '115000',
+                sueldoOferta: '',
+                notasGenerales: 'Empresa con excelente cultura de trabajo.',
+                notasEntrevista: 'Entrevista 1: Entrevista inicial con HR.\n\nEntrevista 2: Entrevista técnica con el equipo.',
+                feedback: 'Nos impresionó tu experiencia con React.'
+            },
+            'microsoft': {
+                empresa: 'Microsoft',
+                puesto: 'Software Engineer II',
+                status: 'oferta',
+                interviewStage: '',
+                fecha: '2024-01-10',
+                plataforma: 'LinkedIn',
+                link: 'https://careers.microsoft.com/job/456789',
+                contactPerson: 'John Smith',
+                reachMethod: 'john.smith@microsoft.com',
+                descripcion: 'Desarrollador con experiencia en .NET, Azure y arquitectura cloud.',
+                sueldoPretendido: '135000',
+                sueldoExpresado: '130000',
+                sueldoOferta: '140000',
+                notasGenerales: 'Gran empresa con beneficios excelentes.',
+                notasEntrevista: '',
+                feedback: 'Tu desempeño en la entrevista técnica fue sobresaliente.'
+            },
+            'netflix': {
+                empresa: 'Netflix',
+                puesto: 'UI/UX Designer',
+                status: 'entrevista',
+                interviewStage: 'Entrevista 1',
+                fecha: '2024-01-20',
+                plataforma: 'Web de la Empresa',
+                link: 'https://jobs.netflix.com/designer',
+                contactPerson: 'Sarah Johnson',
+                reachMethod: 'https://linkedin.com/in/sarahjohnson',
+                descripcion: 'Diseñador con experiencia en productos digitales.',
+                sueldoPretendido: '110000',
+                sueldoExpresado: '105000',
+                sueldoOferta: '',
+                notasGenerales: 'Cultura innovadora y creativa.',
+                notasEntrevista: 'Primera entrevista con el equipo de diseño.',
+                feedback: 'Tu portfolio es impresionante.'
+            },
+            'amazon': {
+                empresa: 'Amazon',
+                puesto: 'Full Stack Developer',
+                status: 'rechazado',
+                interviewStage: '',
+                fecha: '2024-01-05',
+                plataforma: 'LinkedIn',
+                link: 'https://amazon.jobs/fullstack',
+                contactPerson: 'David Lee',
+                reachMethod: 'david.lee@amazon.com',
+                descripcion: 'Desarrollador full stack con experiencia en AWS.',
+                sueldoPretendido: '125000',
+                sueldoExpresado: '120000',
+                sueldoOferta: '',
+                notasGenerales: 'Proceso muy exigente.',
+                notasEntrevista: '',
+                feedback: 'Buscamos candidatos con más experiencia en microservicios.'
+            },
+            'spotify': {
+                empresa: 'Spotify',
+                puesto: 'Product Designer',
+                status: 'ghosted',
+                interviewStage: '',
+                fecha: '2023-12-28',
+                plataforma: 'Referido',
+                link: 'https://spotify.com/jobs/designer',
+                contactPerson: '',
+                reachMethod: '',
+                descripcion: 'Diseñador de producto con experiencia en música.',
+                sueldoPretendido: '105000',
+                sueldoExpresado: '100000',
+                sueldoOferta: '',
+                notasGenerales: 'No recibí respuesta después de la aplicación.',
+                notasEntrevista: '',
+                feedback: ''
+            }
+        };
+
+        function showAuthTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            if (tab === 'login') {
+                loginTab.classList.add('bg-white', 'dark:bg-gray-800', 'text-burnt-peach', 'shadow-sm');
+                loginTab.classList.remove('text-gray-600', 'dark:text-gray-400');
+                signupTab.classList.remove('bg-white', 'dark:bg-gray-800', 'text-burnt-peach', 'shadow-sm');
+                signupTab.classList.add('text-gray-600', 'dark:text-gray-400');
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+            } else {
+                signupTab.classList.add('bg-white', 'dark:bg-gray-800', 'text-burnt-peach', 'shadow-sm');
+                signupTab.classList.remove('text-gray-600', 'dark:text-gray-400');
+                loginTab.classList.remove('bg-white', 'dark:bg-gray-800', 'text-burnt-peach', 'shadow-sm');
+                loginTab.classList.add('text-gray-600', 'dark:text-gray-400');
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            initCharts();
+            lucide.createIcons();
+        }
+
+        function showPage(pageName) {
+            document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageName + 'Page').classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active', 'bg-slate-100', 'bg-opacity-10');
+            });
+            event.currentTarget.classList.add('active', 'bg-slate-100', 'bg-opacity-10');
+
+            if (pageName === 'statistics') {
+                setTimeout(initCharts, 100);
+            }
+
+            lucide.createIcons();
+        }
+
+        function createNewJob() {
+            currentJobMode = 'create';
+            currentJobId = null;
+            
+            document.getElementById('jobForm').reset();
+            document.getElementById('jobDetailTitle').textContent = 'Nueva Postulación';
+            document.getElementById('submitButton').textContent = 'Crear Postulación';
+            
+            document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
+            document.getElementById('jobDetailPage').classList.remove('hidden');
+            
+            handleStatusChange();
+            lucide.createIcons();
+        }
+
+        function editJob(jobId) {
+            currentJobMode = 'edit';
+            currentJobId = jobId;
+            
+            const job = jobsDatabase[jobId];
+            if (!job) return;
+            
+            document.getElementById('empresa').value = job.empresa;
+            document.getElementById('puesto').value = job.puesto;
+            document.getElementById('statusSelect').value = job.status;
+            document.getElementById('interviewStage').value = job.interviewStage;
+            document.getElementById('fecha').value = job.fecha;
+            document.getElementById('plataforma').value = job.plataforma;
+            document.getElementById('link').value = job.link;
+            document.getElementById('contactPerson').value = job.contactPerson;
+            document.getElementById('reachMethod').value = job.reachMethod;
+            document.getElementById('descripcion').value = job.descripcion;
+            document.getElementById('sueldoPretendido').value = job.sueldoPretendido;
+            document.getElementById('sueldoExpresado').value = job.sueldoExpresado;
+            document.getElementById('sueldoOferta').value = job.sueldoOferta;
+            document.getElementById('notasGenerales').value = job.notasGenerales;
+            document.getElementById('notasEntrevista').value = job.notasEntrevista;
+            document.getElementById('feedback').value = job.feedback;
+            
+            document.getElementById('jobDetailTitle').textContent = 'Editar Postulación';
+            document.getElementById('submitButton').textContent = 'Guardar Cambios';
+            
+            document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
+            document.getElementById('jobDetailPage').classList.remove('hidden');
+            
+            handleStatusChange();
+            lucide.createIcons();
+        }
+
+        function handleStatusChange() {
+            const status = document.getElementById('statusSelect').value;
+            const interviewStageContainer = document.getElementById('interviewStageContainer');
+            const interviewNotesContainer = document.getElementById('interviewNotesContainer');
+            const offerSalaryContainer = document.getElementById('offerSalaryContainer');
+
+            if (status === 'entrevista') {
+                interviewStageContainer.classList.remove('hidden');
+                interviewNotesContainer.classList.remove('hidden');
+                offerSalaryContainer.classList.add('hidden');
+            } else if (status === 'oferta') {
+                interviewStageContainer.classList.add('hidden');
+                interviewNotesContainer.classList.add('hidden');
+                offerSalaryContainer.classList.remove('hidden');
+            } else {
+                interviewStageContainer.classList.add('hidden');
+                interviewNotesContainer.classList.add('hidden');
+                offerSalaryContainer.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('jobForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (currentJobMode === 'create') {
+                alert('Nueva postulación creada exitosamente');
+            } else {
+                alert('Postulación actualizada exitosamente');
+            }
+            
+            showPage('dashboard');
+        });
+
+        function deleteApplication(jobId) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta postulación?')) {
+                alert('Postulación eliminada');
+            }
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            lucide.createIcons();
+        }
+
+        function showDonateModal() {
+            alert('¡Gracias por tu interés en apoyar JobTracker! Esta funcionalidad estará disponible próximamente.');
+        }
+
+        function initCharts() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#9ca3af' : '#545863';
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+
+            const statusCtx = document.getElementById('statusChart');
+            if (statusCtx && !statusCtx.chart) {
+                statusCtx.chart = new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Aplicado', 'Entrevista', 'Oferta', 'Rechazado', 'Ghosted'],
+                        datasets: [{
+                            data: [10, 8, 3, 2, 1],
+                            backgroundColor: ['#f96e46', '#00e8fc', '#f9c846', '#545863', '#ffe3e3']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: textColor, font: { family: 'Inter' } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const monthlyCtx = document.getElementById('monthlyChart');
+            if (monthlyCtx && !monthlyCtx.chart) {
+                monthlyCtx.chart = new Chart(monthlyCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Postulaciones',
+                            data: [3, 5, 4, 6, 4, 2],
+                            borderColor: '#f96e46',
+                            backgroundColor: 'rgba(249, 110, 70, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: textColor, font: { family: 'Inter' } } }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: textColor, font: { family: 'Inter' } },
+                                grid: { color: gridColor }
+                            },
+                            x: {
+                                ticks: { color: textColor, font: { family: 'Inter' } },
+                                grid: { color: gridColor }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const salaryCtx = document.getElementById('salaryChart');
+            if (salaryCtx && !salaryCtx.chart) {
+                salaryCtx.chart = new Chart(salaryCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Pretendido', 'Expresado', 'Ofrecido'],
+                        datasets: [{
+                            label: 'Sueldo (k)',
+                            data: [120, 115, 125],
+                            backgroundColor: ['#f96e46', '#00e8fc', '#f9c846']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: textColor, font: { family: 'Inter' } } }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: textColor, font: { family: 'Inter' } },
+                                grid: { color: gridColor }
+                            },
+                            x: {
+                                ticks: { color: textColor, font: { family: 'Inter' } },
+                                grid: { color: gridColor }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
