@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 import {
   Card,
   CardContent,
@@ -16,8 +17,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { login, signup } from '@/app/auth/actions'; // Importamos las acciones
 import { Toast } from '@/components/ui/toast';
 
-
-
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,8 +28,6 @@ export function AuthForm() {
 
     if (result?.error) {
       console.log(result.error);
-     
-     
     }
   }
 
@@ -42,7 +39,6 @@ export function AuthForm() {
 
     if (result?.error) {
       console.log(result.error);
-     
     }
   }
 
@@ -71,14 +67,23 @@ export function AuthForm() {
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
-                    name="email" // Importante: name para FormData
+                    name="email"
                     placeholder="nombre@ejemplo.com"
                     type="email"
                     required
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="password">Contraseña</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="password">Contraseña</Label>
+                    {/* Agregamos el link que faltaba aquí */}
+                    <Link
+                      href="/forgot-password"
+                      className="text-xs text-primary hover:underline"
+                    >
+                      ¿Olvidaste tu contraseña?
+                    </Link>
+                  </div>
                   <Input
                     id="password"
                     name="password"
@@ -86,7 +91,12 @@ export function AuthForm() {
                     required
                   />
                 </div>
-                <Button disabled={isLoading} className="w-full font-semibold">
+                {/* type="submit" asegura que funcione el Enter */}
+                <Button
+                  disabled={isLoading}
+                  className="w-full font-semibold"
+                  type="submit"
+                >
                   {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                 </Button>
               </div>
@@ -100,11 +110,21 @@ export function AuthForm() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
                     <Label htmlFor="first-name">Nombre</Label>
-                    <Input id="first-name" name="first-name" placeholder="Juan" required />
+                    <Input
+                      id="first-name"
+                      name="first-name"
+                      placeholder="Juan"
+                      required
+                    />
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="last-name">Apellido</Label>
-                    <Input id="last-name" name="last-name" placeholder="Pérez" required />
+                    <Input
+                      id="last-name"
+                      name="last-name"
+                      placeholder="Pérez"
+                      required
+                    />
                   </div>
                 </div>
                 <div className="grid gap-2">
@@ -134,9 +154,7 @@ export function AuthForm() {
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter>
-          {/* Footer content */}
-      </CardFooter>
+      <CardFooter>{/* Footer content */}</CardFooter>
     </Card>
   );
 }

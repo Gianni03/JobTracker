@@ -111,3 +111,13 @@ export async function signOut() {
   revalidatePath('/', 'layout');
   redirect('/');
 }
+
+export async function resetPassword(email: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/dashboard/settings`,
+  });
+
+  if (error) return { error: error.message };
+  return { success: "Revisa tu correo para restablecer la contraseña." };
+}
