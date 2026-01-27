@@ -112,8 +112,10 @@ export async function signOut() {
   redirect('/');
 }
 
-export async function resetPassword(email: string) {
+export async function resetPassword(formData: FormData) {
   const supabase = await createClient();
+  const email = formData.get('email') as string;
+
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/dashboard/settings`,
   });
