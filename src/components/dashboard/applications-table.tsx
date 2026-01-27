@@ -153,7 +153,7 @@ export function ApplicationsTable({
             ) : (
                 <TableRow>
                     <TableCell colSpan={5} className="h-24 text-center">
-                        No hay postulaciones que coincidan con los filtros seleccionados.
+                        Todavia no postulaste a ninguna oferta. Animate a hacerlo y éxitos!!!
                     </TableCell>
                 </TableRow>
             )}

@@ -6,7 +6,12 @@ export type User = {
   avatar: string; // URL to avatar image or initials
 };
 
-export type ApplicationStatus = 'Aplicado' | 'Entrevista' | 'Oferta' | 'Rechazado' | 'Ghosted';
+export type ApplicationStatus =
+  | 'Aplicado'
+  | 'Entrevista'
+  | 'Oferta'
+  | 'Rechazado'
+  | 'Ghosted';
 
 export type Application = {
   id: string;
@@ -34,3 +39,11 @@ export type Application = {
   };
   feedback?: string;
 };
+
+// export const user: User = {
+//   id: '1',
+//   firstName: 'Gianni',
+//   lastName: 'Example',
+//   email: 'gianni@example.com',
+//   avatar: 'G', 
+// };

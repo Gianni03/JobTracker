@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Briefcase, CalendarCheck, Plus, Trophy, TrendingUp } from "lucide-react";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { ApplicationsTable } from "@/components/dashboard/applications-table";
-import { applications } from "@/lib/data";
+import { fetchUserApplications } from "@/lib/data";
 import { differenceInDays } from "date-fns";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+    const applications = await fetchUserApplications();
     const totalApplications = applications.length;
     const interviews = applications.filter(app => app.status === 'Entrevista').length;
     const offers = applications.filter(app => app.status === 'Oferta').length;
@@ -69,6 +70,16 @@ export default function DashboardPage() {
       </div>
       
       <ApplicationsTable applications={activeApplications} />
+      {/* <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+        <div className="col-span-4">
+           
+           <ApplicationsTable applications={applications} />
+        </div>
+        <div className="col-span-3">
+           <RecentActivity applications={applications} />
+        </div>
+      </div>
+    </div> */}
 
     </div>
   );

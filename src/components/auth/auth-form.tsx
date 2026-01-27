@@ -13,17 +13,37 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { login, signup } from '@/app/auth/actions'; // Importamos las acciones
+import { Toast } from '@/components/ui/toast';
+
+
 
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
+  // Manejador para Login
+  async function handleLogin(formData: FormData) {
     setIsLoading(true);
+    const result = await login(formData);
+    setIsLoading(false);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    if (result?.error) {
+      console.log(result.error);
+     
+     
+    }
+  }
+
+  // Manejador para Registro
+  async function handleRegister(formData: FormData) {
+    setIsLoading(true);
+    const result = await signup(formData);
+    setIsLoading(false);
+
+    if (result?.error) {
+      console.log(result.error);
+     
+    }
   }
 
   return (
@@ -42,19 +62,18 @@ export function AuthForm() {
             <TabsTrigger value="login">Ingresar</TabsTrigger>
             <TabsTrigger value="register">Registrarse</TabsTrigger>
           </TabsList>
+
+          {/* LOGIN TAB */}
           <TabsContent value="login" className="space-y-4">
-            <form onSubmit={onSubmit}>
+            <form action={handleLogin}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
+                    name="email" // Importante: name para FormData
                     placeholder="nombre@ejemplo.com"
                     type="email"
-                    autoCapitalize="none"
-                    autoComplete="email"
-                    autoCorrect="off"
-                    disabled={isLoading}
                     required
                   />
                 </div>
@@ -62,8 +81,8 @@ export function AuthForm() {
                   <Label htmlFor="password">Contraseña</Label>
                   <Input
                     id="password"
+                    name="password"
                     type="password"
-                    disabled={isLoading}
                     required
                   />
                 </div>
@@ -73,26 +92,28 @@ export function AuthForm() {
               </div>
             </form>
           </TabsContent>
+
+          {/* REGISTER TAB */}
           <TabsContent value="register" className="space-y-4">
-            <form onSubmit={onSubmit}>
+            <form action={handleRegister}>
               <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Nombre Completo</Label>
-                  <Input
-                    id="name"
-                    placeholder="Juan Pérez"
-                    type="text"
-                    disabled={isLoading}
-                    required
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="first-name">Nombre</Label>
+                    <Input id="first-name" name="first-name" placeholder="Juan" required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="last-name">Apellido</Label>
+                    <Input id="last-name" name="last-name" placeholder="Pérez" required />
+                  </div>
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="reg-email">Email</Label>
                   <Input
                     id="reg-email"
+                    name="email"
                     placeholder="nombre@ejemplo.com"
                     type="email"
-                    disabled={isLoading}
                     required
                   />
                 </div>
@@ -100,8 +121,8 @@ export function AuthForm() {
                   <Label htmlFor="reg-password">Contraseña</Label>
                   <Input
                     id="reg-password"
+                    name="password"
                     type="password"
-                    disabled={isLoading}
                     required
                   />
                 </div>
@@ -113,24 +134,8 @@ export function AuthForm() {
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter className="flex flex-col">
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          Al continuar, aceptas nuestros{' '}
-          <a
-            href="#"
-            className="underline underline-offset-4 hover:text-primary"
-          >
-            Términos de Servicio
-          </a>{' '}
-          y{' '}
-          <a
-            href="#"
-            className="underline underline-offset-4 hover:text-primary"
-          >
-            Política de Privacidad
-          </a>
-          .
-        </p>
+      <CardFooter>
+          {/* Footer content */}
       </CardFooter>
     </Card>
   );
