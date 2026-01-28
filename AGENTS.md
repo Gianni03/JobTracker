@@ -22,22 +22,20 @@ The application is in an **MVP / Integration** state.
 
 ## Folder Structure
 
-```text
 src/
-├── app/                  # App Router: Layouts, Pages, and Global CSS
-│   ├── dashboard/        # Main application protected area (Server Components)
-│   │   ├── applications/ # Job application management (list, new, edit)
-│   │   └── statics/      # Statistics and charts
-├── components/           # UI Components
-│   ├── charts/           # Pure UI charts (Props-based)
-│   ├── dashboard/        # Dashboard-specific components (Table, FilterableTable, Form)
-│   └── layout/           # Sidebar (Client Component), Header
-├── lib/                  # Server-side logic and Shared Definitions
-│   ├── data.ts           # Server-only Supabase fetching and mapping
-│   ├── definitions.ts    # TS interfaces + Shared constants/mocks (Safe for Client/Server)
-│   └── actions.ts        # Server Actions (CRUD & AI)
-└── utils/                # Supabase helpers (Client, Server, Middleware)
-```
+├── app/ # App Router: Layouts, Pages, and Global CSS
+│ ├── dashboard/ # Main application protected area (Server Components)
+│ │ ├── applications/ # Job application management (list, new, edit)
+│ │ └── statistics/ # Statistics and charts
+├── components/ # UI Components
+│ ├── charts/ # Pure UI charts (Props-based)
+│ ├── dashboard/ # Dashboard-specific components (Table, FilterableTable, Form)
+│ └── layout/ # Sidebar (Client Component), Header
+├── lib/ # Server-side logic and Shared Definitions
+│ ├── data.ts # Server-only Supabase fetching and mapping
+│ ├── definitions.ts # TS interfaces + Shared constants/mocks (Safe for Client/Server)
+│ └── actions.ts # Server Actions (CRUD & AI)
+└── utils/ # Supabase helpers (Client, Server, Middleware)
 
 ## Design Patterns
 
@@ -65,35 +63,47 @@ src/
 - [x] **Estadísticas Reales**: Conectar los gráficos (`Sankey`, `Pie`) a los datos reales de Supabase (Refactor prop-based).
 - [ ] **Refactor de Tipos**: Eliminar los `any` en `ApplicationForm.tsx` con la nueva definición de Supabase.
 
-
 ## Estado de las Fases
 
 ### Fase 1: Cimientos (100% Completado) ✅
+
 - [x] Configuración de Next.js 15 y Tailwind CSS.
 - [x] Conexión inicial con Supabase (Client, Server y Middleware).
 - [x] Middleware de protección de rutas (Auth Guard).
 - [x] Estabilización del esquema de base de datos (Tabla `applications` y limpieza de FKs).
 
 ### Fase 2: Lógica Core & Hidratación (90% Completado) 🏗️
+
 - [x] **Identidad Real**: El `DashboardLayout` obtiene el usuario de la sesión de Supabase.
 - [x] **Sidebar Dinámico**: Ya no usa datos estáticos; muestra nombre, email y avatar del usuario logueado.
-- [x] **Auth Mejorado**: 
-    - [x] Implementación de `signOut` vía Server Action.
-    - [x] Botón "Enter" funcional en formularios de login.
-    - [x] Flujo de "Olvidé mi contraseña" (Página + Acción de reset).
+- [x] **Auth Mejorado**:
+  - [x] Implementación de `signOut` vía Server Action.
+  - [x] Botón "Enter" funcional en formularios de login.
+  - [x] Flujo de "Olvidé mi contraseña" (Página + Acción de reset).
 - [x] **Lectura de Datos**: `fetchUserApplications` y `getApplicationById` funcionando con mapeo de objetos anidados (`salary`, `contact`).
 - [ ] **Escritura (CRUD)**: Conectar el `ApplicationForm` con las Server Actions de `create` y `update` (Pendiente integración final en UI).
 
 ### Fase 3: Inteligencia y Pulido (En progreso) 🧠
-- [ ] **Persistencia Genkit**: Guardar los análisis de IA en la base de datos.
+
 - [x] **Componentes UI de Estadísticas**: Refactorizados para recibir datos por props (Sankey, Pie, etc.).
 - [ ] **Refactor de Tipos**: Eliminar los remanentes de `any` en los formularios usando las nuevas definiciones.
 - [ ] **Feedback Visual**: Implementar `loading.tsx` y esqueletos para mejorar la percepción de velocidad.
 
 ## Deuda Técnica & Próximos Pasos
-1.  **Conexión Final de Formulario**: Hacer que al darle "Guardar" en una nueva postulación, los datos lleguen a Supabase.
+
+1.
 2.  **Validación de RLS**: Verificar en el dashboard de Supabase que las políticas impidan que un usuario vea datos de otro.
 3.  **Manejo de Errores en UI**: Reemplazar los `console.log` por Toasts o mensajes de error visibles en el login/registro.
+4.  ## Cambios Recientes
+5.  **Base de Datos**: Se agregó la columna `feedback` a la tabla `applications` para sincronizar con el formulario.
+6.  **Navegación**: Se limpió el Sidebar (removido link a AI Analyzer) para enfocar el MVP.
+7.  **Estadísticas**: Implementación de gráficos con `Recharts` + `use client` consumiendo datos del servidor.
+
+## Deuda Técnica & Próximos Pasos
+
+1.  **Recursos**: Implementar la página `/dashboard/resources` con contenido estático de valor.
+2.  **Manejo de Errores Global**: Crear páginas `error.tsx` para fallos inesperados.
+3.  **Landing Page**: Pulir la página de inicio pública (fuera del dashboard).
 
 ## Pruebas Futuras & Consideraciones
 

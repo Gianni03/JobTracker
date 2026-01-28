@@ -32,7 +32,7 @@ const navItems = [
   { href: '/dashboard/applications', icon: ListChecks, label: 'Postulaciones' },
   { href: '/dashboard/statistics', icon: BarChart3, label: 'Estadísticas' },
   { href: '/dashboard/resources', icon: BookOpen, label: 'Recursos' },
-  { href: '/dashboard/analyzer', icon: MessageSquare, label: 'AI Feedback' },
+  // { href: '/dashboard/analyzer', icon: MessageSquare, label: 'AI Feedback' },
   { href: '/dashboard/settings', icon: Settings, label: 'Configuración' },
 ];
 

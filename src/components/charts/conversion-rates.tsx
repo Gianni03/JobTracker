@@ -1,40 +1,42 @@
-import { Progress } from '@/components/ui/progress';
+'use client';
+
+import { Progress } from "@/components/ui/progress";
 import type { Application } from '@/lib/definitions';
 
-export function ConversionRates({
-  applications,
-}: {
-  applications: Application[];
-}) {
-  const applied = applications.length;
-  const interviews = applications.filter((app) =>
-    ['Entrevista', 'Oferta'].includes(app.status)
-  ).length;
-  const offers = applications.filter((app) => app.status === 'Oferta').length;
+export function ConversionRates({ applications }: { applications: Application[] }) {
+  const total = applications.length;
+  // Consideramos entrevista si el estado es Entrevista, Oferta o Rechazado (si pasó por entrevista)
+  // Como simplificación usamos el status actual.
+  const interviews = applications.filter(a => ['Entrevista', 'Oferta'].includes(a.status)).length;
+  const offers = applications.filter(a => a.status === 'Oferta').length;
 
-  const appliedToInterviewRate = applied > 0 ? (interviews / applied) * 100 : 0;
-  const interviewToOfferRate = interviews > 0 ? (offers / interviews) * 100 : 0;
-  const successRate = applied > 0 ? (offers / applied) * 100 : 0;
+  // Tasas
+  const interviewRate = total > 0 ? (interviews / total) * 100 : 0;
+  const offerRate = interviews > 0 ? (offers / interviews) * 100 : 0;
 
   return (
-    <div className="space-y-6">
-      <RateItem title="Aplicado → Entrevista" value={appliedToInterviewRate} />
-      <RateItem title="Entrevista → Oferta" value={interviewToOfferRate} />
-      <RateItem title="Tasa de Éxito General" value={successRate} />
-    </div>
-  );
-}
-
-function RateItem({ title, value }: { title: string; value: number }) {
-  return (
-    <div>
-      <div className="flex justify-between items-center mb-2">
-        <span className="text-sm font-medium text-foreground">{title}</span>
-        <span className="text-sm font-bold text-foreground">
-          {value.toFixed(1)}%
-        </span>
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-medium">De Aplicación a Entrevista</span>
+          <span className="text-muted-foreground">{interviews} de {total} ({Math.round(interviewRate)}%)</span>
+        </div>
+        <Progress value={interviewRate} className="h-2" />
+        <p className="text-xs text-muted-foreground pt-1">
+          Porcentaje de CVs que logran una primera llamada.
+        </p>
       </div>
-      <Progress value={value} />
+
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-medium">De Entrevista a Oferta</span>
+          <span className="text-muted-foreground">{offers} de {interviews} ({Math.round(offerRate)}%)</span>
+        </div>
+        <Progress value={offerRate} className="h-2" color="bg-green-500" /> {/* Nota: Progress usa clases de Tailwind */}
+        <p className="text-xs text-muted-foreground pt-1">
+          Efectividad de tu performance en las entrevistas.
+        </p>
+      </div>
     </div>
   );
 }

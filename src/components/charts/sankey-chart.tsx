@@ -1,3 +1,5 @@
+'use client';
+
 import { Sankey, ResponsiveContainer, Tooltip, Rectangle } from 'recharts';
 import type { Application } from '@/lib/definitions';
 

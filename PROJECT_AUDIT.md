@@ -11,7 +11,7 @@ src/
 │   ├── dashboard/        # Área protegida (utiliza Server Components para data)
 │   │   ├── applications/ # Gestión de postulaciones (listado, creación, edición)
 │   │   ├── analyzer/     # Analizador de Feedback con IA
-│   │   ├── statics/      # Estadísticas y gráficos
+│   │   ├── statistics/   # Estadísticas y gráficos
 │   │   ├── settings/     # Perfil de usuario (actualmente estático)
 │   │   └── layout.tsx    # Layout del dashboard con Sidebar
 │   ├── layout.tsx        # Layout raíz
@@ -32,7 +32,7 @@ src/
 Se realizaron cambios críticos para integrar Supabase sin romper la experiencia de usuario ni causar errores de compilación:
 
 1.  **Mapeo de Datos en `lib/data.ts`**: Se implementó una capa de transformación que convierte las columnas planas de Supabase (ej: `salary_desired`) en los objetos anidados que espera el frontend (`salary: { desired: ... }`).
-2.  **Refactor a Server Components**: Las páginas de `/dashboard/applications` y `/dashboard/statics` ahora son asíncronas. Obtienen los datos directamente desde el servidor y los pasan a componentes de cliente interactivos.
+2.  **Refactor a Server Components**: Las páginas de `/dashboard/applications` y `/dashboard/statistics` ahora son asíncronas. Obtienen los datos directamente desde el servidor y los pasan a componentes de cliente interactivos.
 3.  **Segregación de Dependencias**: El mock del usuario se movió a `definitions.ts`. Esto resolvió el error `next/headers` que ocurría cuando componentes de cliente (como el Sidebar) intentaban importar indirectamente utilidades del servidor.
 4.  **Gráficos Data-Driven**: Se eliminó la dependencia de datos mock directos en los componentes de Recharts. Ahora todos reciben los datos por `props`, permitiendo que el Dashboard muestre información real.
 
