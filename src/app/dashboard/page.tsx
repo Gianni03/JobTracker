@@ -70,17 +70,6 @@ export default async function DashboardPage() {
       </div>
       
       <ApplicationsTable applications={activeApplications} />
-      {/* <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        <div className="col-span-4">
-           
-           <ApplicationsTable applications={applications} />
-        </div>
-        <div className="col-span-3">
-           <RecentActivity applications={applications} />
-        </div>
-      </div>
-    </div> */}
-
     </div>
   );
 }

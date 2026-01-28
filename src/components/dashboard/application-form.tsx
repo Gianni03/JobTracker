@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
+import { createApplication, updateApplication } from '@/lib/actions';
+import { useTransition } from 'react';
 
 const formSchema = z.object({
   company: z.string().min(1, 'El nombre de la empresa es requerido.'),
@@ -62,6 +64,8 @@ interface ApplicationFormProps {
 
 export function ApplicationForm({ application }: ApplicationFormProps) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
@@ -106,14 +110,22 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
   const status = watch('status');
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    // In a real app, this would be a server action
-    console.log(data);
-    alert(application ? 'Postulación actualizada' : 'Postulación creada');
-    router.push('/dashboard');
+    startTransition(async () => {
+      try {
+        if (application) {
+          await updateApplication(application.id, data);
+        } else {
+          await createApplication(data);
+        }
+        router.push('/dashboard/applications');
+      } catch (error) {
+        console.error(error);
+      }
+    });
   };
 
   return (
-    <form onSubmit={(handleSubmit as any)(onSubmit)} className="space-y-6">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Información Básica</CardTitle>
@@ -408,8 +420,12 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
         <Button variant="outline" type="button" onClick={() => router.back()}>
           Cancelar
         </Button>
-        <Button type="submit">
-          {application ? 'Guardar Cambios' : 'Crear Postulación'}
+        <Button type="submit" disabled={isPending}>
+          {isPending
+            ? 'Guardando...'
+            : application
+            ? 'Guardar Cambios'
+            : 'Crear Postulación'}
         </Button>
       </div>
     </form>

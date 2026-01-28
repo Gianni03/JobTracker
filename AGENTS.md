@@ -65,6 +65,36 @@ src/
 - [x] **Estadísticas Reales**: Conectar los gráficos (`Sankey`, `Pie`) a los datos reales de Supabase (Refactor prop-based).
 - [ ] **Refactor de Tipos**: Eliminar los `any` en `ApplicationForm.tsx` con la nueva definición de Supabase.
 
+
+## Estado de las Fases
+
+### Fase 1: Cimientos (100% Completado) ✅
+- [x] Configuración de Next.js 15 y Tailwind CSS.
+- [x] Conexión inicial con Supabase (Client, Server y Middleware).
+- [x] Middleware de protección de rutas (Auth Guard).
+- [x] Estabilización del esquema de base de datos (Tabla `applications` y limpieza de FKs).
+
+### Fase 2: Lógica Core & Hidratación (90% Completado) 🏗️
+- [x] **Identidad Real**: El `DashboardLayout` obtiene el usuario de la sesión de Supabase.
+- [x] **Sidebar Dinámico**: Ya no usa datos estáticos; muestra nombre, email y avatar del usuario logueado.
+- [x] **Auth Mejorado**: 
+    - [x] Implementación de `signOut` vía Server Action.
+    - [x] Botón "Enter" funcional en formularios de login.
+    - [x] Flujo de "Olvidé mi contraseña" (Página + Acción de reset).
+- [x] **Lectura de Datos**: `fetchUserApplications` y `getApplicationById` funcionando con mapeo de objetos anidados (`salary`, `contact`).
+- [ ] **Escritura (CRUD)**: Conectar el `ApplicationForm` con las Server Actions de `create` y `update` (Pendiente integración final en UI).
+
+### Fase 3: Inteligencia y Pulido (En progreso) 🧠
+- [ ] **Persistencia Genkit**: Guardar los análisis de IA en la base de datos.
+- [x] **Componentes UI de Estadísticas**: Refactorizados para recibir datos por props (Sankey, Pie, etc.).
+- [ ] **Refactor de Tipos**: Eliminar los remanentes de `any` en los formularios usando las nuevas definiciones.
+- [ ] **Feedback Visual**: Implementar `loading.tsx` y esqueletos para mejorar la percepción de velocidad.
+
+## Deuda Técnica & Próximos Pasos
+1.  **Conexión Final de Formulario**: Hacer que al darle "Guardar" en una nueva postulación, los datos lleguen a Supabase.
+2.  **Validación de RLS**: Verificar en el dashboard de Supabase que las políticas impidan que un usuario vea datos de otro.
+3.  **Manejo de Errores en UI**: Reemplazar los `console.log` por Toasts o mensajes de error visibles en el login/registro.
+
 ## Pruebas Futuras & Consideraciones
 
 1. **Flujo de Auth Completo**: Probar el registro y login con usuarios reales y verificar la creación automática de perfiles.

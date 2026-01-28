@@ -39,11 +39,3 @@ export type Application = {
   };
   feedback?: string;
 };
-
-// export const user: User = {
-//   id: '1',
-//   firstName: 'Gianni',
-//   lastName: 'Example',
-//   email: 'gianni@example.com',
-//   avatar: 'G', 
-// };
