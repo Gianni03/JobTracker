@@ -33,6 +33,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { deleteApplication } from '@/lib/actions';
+import { useToast } from '@/hooks/use-toast';
+import { useState, useTransition } from 'react';
 
 const StatusBadge = ({
   status,
@@ -96,9 +99,45 @@ export function ApplicationsTable({
   onItemsPerPageChange = () => {},
 }: ApplicationsTableProps) {
   const router = useRouter();
+  const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
 
   const handleRowClick = (id: string) => {
     router.push(`/dashboard/applications/${id}`);
+  };
+
+  const handleDelete = async (
+    e: React.MouseEvent,
+    id: string,
+    company: string
+  ) => {
+    e.stopPropagation();
+
+    if (
+      !confirm(
+        `¿Estás seguro de que quieres eliminar la postulación en ${company}?`
+      )
+    ) {
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        await deleteApplication(id);
+        toast({
+          title: 'Postulación eliminada',
+          description: `La postulación en ${company} ha sido eliminada exitosamente.`,
+        });
+        router.refresh();
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description:
+            'No se pudo eliminar la postulación. Inténtalo de nuevo.',
+          variant: 'destructive',
+        });
+      }
+    });
   };
 
   const totalPages = Math.ceil(totalApplications / itemsPerPage);
@@ -233,10 +272,8 @@ export function ApplicationsTable({
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
                           className="text-destructive"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            alert('Funcionalidad de eliminar no implementada.');
-                          }}
+                          onClick={(e) => handleDelete(e, app.id, app.company)}
+                          disabled={isPending}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
                           Eliminar
