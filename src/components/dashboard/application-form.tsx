@@ -25,6 +25,7 @@ const formSchema = z.object({
   role: z.string().min(1, 'El puesto es requerido.'),
   status: z.enum(['Aplicado', 'Entrevista', 'Oferta', 'Rechazado', 'Ghosted']),
   interviewStage: z.string().optional(),
+  offerStage: z.string().optional(),
   date: z.string().min(1, 'La fecha es requerida.'),
   interviewDate: z.string().optional(),
   platform: z.enum([
@@ -65,7 +66,7 @@ interface ApplicationFormProps {
 export function ApplicationForm({ application }: ApplicationFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
@@ -73,6 +74,7 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
       role: application?.role || '',
       status: application?.status || 'Aplicado',
       interviewStage: application?.interviewStage || '',
+      offerStage: application?.offerStage || '',
       date: application?.date
         ? new Date(application.date + 'T00:00:00').toISOString().split('T')[0]
         : new Date().toISOString().split('T')[0],
@@ -212,6 +214,32 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
                         <SelectItem value="Entrevista 5">
                           Entrevista 5
                         </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+            </>
+          )}
+          {status === 'Oferta' && (
+            <>
+              <div>
+                <Label htmlFor="offerStage">Etapa de Oferta</Label>
+                <Controller
+                  control={control}
+                  name="offerStage"
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona una etapa" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Aceptada">Aceptada</SelectItem>
+                        <SelectItem value="Rechazada">Rechazada</SelectItem>
+                        <SelectItem value="On Hold">On Hold</SelectItem>
                       </SelectContent>
                     </Select>
                   )}

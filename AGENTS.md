@@ -91,13 +91,12 @@ src/
 
 ## Deuda Técnica & Próximos Pasos
 
-1.
-2.  **Validación de RLS**: Verificar en el dashboard de Supabase que las políticas impidan que un usuario vea datos de otro.
-3.  **Manejo de Errores en UI**: Reemplazar los `console.log` por Toasts o mensajes de error visibles en el login/registro.
-4.  ## Cambios Recientes
-5.  **Base de Datos**: Se agregó la columna `feedback` a la tabla `applications` para sincronizar con el formulario.
-6.  **Navegación**: Se limpió el Sidebar (removido link a AI Analyzer) para enfocar el MVP.
-7.  **Estadísticas**: Implementación de gráficos con `Recharts` + `use client` consumiendo datos del servidor.
+1.  **Validación de RLS**: Verificar en el dashboard de Supabase que las políticas impidan que un usuario vea datos de otro.
+2.  **Manejo de Errores en UI**: Reemplazar los `console.log` por Toasts o mensajes de error visibles en el login/registro.
+3.  ## Cambios Recientes
+4.  **Base de Datos**: Se agregó la columna `feedback` a la tabla `applications` para sincronizar con el formulario.
+5.  **Navegación**: Se limpió el Sidebar (removido link a AI Analyzer) para enfocar el MVP.
+6.  **Estadísticas**: Implementación de gráficos con `Recharts` + `use client` consumiendo datos del servidor.
 
 ## Deuda Técnica & Próximos Pasos
 

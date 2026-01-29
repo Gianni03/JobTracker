@@ -1,3 +1,5 @@
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -9,9 +11,23 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { user } from '@/lib/definitions';
 
-export default function SettingsPage() {
+// Ya no necesitamos recibir props, la página busca sus propios datos
+export default async function SettingsPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/');
+  }
+
+  // Preparamos los datos del usuario real
+  const userData = {
+    firstName: user.user_metadata?.full_name?.split(' ')[0] || '',
+    lastName: user.user_metadata?.full_name?.split(' ')[1] || '',
+    email: user.email || '',
+  };
+
   return (
     <div className="space-y-8 max-w-3xl mx-auto">
       <div>
@@ -23,6 +39,10 @@ export default function SettingsPage() {
         </p>
       </div>
 
+      {/* NOTA: Para que este formulario funcione y guarde cambios, 
+          en el futuro deberás agregarle una Server Action en el 'action={...}'.
+          Por ahora es visual.
+      */}
       <form className="space-y-6">
         <Card>
           <CardHeader>
@@ -32,16 +52,17 @@ export default function SettingsPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="firstName">Nombre</Label>
-                <Input id="firstName" defaultValue={user.firstName} />
+                <Input id="firstName" name="firstName" defaultValue={userData.firstName} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Apellido</Label>
-                <Input id="lastName" defaultValue={user.lastName} />
+                <Input id="lastName" name="lastName" defaultValue={userData.lastName} />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" defaultValue={user.email} />
+              <Input id="email" name="email" type="email" defaultValue={userData.email} disabled className="bg-muted" />
+              <p className="text-[0.8rem] text-muted-foreground">El email no se puede cambiar por seguridad.</p>
             </div>
           </CardContent>
         </Card>
@@ -76,15 +97,16 @@ export default function SettingsPage() {
             <CardTitle>Seguridad</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col sm:flex-row gap-2">
-            <Button>Cambiar Contraseña</Button>
-            <Button variant="outline">
-              Cerrar Sesión en todos los dispositivos
+            <Button variant="outline" type="button">Cambiar Contraseña</Button>
+            {/* Aquí podrías conectar la acción de signOut que creamos antes */}
+            <Button variant="destructive" type="button">
+              Cerrar Sesión
             </Button>
           </CardContent>
         </Card>
 
         <div className="flex justify-end">
-          <Button>Guardar Cambios</Button>
+          <Button type="submit">Guardar Cambios</Button>
         </div>
       </form>
     </div>

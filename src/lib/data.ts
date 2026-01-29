@@ -32,6 +32,7 @@ export async function fetchUserApplications() {
     link: app.link,
     description: app.description,
     interviewStage: app.interview_stage,
+    offerStage: app.offer_stage,
     interviewDate: app.interview_date,
     salary: {
       desired: app.salary_desired,
@@ -80,6 +81,7 @@ export async function getApplicationById(id: string) {
     link: app.link,
     description: app.description,
     interviewStage: app.interview_stage,
+    offerStage: app.offer_stage,
     interviewDate: app.interview_date,
     salary: {
       desired: app.salary_desired,

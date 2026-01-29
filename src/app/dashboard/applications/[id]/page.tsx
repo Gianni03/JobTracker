@@ -8,9 +8,10 @@ import { notFound } from 'next/navigation';
 export default async function EditApplicationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const application = await getApplicationById(params.id);
+  const { id } = await params;
+  const application = await getApplicationById(id);
 
   if (!application) {
     notFound();

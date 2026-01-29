@@ -29,6 +29,7 @@ export async function createApplication(data: any) {
     link: data.link || null,
     description: data.description || null,
     interview_stage: data.interviewStage || null,
+    offer_stage: data.offerStage || null,
     interview_date: data.interviewDate || null,
     salary_desired: data.salary?.desired || 0,
     salary_expressed: data.salary?.expressed || null,
@@ -54,7 +55,9 @@ export async function createApplication(data: any) {
 
 export async function updateApplication(id: string, data: any) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) throw new Error('No autorizado');
 
@@ -69,28 +72,29 @@ export async function updateApplication(id: string, data: any) {
       link: data.link || null,
       description: data.description || null,
       interview_stage: data.interviewStage || null,
+      offer_stage: data.offerStage || null,
       interview_date: data.interviewDate || null,
-      salary_desired: data.salary.desired,
-      salary_expressed: data.salary.expressed || null,
-      salary_offer: data.salary.offer || null,
+      salary_desired: data.salary?.desired || 0,
+      salary_expressed: data.salary?.expressed || null,
+      salary_offer: data.salary?.offer || null,
       contact_name: data.contact?.name || null,
       contact_method: data.contact?.method || null,
       notes_general: data.notes?.general || null,
       notes_interview: data.notes?.interview || null,
-      feedback: data.feedback,
+      feedback: data.feedback || null,
     })
     .eq('id', id)
     .eq('user_id', user.id);
 
   if (error) {
-    console.error("Error en update:", error);
+    console.error('Error en update:', error);
     throw error;
   }
 
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
-  
-  return { success: true }; 
+
+  return { success: true };
 }
 
 export async function deleteApplication(id: string) {

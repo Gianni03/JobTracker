@@ -19,6 +19,7 @@ export type Application = {
   role: string;
   status: ApplicationStatus;
   interviewStage?: string;
+  offerStage?: string;
   date: string; // ISO 8601 format
   interviewDate?: string;
   platform: 'LinkedIn' | 'Web de la Empresa' | 'Referido' | 'Indeed' | 'Otro';
