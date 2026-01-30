@@ -19,7 +19,7 @@ export default async function AllApplicationsPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard/applications/new">
+          <Link href="/dashboard/applications/new?from=applications">
             <Plus className="mr-2 h-4 w-4" /> Nueva Postulación
           </Link>
         </Button>

@@ -7,21 +7,27 @@ import { notFound } from 'next/navigation';
 
 export default async function EditApplicationPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
 }) {
   const { id } = await params;
+  const { from } = await searchParams;
   const application = await getApplicationById(id);
 
   if (!application) {
     notFound();
   }
 
+  const redirectTo =
+    from === 'dashboard' ? '/dashboard' : '/dashboard/applications';
+
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4">
         <Button variant="outline" size="icon" asChild>
-          <Link href="/dashboard">
+          <Link href={redirectTo}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
@@ -34,7 +40,7 @@ export default async function EditApplicationPage({
           </p>
         </div>
       </div>
-      <ApplicationForm application={application} />
+      <ApplicationForm application={application} redirectTo={redirectTo} />
     </div>
   );
 }

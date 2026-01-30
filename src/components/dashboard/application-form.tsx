@@ -18,7 +18,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { createApplication, updateApplication } from '@/lib/actions';
-import { useTransition } from 'react';
+import { useTransition, useEffect } from 'react';
 
 const formSchema = z.object({
   company: z.string().min(1, 'El nombre de la empresa es requerido.'),
@@ -61,9 +61,10 @@ type FormValues = z.infer<typeof formSchema>;
 
 interface ApplicationFormProps {
   application?: Application;
+  redirectTo?: string;
 }
 
-export function ApplicationForm({ application }: ApplicationFormProps) {
+export function ApplicationForm({ application, redirectTo = '/dashboard/applications' }: ApplicationFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -111,6 +112,16 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
 
   const status = watch('status');
 
+  // Set default values when status changes
+  useEffect(() => {
+    if (status === 'Entrevista' && !form.getValues('interviewStage')) {
+      form.setValue('interviewStage', 'Recruiter');
+    }
+    if (status === 'Oferta' && !form.getValues('offerStage')) {
+      form.setValue('offerStage', 'Analisis');
+    }
+  }, [status, form]);
+
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     startTransition(async () => {
       try {
@@ -119,7 +130,7 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
         } else {
           await createApplication(data);
         }
-        router.push('/dashboard/applications');
+        router.push(redirectTo);
       } catch (error) {
         console.error(error);
       }
@@ -199,21 +210,14 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
                         <SelectValue placeholder="Selecciona una etapa" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Entrevista 1">
-                          Entrevista 1
-                        </SelectItem>
-                        <SelectItem value="Entrevista 2">
-                          Entrevista 2
-                        </SelectItem>
-                        <SelectItem value="Entrevista 3">
-                          Entrevista 3
-                        </SelectItem>
-                        <SelectItem value="Entrevista 4">
-                          Entrevista 4
-                        </SelectItem>
-                        <SelectItem value="Entrevista 5">
-                          Entrevista 5
-                        </SelectItem>
+                        <SelectItem value="Recruiter">Recruiter</SelectItem>
+                        <SelectItem value="Screening">Screening</SelectItem>
+                        <SelectItem value="Cultural fit">Cultural fit</SelectItem>
+                        <SelectItem value="Técnica">Técnica</SelectItem>
+                        <SelectItem value="Live coding">Live coding</SelectItem>
+                        <SelectItem value="Team">Team</SelectItem>
+                        <SelectItem value="Manager/Leader">Manager/Leader</SelectItem>
+                        <SelectItem value="Offer">Offer</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -237,9 +241,10 @@ export function ApplicationForm({ application }: ApplicationFormProps) {
                         <SelectValue placeholder="Selecciona una etapa" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="Analisis">Analisis</SelectItem>
+                        <SelectItem value="On Hold">On Hold</SelectItem>
                         <SelectItem value="Aceptada">Aceptada</SelectItem>
                         <SelectItem value="Rechazada">Rechazada</SelectItem>
-                        <SelectItem value="On Hold">On Hold</SelectItem>
                       </SelectContent>
                     </Select>
                   )}

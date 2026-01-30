@@ -87,6 +87,7 @@ interface ApplicationsTableProps {
   itemsPerPage?: number;
   onPageChange?: (page: number) => void;
   onItemsPerPageChange?: (value: string) => void;
+  from?: string;
 }
 
 export function ApplicationsTable({
@@ -97,13 +98,14 @@ export function ApplicationsTable({
   itemsPerPage = 10,
   onPageChange = () => {},
   onItemsPerPageChange = () => {},
+  from = 'dashboard',
 }: ApplicationsTableProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const handleRowClick = (id: string) => {
-    router.push(`/dashboard/applications/${id}`);
+    router.push(`/dashboard/applications/${id}?from=${from}`);
   };
 
   const handleDelete = async (

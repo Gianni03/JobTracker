@@ -112,6 +112,7 @@ export function ApplicationsFilterableTable({
           setItemsPerPage(Number(value));
           setCurrentPage(1);
         }}
+        from="applications"
       />
     </div>
   );
