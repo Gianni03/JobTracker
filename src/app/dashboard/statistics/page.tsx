@@ -11,9 +11,20 @@ import { StatusChart } from '@/components/charts/status-chart';
 import { MonthlyChart } from '@/components/charts/monthly-chart';
 import { ConversionRates } from '@/components/charts/conversion-rates';
 import { SankeyChart } from '@/components/charts/sankey-chart';
+import { DateRangeFilter } from '@/components/dashboard/date-range-filter';
+import { filterApplicationsByDate } from '@/lib/date-utils';
 
-export default async function StatisticsPage() {
-  const applications = await fetchUserApplications();
+export default async function StatisticsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const applicationsRaw = await fetchUserApplications();
+
+  const range = (searchParams?.range as string) || '30d';
+  const from = searchParams?.from as string;
+
+  const applications = filterApplicationsByDate(applicationsRaw, range, from);
 
   // --- CÁLCULOS DE MÉTRICAS ---
   const total = applications.length;
@@ -43,13 +54,16 @@ export default async function StatisticsPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold font-headline text-foreground">
-          Estadísticas
-        </h1>
-        <p className="text-muted-foreground">
-          Analiza el rendimiento de tus postulaciones
-        </p>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold font-headline text-foreground">
+            Estadísticas
+          </h1>
+          <p className="text-muted-foreground">
+            Analiza el rendimiento de tus postulaciones
+          </p>
+        </div>
+        <DateRangeFilter />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
