@@ -42,7 +42,10 @@ const formSchema = z.object({
       method: z.string().optional(),
     })
     .optional(),
-  description: z.string().optional(),
+  description: z
+    .string()
+    .max(10000, 'La descripción no puede superar los 10000 caracteres.')
+    .optional(),
   salary: z.object({
     desired: z.coerce.number().min(0, 'El salario debe ser positivo.'),
     expressed: z.coerce.number().min(0).optional(),
@@ -50,11 +53,20 @@ const formSchema = z.object({
   }),
   notes: z
     .object({
-      general: z.string().optional(),
-      interview: z.string().optional(),
+      general: z
+        .string()
+        .max(10000, 'Las notas no pueden superar los 10000 caracteres.')
+        .optional(),
+      interview: z
+        .string()
+        .max(10000, 'Las notas no pueden superar los 10000 caracteres.')
+        .optional(),
     })
     .optional(),
-  feedback: z.string().optional(),
+  feedback: z
+    .string()
+    .max(10000, 'El feedback no puede superar los 10000 caracteres.')
+    .optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -64,7 +76,10 @@ interface ApplicationFormProps {
   redirectTo?: string;
 }
 
-export function ApplicationForm({ application, redirectTo = '/dashboard/applications' }: ApplicationFormProps) {
+export function ApplicationForm({
+  application,
+  redirectTo = '/dashboard/applications',
+}: ApplicationFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -212,11 +227,15 @@ export function ApplicationForm({ application, redirectTo = '/dashboard/applicat
                       <SelectContent>
                         <SelectItem value="Recruiter">Recruiter</SelectItem>
                         <SelectItem value="Screening">Screening</SelectItem>
-                        <SelectItem value="Cultural fit">Cultural fit</SelectItem>
+                        <SelectItem value="Cultural fit">
+                          Cultural fit
+                        </SelectItem>
                         <SelectItem value="Técnica">Técnica</SelectItem>
                         <SelectItem value="Live coding">Live coding</SelectItem>
                         <SelectItem value="Team">Team</SelectItem>
-                        <SelectItem value="Manager/Leader">Manager/Leader</SelectItem>
+                        <SelectItem value="Manager/Leader">
+                          Manager/Leader
+                        </SelectItem>
                         <SelectItem value="Offer">Offer</SelectItem>
                       </SelectContent>
                     </Select>

@@ -18,7 +18,20 @@ export async function createApplication(data: any) {
   } = await supabase.auth.getUser();
   if (userError || !user) throw new Error('No estás autenticado');
 
+  // 1. Validar límite de campañas (Solo en Create)
+  const { count } = await supabase
+    .from('applications')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id);
+
+  if (count !== null && count >= 1000) {
+    throw new Error(
+      'Has alcanzado el límite de 1000 postulaciones. Por favor, contacta a soporte para aumentar tu plan.'
+    );
+  }
+
   // Limpiamos los datos: si es un string vacío, mandamos null
+  // Y truncamos textos largos por seguridad extra (aunque el cliente ya valida)
   const cleanData = {
     user_id: user.id,
     company: data.company,
@@ -27,7 +40,7 @@ export async function createApplication(data: any) {
     date: data.date || new Date().toISOString().split('T')[0],
     platform: data.platform,
     link: data.link || null,
-    description: data.description || null,
+    description: data.description ? data.description.slice(0, 10000) : null,
     interview_stage: data.interviewStage || null,
     offer_stage: data.offerStage || null,
     interview_date: data.interviewDate || null,
@@ -36,9 +49,13 @@ export async function createApplication(data: any) {
     salary_offer: data.salary?.offer || null,
     contact_name: data.contact?.name || null,
     contact_method: data.contact?.method || null,
-    notes_general: data.notes?.general || null,
-    notes_interview: data.notes?.interview || null,
-    feedback: data.feedback || null,
+    notes_general: data.notes?.general
+      ? data.notes.general.slice(0, 10000)
+      : null,
+    notes_interview: data.notes?.interview
+      ? data.notes.interview.slice(0, 10000)
+      : null,
+    feedback: data.feedback ? data.feedback.slice(0, 10000) : null,
   };
 
   const { error } = await supabase.from('applications').insert([cleanData]);
@@ -70,7 +87,7 @@ export async function updateApplication(id: string, data: any) {
       date: data.date,
       platform: data.platform,
       link: data.link || null,
-      description: data.description || null,
+      description: data.description ? data.description.slice(0, 10000) : null,
       interview_stage: data.interviewStage || null,
       offer_stage: data.offerStage || null,
       interview_date: data.interviewDate || null,
@@ -79,9 +96,13 @@ export async function updateApplication(id: string, data: any) {
       salary_offer: data.salary?.offer || null,
       contact_name: data.contact?.name || null,
       contact_method: data.contact?.method || null,
-      notes_general: data.notes?.general || null,
-      notes_interview: data.notes?.interview || null,
-      feedback: data.feedback || null,
+      notes_general: data.notes?.general
+        ? data.notes.general.slice(0, 10000)
+        : null,
+      notes_interview: data.notes?.interview
+        ? data.notes.interview.slice(0, 10000)
+        : null,
+      feedback: data.feedback ? data.feedback.slice(0, 10000) : null,
     })
     .eq('id', id)
     .eq('user_id', user.id);
