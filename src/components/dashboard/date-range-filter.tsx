@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { format, subDays } from 'date-fns';
+import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';

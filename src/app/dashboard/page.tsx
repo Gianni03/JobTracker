@@ -17,12 +17,13 @@ import { differenceInDays } from 'date-fns';
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const applications = await fetchUserApplications();
+  const params = await searchParams;
 
-  const range = (searchParams?.range as string) || '30d';
-  const from = searchParams?.from as string;
+  const range = (params?.range as string) || '30d';
+  const from = params?.from as string;
 
   const filteredApplications = filterApplicationsByDate(
     applications,

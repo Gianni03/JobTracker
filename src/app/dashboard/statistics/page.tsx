@@ -1,12 +1,6 @@
 import { fetchUserApplications } from '@/lib/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  BarChart3,
-  TrendingUp,
-  Users,
-  CheckCircle2,
-  XCircle,
-} from 'lucide-react';
+import { BarChart3, TrendingUp, Users, XCircle } from 'lucide-react';
 import { StatusChart } from '@/components/charts/status-chart';
 import { MonthlyChart } from '@/components/charts/monthly-chart';
 import { ConversionRates } from '@/components/charts/conversion-rates';
@@ -17,12 +11,13 @@ import { filterApplicationsByDate } from '@/lib/date-utils';
 export default async function StatisticsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const applicationsRaw = await fetchUserApplications();
+  const params = await searchParams;
 
-  const range = (searchParams?.range as string) || '30d';
-  const from = searchParams?.from as string;
+  const range = (params?.range as string) || '30d';
+  const from = params?.from as string;
 
   const applications = filterApplicationsByDate(applicationsRaw, range, from);
 
@@ -31,12 +26,7 @@ export default async function StatisticsPage({
   const active = applications.filter((app) =>
     ['Aplicado', 'Entrevista', 'Oferta'].includes(app.status)
   ).length;
-  const interviews =
-    applications.filter(
-      (app) =>
-        ['Entrevista', 'Oferta', 'Rechazado'].includes(app.status) &&
-        app.interviewStage
-    ).length + applications.filter((app) => app.status === 'Entrevista').length;
+
   // Ajuste simple: Contamos como entrevista si el estado es entrevista u oferta
   const interviewCount = applications.filter(
     (a) => a.status === 'Entrevista' || a.status === 'Oferta'

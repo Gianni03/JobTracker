@@ -15,7 +15,6 @@ import {
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { login, signup } from '@/app/auth/actions'; // Importamos las acciones
-import { Toast } from '@/components/ui/toast';
 
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);

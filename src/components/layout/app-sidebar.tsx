@@ -9,7 +9,6 @@ import {
   LayoutDashboard,
   BarChart3,
   BookOpen,
-  MessageSquare,
   Settings,
   LogOut,
   ListChecks,

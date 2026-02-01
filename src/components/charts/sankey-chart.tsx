@@ -40,6 +40,7 @@ const sankeyData = (applications: Application[]) => {
   return { nodes, links };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomSankeyNode = ({ x, y, width, height, index, payload }: any) => {
   if (!payload.value) return null;
   return (

@@ -143,7 +143,7 @@ export function ApplicationsTable({
           description: `La postulación en ${applicationToDelete.company} ha sido eliminada exitosamente.`,
         });
         router.refresh();
-      } catch (error) {
+      } catch {
         toast({
           title: 'Error',
           description:

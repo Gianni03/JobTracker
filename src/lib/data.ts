@@ -22,6 +22,7 @@ export async function fetchUserApplications() {
   }
 
   // Mapeamos los datos planos de la DB a nuestra interfaz anidada Application
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (data as any[]).map((app) => ({
     id: app.id,
     company: app.company,

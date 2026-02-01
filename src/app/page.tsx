@@ -1,5 +1,6 @@
-import { Briefcase, ListChecks, BarChart3, BookOpen } from "lucide-react";
-import { AuthForm } from "@/components/auth/auth-form";
+
+import { Briefcase, ListChecks, BarChart3, BookOpen } from 'lucide-react';
+import { AuthForm } from '@/components/auth/auth-form';
 
 export default function Home() {
   return (
@@ -10,7 +11,9 @@ export default function Home() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
               <Briefcase className="h-6 w-6 text-primary-foreground" />
             </div>
-            <h1 className="text-2xl font-bold text-foreground font-headline">JobTracker</h1>
+            <h1 className="text-2xl font-bold text-foreground font-headline">
+              JobTracker
+            </h1>
           </div>
         </div>
       </header>
@@ -23,7 +26,9 @@ export default function Home() {
                 Gestiona tus postulaciones laborales de forma inteligente
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Realiza seguimiento de cada aplicación, analiza tus estadísticas, prepárate para entrevistas y mantén toda tu información organizada en un solo lugar.
+                Realiza seguimiento de cada aplicación, analiza tus
+                estadísticas, prepárate para entrevistas y mantén toda tu
+                información organizada en un solo lugar.
               </p>
             </div>
 
@@ -53,16 +58,25 @@ export default function Home() {
 
       <footer className="border-t py-6 md:py-8">
         <div className="container flex items-center justify-center">
-            <p className="text-center text-sm text-muted-foreground">
-              © {new Date().getFullYear()} JobTracker. Todos los derechos reservados.
-            </p>
+          <p className="text-center text-sm text-muted-foreground">
+            © {new Date().getFullYear()} JobTracker. Todos los derechos
+            reservados.
+          </p>
         </div>
       </footer>
     </div>
   );
 }
 
-function FeatureItem({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
+function FeatureItem({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
   return (
     <div className="flex items-start space-x-4">
       <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">

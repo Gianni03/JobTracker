@@ -87,6 +87,7 @@ export function ApplicationForm({
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<FormValues>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
       company: application?.company || '',
@@ -122,7 +123,6 @@ export function ApplicationForm({
 
   const {
     register,
-    handleSubmit,
     control,
     watch,
     formState: { errors },

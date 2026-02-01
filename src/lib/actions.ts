@@ -3,12 +3,12 @@
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { Application } from './definitions';
 
 // OJO: Asumimos que recibís el objeto del formulario ya formateado
 // Si usas FormData directo es más complejo, pero como usas React Hook Form
 // probablemente envíes el JSON.
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createApplication(data: any) {
   const supabase = await createClient();
 
@@ -70,6 +70,7 @@ export async function createApplication(data: any) {
   return { success: true };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateApplication(id: string, data: any) {
   const supabase = await createClient();
   const {
