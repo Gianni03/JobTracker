@@ -67,7 +67,7 @@ export default async function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Preferencias</CardTitle>
             <CardDescription>
@@ -90,7 +90,7 @@ export default async function SettingsPage() {
               description="Recibe un resumen semanal de tu progreso"
             />
           </CardContent>
-        </Card>
+        </Card> */}
 
         <Card>
           <CardHeader>
@@ -98,10 +98,10 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent className="flex flex-col sm:flex-row gap-2">
             <Button variant="outline" type="button">Cambiar Contraseña</Button>
-            {/* Aquí podrías conectar la acción de signOut que creamos antes */}
+            {/* Aquí podrías conectar la acción de signOut que creamos antes
             <Button variant="destructive" type="button">
               Cerrar Sesión
-            </Button>
+            </Button> */}
           </CardContent>
         </Card>
 
