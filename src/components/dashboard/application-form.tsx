@@ -19,6 +19,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { createApplication, updateApplication } from '@/lib/actions';
 import { useTransition, useEffect } from 'react';
+import confetti from 'canvas-confetti';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   company: z.string().min(1, 'El nombre de la empresa es requerido.'),
@@ -81,6 +83,7 @@ export function ApplicationForm({
   redirectTo = '/dashboard/applications',
 }: ApplicationFormProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<FormValues>({
@@ -138,16 +141,73 @@ export function ApplicationForm({
   }, [status, form]);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
+    console.log(
+      'Form Submitted. Status:',
+      data.status,
+      'Prev Status:',
+      application?.status
+    );
     startTransition(async () => {
       try {
+        let isUpgrade = false;
+        let upgradeMessage = '';
+
         if (application) {
+          // Detect logic improvements
+          if (
+            application.status === 'Aplicado' &&
+            data.status === 'Entrevista'
+          ) {
+            isUpgrade = true;
+            upgradeMessage = '¡Esa es! A por todas en la entrevista.';
+          } else if (
+            application.status === 'Entrevista' &&
+            data.status === 'Entrevista' &&
+            application.interviewStage !== data.interviewStage
+          ) {
+            isUpgrade = true;
+            upgradeMessage = '¡Sigues avanzando! Bien hecho.';
+          } else if (
+            application.status !== 'Oferta' &&
+            data.status === 'Oferta'
+          ) {
+            isUpgrade = true;
+            upgradeMessage = '¡FELICIDADES! ¡Lo lograste!';
+          }
           await updateApplication(application.id, data);
         } else {
+          // New application direct to Interview or Offer (unlikely but possible)
+          if (data.status === 'Entrevista' || data.status === 'Oferta') {
+            isUpgrade = true;
+            upgradeMessage = '¡Vaya comienzo! Mucha suerte.';
+          }
           await createApplication(data);
         }
+
+        if (isUpgrade) {
+          console.log('Upgrade detected! Triggering effects...');
+          confetti({
+            particleCount: data.status === 'Oferta' ? 400 : 200,
+            spread: 170,
+            origin: { y: 0.6 },
+            colors: ['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'],
+          });
+          toast({
+            title: '¡Progreso Registrado!',
+            description: upgradeMessage,
+            duration: 5000,
+            className: 'bg-primary text-primary-foreground',
+          });
+        }
+
         router.push(redirectTo);
       } catch (error) {
         console.error(error);
+        toast({
+          title: 'Error',
+          description: 'Hubo un problema al guardar. Inténtalo de nuevo.',
+          variant: 'destructive',
+        });
       }
     });
   };

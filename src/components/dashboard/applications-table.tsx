@@ -36,6 +36,7 @@ import {
 import { deleteApplication } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useTransition } from 'react';
+import { CompanyAvatar } from '@/components/ui/company-avatar';
 
 const StatusBadge = ({
   status,
@@ -168,19 +169,22 @@ export function ApplicationsTable({
                   className="cursor-pointer"
                 >
                   <TableCell>
-                    <div>
-                      <div className="font-medium text-foreground">
-                        {app.company}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {app.role}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {format(
-                          new Date(app.date + 'T00:00:00'),
-                          'd MMM yyyy',
-                          { locale: es }
-                        )}
+                    <div className="flex items-center gap-3">
+                      <CompanyAvatar name={app.company} />
+                      <div>
+                        <div className="font-medium text-foreground">
+                          {app.company}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {app.role}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {format(
+                            new Date(app.date + 'T00:00:00'),
+                            'd MMM yyyy',
+                            { locale: es }
+                          )}
+                        </div>
                       </div>
                     </div>
                   </TableCell>
