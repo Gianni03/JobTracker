@@ -37,6 +37,16 @@ import { deleteApplication } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useTransition } from 'react';
 import { CompanyAvatar } from '@/components/ui/company-avatar';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const StatusBadge = ({
   status,
@@ -104,32 +114,33 @@ export function ApplicationsTable({
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [applicationToDelete, setApplicationToDelete] = useState<{
+    id: string;
+    company: string;
+  } | null>(null);
 
   const handleRowClick = (id: string) => {
     router.push(`/dashboard/applications/${id}?from=${from}`);
   };
 
-  const handleDelete = async (
+  const handleDeleteClick = (
     e: React.MouseEvent,
     id: string,
     company: string
   ) => {
     e.stopPropagation();
+    setApplicationToDelete({ id, company });
+  };
 
-    if (
-      !confirm(
-        `¿Estás seguro de que quieres eliminar la postulación en ${company}?`
-      )
-    ) {
-      return;
-    }
+  const confirmDelete = async () => {
+    if (!applicationToDelete) return;
 
     startTransition(async () => {
       try {
-        await deleteApplication(id);
+        await deleteApplication(applicationToDelete.id);
         toast({
           title: 'Postulación eliminada',
-          description: `La postulación en ${company} ha sido eliminada exitosamente.`,
+          description: `La postulación en ${applicationToDelete.company} ha sido eliminada exitosamente.`,
         });
         router.refresh();
       } catch (error) {
@@ -139,6 +150,8 @@ export function ApplicationsTable({
             'No se pudo eliminar la postulación. Inténtalo de nuevo.',
           variant: 'destructive',
         });
+      } finally {
+        setApplicationToDelete(null);
       }
     });
   };
@@ -278,7 +291,9 @@ export function ApplicationsTable({
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
                           className="text-destructive"
-                          onClick={(e) => handleDelete(e, app.id, app.company)}
+                          onClick={(e) =>
+                            handleDeleteClick(e, app.id, app.company)
+                          }
                           disabled={isPending}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
@@ -350,6 +365,35 @@ export function ApplicationsTable({
           </div>
         </div>
       )}
+
+      <AlertDialog
+        open={!!applicationToDelete}
+        onOpenChange={(open) => !open && setApplicationToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Está absolutamente seguro?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer. Esto eliminará permanentemente
+              la postulación para
+              <span className="font-semibold text-foreground">
+                {' '}
+                {applicationToDelete?.company}{' '}
+              </span>
+              y removerá los datos de nuestros servidores.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isPending ? 'Eliminando...' : 'Eliminar'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
