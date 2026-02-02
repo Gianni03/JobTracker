@@ -47,10 +47,9 @@ export async function signup(formData: FormData) {
     return { error: error.message };
   }
 
-  if (!data.session) {
+  if (data.user) {
     return {
       success: true,
-      message: 'Revisa tu correo para confirmar tu cuenta.',
     };
   }
 

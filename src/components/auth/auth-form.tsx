@@ -14,20 +14,10 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { login, signup } from '@/app/auth/actions'; // Importamos las acciones
+import { login, signup } from '@/app/auth/actions';
 
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Manejador para Login
   async function handleLogin(formData: FormData) {
@@ -48,35 +38,11 @@ export function AuthForm() {
 
     if (result?.error) {
       console.log(result.error);
-    } else if (result?.success) {
-      setShowSuccessModal(true);
     }
   }
 
   return (
     <>
-      <AlertDialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-        <AlertDialogContent className="max-w-[400px]">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-center text-xl">
-              ¡Registro exitoso!
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-center pt-4 text-base space-y-2">
-              <p>Revisa tu correo para confirmar tu cuenta y poder ingresar.</p>
-              <p className="font-semibold text-primary">
-                Nota: El mensaje llega a nombre de{' '}
-                <span className="underline">Supabase Auth</span>.
-              </p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="sm:justify-center pt-4">
-            <AlertDialogAction onClick={() => (window.location.href = '/')}>
-              Entendido
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
       <Card className="w-full max-w-md shadow-xl border-primary/20 bg-card/50 backdrop-blur-sm">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold tracking-tight">
