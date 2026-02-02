@@ -14,10 +14,20 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { login, signup } from '@/app/auth/actions'; // Importamos las acciones
 
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Manejador para Login
   async function handleLogin(formData: FormData) {
@@ -38,122 +48,148 @@ export function AuthForm() {
 
     if (result?.error) {
       console.log(result.error);
+    } else if (result?.success) {
+      setShowSuccessModal(true);
     }
   }
 
   return (
-    <Card className="w-full max-w-md shadow-xl border-primary/20 bg-card/50 backdrop-blur-sm">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold tracking-tight">
-          Bienvenido
-        </CardTitle>
-        <CardDescription>
-          Ingresa a tu cuenta para gestionar tus postulaciones
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="login" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="login">Ingresar</TabsTrigger>
-            <TabsTrigger value="register">Registrarse</TabsTrigger>
-          </TabsList>
+    <>
+      <AlertDialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <AlertDialogContent className="max-w-[400px]">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center text-xl">
+              ¡Registro exitoso!
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center pt-4 text-base space-y-2">
+              <p>Revisa tu correo para confirmar tu cuenta y poder ingresar.</p>
+              <p className="font-semibold text-primary">
+                Nota: El mensaje llega a nombre de{' '}
+                <span className="underline">Supabase Auth</span>.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-center pt-4">
+            <AlertDialogAction onClick={() => (window.location.href = '/')}>
+              Entendido
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
-          {/* LOGIN TAB */}
-          <TabsContent value="login" className="space-y-4">
-            <form action={handleLogin}>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    placeholder="nombre@ejemplo.com"
-                    type="email"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Contraseña</Label>
-                    {/* Agregamos el link que faltaba aquí */}
-                    <Link
-                      href="/forgot-password"
-                      className="text-xs text-primary hover:underline"
-                    >
-                      ¿Olvidaste tu contraseña?
-                    </Link>
-                  </div>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                  />
-                </div>
-                {/* type="submit" asegura que funcione el Enter */}
-                <Button
-                  disabled={isLoading}
-                  className="w-full font-semibold"
-                  type="submit"
-                >
-                  {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-                </Button>
-              </div>
-            </form>
-          </TabsContent>
+      <Card className="w-full max-w-md shadow-xl border-primary/20 bg-card/50 backdrop-blur-sm">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold tracking-tight">
+            Bienvenido
+          </CardTitle>
+          <CardDescription>
+            Ingresa a tu cuenta para gestionar tus postulaciones
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="login" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="login">Ingresar</TabsTrigger>
+              <TabsTrigger value="register">Registrarse</TabsTrigger>
+            </TabsList>
 
-          {/* REGISTER TAB */}
-          <TabsContent value="register" className="space-y-4">
-            <form action={handleRegister}>
-              <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-4">
+            {/* LOGIN TAB */}
+            <TabsContent value="login" className="space-y-4">
+              <form action={handleLogin}>
+                <div className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="first-name">Nombre</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
-                      id="first-name"
-                      name="first-name"
-                      placeholder="Juan"
+                      id="email"
+                      name="email"
+                      placeholder="nombre@ejemplo.com"
+                      type="email"
                       required
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="last-name">Apellido</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="password">Contraseña</Label>
+                      {/* Agregamos el link que faltaba aquí */}
+                      <Link
+                        href="/forgot-password"
+                        className="text-xs text-primary hover:underline"
+                      >
+                        ¿Olvidaste tu contraseña?
+                      </Link>
+                    </div>
                     <Input
-                      id="last-name"
-                      name="last-name"
-                      placeholder="Pérez"
+                      id="password"
+                      name="password"
+                      type="password"
                       required
                     />
                   </div>
+                  {/* type="submit" asegura que funcione el Enter */}
+                  <Button
+                    disabled={isLoading}
+                    className="w-full font-semibold"
+                    type="submit"
+                  >
+                    {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+                  </Button>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="reg-email">Email</Label>
-                  <Input
-                    id="reg-email"
-                    name="email"
-                    placeholder="nombre@ejemplo.com"
-                    type="email"
-                    required
-                  />
+              </form>
+            </TabsContent>
+
+            {/* REGISTER TAB */}
+            <TabsContent value="register" className="space-y-4">
+              <form action={handleRegister}>
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="first-name">Nombre</Label>
+                      <Input
+                        id="first-name"
+                        name="first-name"
+                        placeholder="Juan"
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="last-name">Apellido</Label>
+                      <Input
+                        id="last-name"
+                        name="last-name"
+                        placeholder="Pérez"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="reg-email">Email</Label>
+                    <Input
+                      id="reg-email"
+                      name="email"
+                      placeholder="nombre@ejemplo.com"
+                      type="email"
+                      required
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="reg-password">Contraseña</Label>
+                    <Input
+                      id="reg-password"
+                      name="password"
+                      type="password"
+                      required
+                    />
+                  </div>
+                  <Button disabled={isLoading} className="w-full font-semibold">
+                    {isLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
+                  </Button>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="reg-password">Contraseña</Label>
-                  <Input
-                    id="reg-password"
-                    name="password"
-                    type="password"
-                    required
-                  />
-                </div>
-                <Button disabled={isLoading} className="w-full font-semibold">
-                  {isLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
-                </Button>
-              </div>
-            </form>
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-      <CardFooter>{/* Footer content */}</CardFooter>
-    </Card>
+              </form>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+        <CardFooter>{/* Footer content */}</CardFooter>
+      </Card>
+    </>
   );
 }

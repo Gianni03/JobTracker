@@ -7,7 +7,15 @@ export function Footer() {
       <div className="container flex flex-col items-center justify-between gap-4 md:flex-row md:px-8">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">
-            Gianni Pasquinelli
+            Desarrollado por{' '}
+            <a
+              href="https://giannipasquinelli-webdev.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-all duration-300 hover:text-primary hover:drop-shadow-[0_0_8px_rgba(224,122,95,0.8)]"
+            >
+              Gianni Pasquinelli
+            </a>
           </span>
           <span className="hidden md:inline">•</span>
           <span>© {new Date().getFullYear()}</span>
