@@ -31,7 +31,7 @@ export async function signup(formData: FormData) {
   const firstName = formData.get('first-name') as string;
   const lastName = formData.get('last-name') as string;
 
-  const { data, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -47,11 +47,7 @@ export async function signup(formData: FormData) {
     return { error: error.message };
   }
 
-  if (data.user) {
-    return {
-      success: true,
-    };
-  }
+
 
   revalidatePath('/', 'layout');
   redirect('/dashboard');
