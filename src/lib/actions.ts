@@ -140,13 +140,25 @@ export async function signOut() {
 }
 
 export async function resetPassword(formData: FormData) {
-  const supabase = await createClient();
-  const email = formData.get('email') as string;
+  try {
+    const supabase = await createClient();
+    const email = formData.get('email') as string;
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/dashboard/settings`,
-  });
+    if (!email) return { error: 'El email es requerido' };
 
-  if (error) throw new Error(error.message);
-  return { success: 'Revisa tu correo para restablecer la contraseña.' };
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/dashboard/settings`,
+    });
+
+    if (error) return { error: error.message };
+
+    return { success: 'Revisa tu correo para restablecer la contraseña.' };
+  } catch (error: unknown) {
+    // Validamos si el error es una instancia de Error de JS
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+    // Si por alguna razón lo que se lanzó no es un objeto Error
+    return { error: 'Ocurrió un error inesperado' };
+  }
 }
