@@ -10,6 +10,15 @@ import { cn } from '@/lib/utils';
 export const metadata: Metadata = {
   title: 'JobTracker',
   description: 'Gestiona tus postulaciones laborales de forma inteligente',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png' },
+    ],
+  },
 };
 
 export default function RootLayout({
