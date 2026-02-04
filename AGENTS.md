@@ -1,113 +1,126 @@
-# Project Status: JobTracker
+# Project Status: JobTracker - MVP Finalizado ✅
 
 ## Overview
 
-JobTracker is a Next.js application designed to manage job applications intelligently. It includes a dashboard, job tracking, statistics visualization, and an AI-powered feedback analyzer.
+JobTracker es una aplicación Next.js diseñada para gestionar postulaciones laborales de manera inteligente. Incluye un dashboard completo, seguimiento de postulaciones, visualización de estadísticas y filtrado por rangos de fecha.
 
 ## Current State
 
-The application is in an **MVP / Integration** state.
+La aplicación ha alcanzado el estado de **MVP (Minimum Viable Product) Completado**.
 
-- **Frontend**: Fully functional UI with responsive layouts and dark mode support. Refactored main dashboard and application pages to use **Server Components** for efficient data fetching.
-- **Backend/Logic**: Integrated with **Supabase**. Real data is now fetched and mapped from the `applications` table.
-- **Auth**: Partially integrated with Supabase (middleware and server actions ready). Currently uses a shared `user` mock in `lib/definitions.ts` for UI consistency.
+- **Frontend**: UI profesional y responsiva con soporte para modo oscuro. Dashboard funcional con filtros integrados.
+- **Backend**: Integración total con **Supabase** para persistencia de datos y autenticación.
+- **Auth**: Flujo de autenticación real (Login, Registro, Recuperación de contraseña) implementado con Supabase Auth y Middleware de protección de rutas.
+- **Filtros y Métricas**: Sistema de filtrado por rango de fechas (30 días, 3 meses, 6 meses, 1 año, personalizado) operativo en el dashboard y estadísticas.
 
 ## Architecture & Tech Stack
 
 - **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
 - **Database/Auth**: [Supabase](https://supabase.com/)
 - **UI/Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Shadcn UI](https://ui.shadcn.com/)
-- **AI Integration**: [Genkit](https://firebase.google.com/docs/genkit) + [Google AI (Gemini)](https://ai.google.dev/)
-- **Charts**: [Recharts](https://recharts.org/) (Refactored as pure UI components)
+- **Visualización**: [Recharts](https://recharts.org/) (Componentes desacoplados y orientados a datos)
+- **Utilidades**: `date-fns` para manipulación de fechas, `canvas-confetti` para feedback visual de progreso.
 
 ## Folder Structure
 
+```text
 src/
-├── app/ # App Router: Layouts, Pages, and Global CSS
-│ ├── dashboard/ # Main application protected area (Server Components)
-│ │ ├── applications/ # Job application management (list, new, edit)
-│ │ └── statistics/ # Statistics and charts
-├── components/ # UI Components
-│ ├── charts/ # Pure UI charts (Props-based)
-│ ├── dashboard/ # Dashboard-specific components (Table, FilterableTable, Form)
-│ └── layout/ # Sidebar (Client Component), Header
-├── lib/ # Server-side logic and Shared Definitions
-│ ├── data.ts # Server-only Supabase fetching and mapping
-│ ├── definitions.ts # TS interfaces + Shared constants/mocks (Safe for Client/Server)
-│ └── actions.ts # Server Actions (CRUD & AI)
-└── utils/ # Supabase helpers (Client, Server, Middleware)
+├── app/                  # App Router: Layouts, Pages y CSS Global
+│   ├── auth/             # Rutas y acciones de autenticación
+│   ├── dashboard/        # Área protegida (Data fetching en Servidor)
+│   │   ├── applications/ # CRUD de postulaciones
+│   │   ├── statistics/   # Estadísticas y gráficos
+│   │   └── settings/     # Perfil y configuración (En progreso)
+├── components/           # Componentes UI
+│   ├── charts/           # Gráficos de Recharts (Props-based)
+│   ├── dashboard/        # Componentes complejos (Tablas, Filtros, Formularios)
+│   └── ui/               # Componentes base (Shadcn)
+├── lib/                  # Lógica de negocio y definiciones
+│   ├── actions.ts        # Server Actions (CRUD, Auth)
+│   ├── data.ts           # Fetching desde Supabase (Server-side)
+│   ├── definitions.ts    # Tipos e interfaces de TypeScript
+│   └── date-utils.ts     # Lógica de filtrado de fechas
+└── utils/                # Clientes de Supabase y Middleware
+```
 
-## Design Patterns
+## Cambios Recientes (Finalización MVP)
 
-- **Server-First Data Fetching**: Main pages fetch data server-side and pass it to interactive client components.
-- **Data Mapping Layer**: Flat database results are transformed into nested TypeScript entities in `lib/data.ts`.
-- **Client/Server Separation**: Strict separation of server-only modules (`next/headers`) from client components by placing shared mocks in `definitions.ts`.
+1.  **Filtros de Fecha**: Implementación de `DateRangeFilter` que permite segmentar métricas en el Dashboard y Estadísticas.
+2.  **Etapas Dinámicas**:
+    - **Entrevistas**: Agregadas etapas específicas (Recruiter, Screening, Técnica, etc.).
+    - **Ofertas**: Agregadas etapas de análisis (Análisis, Aceptada, Rechazada).
+    - **Auto-población**: El formulario selecciona automáticamente la etapa inicial al cambiar el estado.
+3.  **Feedback Visual**: Integración de Confetti y Toasts para celebrar hitos (paso a entrevista u oferta).
+4.  **Estadísticas Reales**: Gráficos de Sankey, Pie y Barras ahora consumen datos reales filtrados.
+5.  **Robustez de Auth**: Implementación de `signOut`, recuperación de contraseña y flujo de registro con perfiles automáticos.
 
-## Roadmap de Integración (Actualizado)
+## Roadmap Post-MVP
 
-### Fase 1: El Motor (Infraestructura de Datos)
+### Próximos Steps: Mejoras y New Features
 
-- [x] **Configuración de Supabase**: Crear proyecto, tablas de `profiles` y `applications`.
-- [ ] **Auth Real**: Reemplazar mocks en `AuthForm` por Supabase Auth.
-- [x] **Middleware de Protección**: Bloquear `/dashboard/*` si no hay sesión activa.
+- [ ] **AI Analyzer Integration**: Re-integrar el analizador de feedback usando Genkit para analizar descripciones y feedback de reclutadores.
+- [ ] **Sincronización de Perfil**: Permitir al usuario editar su metadata (nombre, avatar) desde `/dashboard/settings`.
+- [ ] **Exportación de Datos**: Opción para descargar el historial de postulaciones en CSV o PDF.
+- [ ] **Notificaciones**: Sistema de recordatorios para entrevistas próximas.
+- [ ] **Mobile App**: Explorar versión minimalista con PWA.
 
-### Fase 2: CRUD de Postulaciones
+### Bugfixing y Optimización
 
-- [x] **Migración de Mock a DB**: Crear Server Actions reales para `getApplications`, `createApplication`, y `updateApplication`.
-- [x] **Filtro por UserID**: Asegurar que cada usuario solo vea sus propios datos (Implementado en `getApplicationById`).
-- [x] **Hydration del Dashboard**: Reemplazar imports de mocks por llamadas asíncronas a la DB en Server Components.
+- [ ] **Refactor de Tipos**: Eliminar los últimos `any` en `ApplicationForm.tsx` y `actions.ts`.
+- [ ] **UX (Loading States)**: Implementar `loading.tsx` con Skeletons en todas las rutas del dashboard.
+- [ ] **Manejo de Errores**: Crear páginas `error.tsx` robustas para interceptar fallos de red o base de datos.
+- [ ] **Testing**: Implementar tests unitarios para `date-utils.ts` y tests de integración para Server Actions críticos.
 
-### Fase 3: Inteligencia y Pulido
+## Deuda Técnica
 
-- [ ] **Genkit Persistence**: Guardar los análisis de feedback en la DB vinculados a la postulación.
-- [x] **Estadísticas Reales**: Conectar los gráficos (`Sankey`, `Pie`) a los datos reales de Supabase (Refactor prop-based).
-- [ ] **Refactor de Tipos**: Eliminar los `any` en `ApplicationForm.tsx` con la nueva definición de Supabase.
+- **Seguridad RLS**: Realizar una auditoría completa de las políticas de Row Level Security en Supabase para asegurar aislamiento total entre usuarios.
+- **Validación Zod**: Sincronizar estrictamente el schema de Zod con el modelo de datos de Supabase.
 
-## Estado de las Fases
 
-### Fase 1: Cimientos (100% Completado) ✅
+# Plan de Acción Post-MVP (Roadmap de Ejecución)
 
-- [x] Configuración de Next.js 15 y Tailwind CSS.
-- [x] Conexión inicial con Supabase (Client, Server y Middleware).
-- [x] Middleware de protección de rutas (Auth Guard).
-- [x] Estabilización del esquema de base de datos (Tabla `applications` y limpieza de FKs).
+El desarrollo se organizará en 4 fases secuenciales, priorizando la estabilidad y corrección de errores antes de nuevas funcionalidades complejas.
 
-### Fase 2: Lógica Core & Hidratación (90% Completado) 🏗️
+## 📅 Fase 1: Quick Wins & Fixes (Prioridad Alta)
+*Objetivo: Eliminar bugs visuales/funcionales y pulir la UX inmediata.*
 
-- [x] **Identidad Real**: El `DashboardLayout` obtiene el usuario de la sesión de Supabase.
-- [x] **Sidebar Dinámico**: Ya no usa datos estáticos; muestra nombre, email y avatar del usuario logueado.
-- [x] **Auth Mejorado**:
-  - [x] Implementación de `signOut` vía Server Action.
-  - [x] Botón "Enter" funcional en formularios de login.
-  - [x] Flujo de "Olvidé mi contraseña" (Página + Acción de reset).
-- [x] **Lectura de Datos**: `fetchUserApplications` y `getApplicationById` funcionando con mapeo de objetos anidados (`salary`, `contact`).
-- [ ] **Escritura (CRUD)**: Conectar el `ApplicationForm` con las Server Actions de `create` y `update` (Pendiente integración final en UI).
+1.  **Bug Menu Mobile**:
+    * El menú lateral (`Sheet`) debe cerrarse automáticamente al hacer clic en un enlace de navegación.
+2.  **UX Inputs Salarios**:
+    * Eliminar el `0` inicial por defecto. El campo debe mostrarse vacío (placeholder) si el valor es 0 o nulo.
+3.  **Traducciones (Contact Info)**:
+    * Traducir etiquetas restantes en el formulario (Phone, Address, City, State, Zip Code, Contact Info).
+4.  **Mejora Date/Time Picker (Entrevistas)**:
+    * **Formato**: Cambiar selector de hora a formato **24 horas**.
+    * **Intervalos**: Restringir los minutos a incrementos de **15 minutos** (00, 15, 30, 45).
+5.  **Bug Zona Horaria en Tabla**:
+    * Corregir la visualización de la "Fecha de Entrevista" en la tabla de postulaciones. Actualmente muestra la hora desplazada (probablemente UTC) en lugar de la hora local seleccionada por el usuario.
 
-### Fase 3: Inteligencia y Pulido (En progreso) 🧠
+## 🎨 Fase 2: Contenido y Estilo (Polish)
+*Objetivo: Que la web se sienta "llena" y terminada visualmente.*
 
-- [x] **Componentes UI de Estadísticas**: Refactorizados para recibir datos por props (Sankey, Pie, etc.).
-- [ ] **Refactor de Tipos**: Eliminar los remanentes de `any` en los formularios usando las nuevas definiciones.
-- [ ] **Feedback Visual**: Implementar `loading.tsx` y esqueletos para mejorar la percepción de velocidad.
+1.  **Sección Recursos**:
+    * Completar el contenido estático de las tabs faltantes (CV Templates, Interview Tips, Networking, etc.).
+2.  **Refinamiento de Gráficos**:
+    * Ajustar estilos de Tooltips en Recharts para mejorar contraste en modo Dark/Light.
 
-## Deuda Técnica & Próximos Pasos
+## 🗄️ Fase 3: Mejora en Lógica de Salarios (Base de Datos)
+*Objetivo: Soportar datos más reales y flexibles.*
 
-1.  **Validación de RLS**: Verificar en el dashboard de Supabase que las políticas impidan que un usuario vea datos de otro.
-2.  **Manejo de Errores en UI**: Reemplazar los `console.log` por Toasts o mensajes de error visibles en el login/registro.
-3.  ## Cambios Recientes
-4.  **Base de Datos**: Se agregó la columna `feedback` a la tabla `applications` para sincronizar con el formulario.
-5.  **Navegación**: Se limpió el Sidebar (removido link a AI Analyzer) para enfocar el MVP.
-6.  **Estadísticas**: Implementación de gráficos con `Recharts` + `use client` consumiendo datos del servidor.
+1.  **Frecuencia de Pago**:
+    * Agregar columna `salary_frequency` en BD (enum: 'hour', 'month', 'year').
+    * Agregar selector en la UI del formulario.
+2.  **Inputs Numéricos**:
+    * Mantener el campo como numérico para las estadísticas, pero evaluar agregar campos de rango si es estrictamente necesario (actualmente se prioriza la frecuencia).
 
-## Deuda Técnica & Próximos Pasos
+## ✨ Fase 4: Nueva Feature "View vs Edit" (Cambio Estructural)
+*Objetivo: Separar la experiencia de lectura de la de edición.*
 
-1.  **Recursos**: Implementar la página `/dashboard/resources` con contenido estático de valor.
-2.  **Manejo de Errores Global**: Crear páginas `error.tsx` para fallos inesperados.
-3.  **Landing Page**: Pulir la página de inicio pública (fuera del dashboard).
+1.  **Vista de Detalle (`/applications/[id]`)**:
+    * Nueva página para visualizar la postulación en modo lectura (estilo Job Description).
+    * Edición rápida de "Estado" y "Etapa" desde esta vista.
+2.  **Refactor de Edición**:
+    * Mover el formulario completo a `/applications/[id]/edit`.
+    * Agregar botón de "Editar" (lápiz) en la tabla de postulaciones.
 
-## Pruebas Futuras & Consideraciones
-
-1. **Flujo de Auth Completo**: Probar el registro y login con usuarios reales y verificar la creación automática de perfiles.
-2. **Robustez de Server Actions**: Verificar que `createApplication` y `updateApplication` manejen correctamente las transacciones y revalidación de caché (`revalidatePath`).
-3. **Escalabilidad de Estadísticas**: Probar los gráficos con grandes volúmenes de datos para asegurar el rendimiento de los cálculos en el cliente.
-4. **Manejo de Errores**: Implementar `error.tsx` y `loading.tsx` (Suspense) en las rutas del dashboard para una mejor UX durante la carga de datos.
-5. **RLS (Row Level Security)**: Verificar en el dashboard de Supabase que las políticas de seguridad impidan el acceso cruzado de datos entre usuarios.
+---
