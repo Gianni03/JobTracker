@@ -21,6 +21,7 @@ import { createApplication, updateApplication } from '@/lib/actions';
 import { useTransition, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
 
 const formSchema = z.object({
   company: z.string().min(1, 'El nombre de la empresa es requerido.'),
@@ -99,7 +100,7 @@ export function ApplicationForm({
         ? new Date(application.date + 'T00:00:00').toISOString().split('T')[0]
         : new Date().toISOString().split('T')[0],
       interviewDate: application?.interviewDate
-        ? new Date(application.interviewDate).toISOString().slice(0, 16)
+        ? format(new Date(application.interviewDate), "yyyy-MM-dd'T'HH:mm")
         : '',
       platform: application?.platform || 'LinkedIn',
       link: application?.link || '',
@@ -174,14 +175,24 @@ export function ApplicationForm({
             isUpgrade = true;
             upgradeMessage = '¡FELICIDADES! ¡Lo lograste!';
           }
-          await updateApplication(application.id, data);
+          await updateApplication(application.id, {
+            ...data,
+            interviewDate: data.interviewDate
+              ? new Date(data.interviewDate).toISOString()
+              : null,
+          });
         } else {
           // New application direct to Interview or Offer (unlikely but possible)
           if (data.status === 'Entrevista' || data.status === 'Oferta') {
             isUpgrade = true;
             upgradeMessage = '¡Vaya comienzo! Mucha suerte.';
           }
-          await createApplication(data);
+          await createApplication({
+            ...data,
+            interviewDate: data.interviewDate
+              ? new Date(data.interviewDate).toISOString()
+              : null,
+          });
         }
 
         if (isUpgrade) {
@@ -233,7 +244,7 @@ export function ApplicationForm({
             )}
           </div>
           <div>
-            <Label htmlFor="role">Puesto *</Label>
+            <Label htmlFor="role">Posición *</Label>
             <Input
               id="role"
               {...register('role')}
@@ -290,6 +301,7 @@ export function ApplicationForm({
                         <SelectItem value="Cultural fit">
                           Cultural fit
                         </SelectItem>
+                        <SelectItem value="IA">IA </SelectItem>
                         <SelectItem value="Técnica">Técnica</SelectItem>
                         <SelectItem value="Live coding">Live coding</SelectItem>
                         <SelectItem value="Team">Team</SelectItem>
@@ -347,6 +359,7 @@ export function ApplicationForm({
                 id="interviewDate"
                 type="datetime-local"
                 {...register('interviewDate')}
+                step="900"
               />
             </div>
           )}
@@ -369,7 +382,9 @@ export function ApplicationForm({
                       Web de la Empresa
                     </SelectItem>
                     <SelectItem value="Referido">Referido</SelectItem>
-                    <SelectItem value="Indeed">Indeed</SelectItem>
+                    <SelectItem value="Portal de empleo">
+                      Portal de empleo
+                    </SelectItem>
                     <SelectItem value="Otro">Otro</SelectItem>
                   </SelectContent>
                 </Select>
@@ -399,7 +414,7 @@ export function ApplicationForm({
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <Label htmlFor="contact.name">Contact Person</Label>
+            <Label htmlFor="contact.name">Contacto</Label>
             <Input
               id="contact.name"
               {...register('contact.name')}
@@ -407,7 +422,7 @@ export function ApplicationForm({
             />
           </div>
           <div>
-            <Label htmlFor="contact.method">Reach Method</Label>
+            <Label htmlFor="contact.method">Método de Contacto</Label>
             <Input
               id="contact.method"
               {...register('contact.method')}

@@ -115,6 +115,7 @@ export async function updateApplication(id: string, data: any) {
 
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
+  revalidatePath(`/dashboard/applications/${id}`);
 
   return { success: true };
 }
