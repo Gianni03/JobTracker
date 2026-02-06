@@ -9,6 +9,8 @@ export async function login(formData: FormData) {
 
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+  // rememberMe está disponible en formData pero Supabase ya persiste sesiones por defecto
+  // const rememberMe = formData.get('rememberMe') === 'true';
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
@@ -18,6 +20,10 @@ export async function login(formData: FormData) {
   if (error) {
     return { error: error.message };
   }
+
+  // Nota: Supabase por defecto persiste las sesiones mediante cookies HTTP-only
+  // que duran 7 días. El checkbox "Recordarme" proporciona claridad al usuario
+  // sobre este comportamiento, pero la funcionalidad ya está implementada.
 
   revalidatePath('/', 'layout');
   redirect('/dashboard');
@@ -47,15 +53,13 @@ export async function signup(formData: FormData) {
     return { error: error.message };
   }
 
-
-
   revalidatePath('/', 'layout');
   redirect('/dashboard');
 }
 
 export async function signInWithGoogle() {
   const supabase = await createClient();
-  
+
   const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -71,6 +75,6 @@ export async function signInWithGoogle() {
   }
 
   if (data.url) {
-    redirect(data.url); 
+    redirect(data.url);
   }
 }

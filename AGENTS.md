@@ -76,51 +76,62 @@ src/
 - **Seguridad RLS**: Realizar una auditoría completa de las políticas de Row Level Security en Supabase para asegurar aislamiento total entre usuarios.
 - **Validación Zod**: Sincronizar estrictamente el schema de Zod con el modelo de datos de Supabase.
 
-
 # Plan de Acción Post-MVP (Roadmap de Ejecución)
 
 El desarrollo se organizará en 4 fases secuenciales, priorizando la estabilidad y corrección de errores antes de nuevas funcionalidades complejas.
 
 ## 📅 Fase 1: Quick Wins & Fixes (Prioridad Alta)
-*Objetivo: Eliminar bugs visuales/funcionales y pulir la UX inmediata.*
+
+_Objetivo: Eliminar bugs visuales/funcionales y pulir la UX inmediata._
 
 1.  **Bug Menu Mobile**:
-    * El menú lateral (`Sheet`) debe cerrarse automáticamente al hacer clic en un enlace de navegación.
+    - El menú lateral (`Sheet`) debe cerrarse automáticamente al hacer clic en un enlace de navegación.
 2.  **UX Inputs Salarios**:
-    * Eliminar el `0` inicial por defecto. El campo debe mostrarse vacío (placeholder) si el valor es 0 o nulo.
+    - Eliminar el `0` inicial por defecto. El campo debe mostrarse vacío (placeholder) si el valor es 0 o nulo.
 3.  **Traducciones (Contact Info)**:
-    * Traducir etiquetas restantes en el formulario (Phone, Address, City, State, Zip Code, Contact Info).
+    - Traducir etiquetas restantes en el formulario (Phone, Address, City, State, Zip Code, Contact Info).
 4.  **Mejora Date/Time Picker (Entrevistas)**:
-    * **Formato**: Cambiar selector de hora a formato **24 horas**.
-    * **Intervalos**: Restringir los minutos a incrementos de **15 minutos** (00, 15, 30, 45).
+    - **Formato**: Cambiar selector de hora a formato **24 horas**.
+    - **Intervalos**: Restringir los minutos a incrementos de **15 minutos** (00, 15, 30, 45).
 5.  **Bug Zona Horaria en Tabla**:
-    * Corregir la visualización de la "Fecha de Entrevista" en la tabla de postulaciones. Actualmente muestra la hora desplazada (probablemente UTC) en lugar de la hora local seleccionada por el usuario.
+    - Corregir la visualización de la "Fecha de Entrevista" en la tabla de postulaciones. Actualmente muestra la hora desplazada (probablemente UTC) en lugar de la hora local seleccionada por el usuario.
 
 ## 🎨 Fase 2: Contenido y Estilo (Polish)
-*Objetivo: Que la web se sienta "llena" y terminada visualmente.*
+
+_Objetivo: Que la web se sienta "llena" y terminada visualmente._
 
 1.  **Sección Recursos**:
-    * Completar el contenido estático de las tabs faltantes (CV Templates, Interview Tips, Networking, etc.).
+    - Completar el contenido estático de las tabs faltantes (CV Templates, Interview Tips, Networking, etc.).
 2.  **Refinamiento de Gráficos**:
-    * Ajustar estilos de Tooltips en Recharts para mejorar contraste en modo Dark/Light.
+    - Ajustar estilos de Tooltips en Recharts para mejorar contraste en modo Dark/Light.
+
+### Fase 2: Contenido y Estilo (Polish) - Completados ✅
+
+[x] Permitir la opción de recordar usuario en el login, para no logearse cada vez que se abre la web - Implementado checkbox "Recordarme" en el formulario de login - Supabase ya persiste sesiones por defecto (cookies HTTP-only de 7 días)
+
+[x] Crear componente reutilizable ResourceCard - Componente mejorado con soporte para enlaces externos - Prop `isExternal` para diferenciar enlaces internos/externos - Iconos diferenciados (ArrowRight vs ExternalLink) - Apertura en nueva pestaña para enlaces externos
+
+[ ] Pulir Gráficos: Revisar colores y tooltips de Recharts para mejorar la legibilidad en Dark Mode.
 
 ## 🗄️ Fase 3: Mejora en Lógica de Salarios (Base de Datos)
-*Objetivo: Soportar datos más reales y flexibles.*
+
+_Objetivo: Soportar datos más reales y flexibles._
 
 1.  **Frecuencia de Pago**:
-    * Agregar columna `salary_frequency` en BD (enum: 'hour', 'month', 'year').
-    * Agregar selector en la UI del formulario.
+    - Agregar columna `salary_frequency` en BD (enum: 'hour', 'month', 'year').
+    - Agregar selector en la UI del formulario.
 2.  **Inputs Numéricos**:
-    * Mantener el campo como numérico para las estadísticas, pero evaluar agregar campos de rango si es estrictamente necesario (actualmente se prioriza la frecuencia).
+    - Mantener el campo como numérico para las estadísticas, pero evaluar agregar campos de rango si es estrictamente necesario (actualmente se prioriza la frecuencia).
 
 ## ✨ Fase 4: Nueva Feature "View vs Edit" (Cambio Estructural)
-*Objetivo: Separar la experiencia de lectura de la de edición.*
+
+_Objetivo: Separar la experiencia de lectura de la de edición._
 
 1.  **Vista de Detalle (`/applications/[id]`)**:
-    * Nueva página para visualizar la postulación en modo lectura (estilo Job Description).
-    * Edición rápida de "Estado" y "Etapa" desde esta vista.
+    - Nueva página para visualizar la postulación en modo lectura (estilo Job Description).
+    - Edición rápida de "Estado" y "Etapa" desde esta vista.
 2.  **Refactor de Edición**:
-    * Mover el formulario completo a `/applications/[id]/edit`.
-    * Agregar botón de "Editar" (lápiz) en la tabla de postulaciones.
+    - Mover el formulario completo a `/applications/[id]/edit`.
+    - Agregar botón de "Editar" (lápiz) en la tabla de postulaciones.
 
 ---

@@ -18,10 +18,12 @@ import { login, signup, signInWithGoogle } from '@/app/auth/actions';
 
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // Manejador para Login
   async function handleLogin(formData: FormData) {
     setIsLoading(true);
+    formData.append('rememberMe', rememberMe.toString());
     const result = await login(formData);
     setIsLoading(false);
     if (result?.error) console.log(result.error);
@@ -58,18 +60,51 @@ export function AuthForm() {
               <div className="grid gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" placeholder="nombre@ejemplo.com" type="email" required />
+                  <Input
+                    id="email"
+                    name="email"
+                    placeholder="nombre@ejemplo.com"
+                    type="email"
+                    required
+                  />
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password">Contraseña</Label>
-                    <Link href="/forgot-password" className="text-xs text-primary hover:underline">
+                    <Link
+                      href="/forgot-password"
+                      className="text-xs text-primary hover:underline"
+                    >
                       ¿Olvidaste tu contraseña?
                     </Link>
                   </div>
-                  <Input id="password" name="password" type="password" required />
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                  />
                 </div>
-                <Button disabled={isLoading} className="w-full font-semibold" type="submit">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="remember-me"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                  />
+                  <label
+                    htmlFor="remember-me"
+                    className="text-sm text-muted-foreground cursor-pointer"
+                  >
+                    Recordarme
+                  </label>
+                </div>
+                <Button
+                  disabled={isLoading}
+                  className="w-full font-semibold"
+                  type="submit"
+                >
                   {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                 </Button>
               </div>
@@ -83,22 +118,47 @@ export function AuthForm() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
                     <Label htmlFor="first-name">Nombre</Label>
-                    <Input id="first-name" name="first-name" placeholder="Juan" required />
+                    <Input
+                      id="first-name"
+                      name="first-name"
+                      placeholder="Juan"
+                      required
+                    />
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="last-name">Apellido</Label>
-                    <Input id="last-name" name="last-name" placeholder="Pérez" required />
+                    <Input
+                      id="last-name"
+                      name="last-name"
+                      placeholder="Pérez"
+                      required
+                    />
                   </div>
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="reg-email">Email</Label>
-                  <Input id="reg-email" name="email" placeholder="nombre@ejemplo.com" type="email" required />
+                  <Input
+                    id="reg-email"
+                    name="email"
+                    placeholder="nombre@ejemplo.com"
+                    type="email"
+                    required
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="reg-password">Contraseña</Label>
-                  <Input id="reg-password" name="password" type="password" required />
+                  <Input
+                    id="reg-password"
+                    name="password"
+                    type="password"
+                    required
+                  />
                 </div>
-                <Button disabled={isLoading} className="w-full font-semibold" type="submit">
+                <Button
+                  disabled={isLoading}
+                  className="w-full font-semibold"
+                  type="submit"
+                >
                   {isLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
                 </Button>
               </div>
@@ -112,16 +172,18 @@ export function AuthForm() {
             <span className="w-full border-t border-muted" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">O continúa con</span>
+            <span className="bg-background px-2 text-muted-foreground">
+              O continúa con
+            </span>
           </div>
         </div>
 
         {/* BOTÓN DE GOOGLE */}
         <form action={signInWithGoogle}>
-          <Button 
-            variant="outline" 
-            type="submit" 
-            className="w-full bg-background/50" 
+          <Button
+            variant="outline"
+            type="submit"
+            className="w-full bg-background/50"
             disabled={isLoading}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
