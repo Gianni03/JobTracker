@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
   ArrowLeft,
-  Search,
-  Code,
   Layout,
   Users,
   Trophy,
@@ -15,7 +13,6 @@ import {
   ShieldAlert,
   TrendingUp,
   Microscope,
-  Cpu,
   Terminal,
   Clock,
   Briefcase,
