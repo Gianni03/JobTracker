@@ -85,16 +85,16 @@ El desarrollo se organizará en 4 fases secuenciales, priorizando la estabilidad
 _Objetivo: Eliminar bugs visuales/funcionales y pulir la UX inmediata._
 
 1.  **Bug Menu Mobile**:
-    - El menú lateral (`Sheet`) debe cerrarse automáticamente al hacer clic en un enlace de navegación.✅
+    * El menú lateral (`Sheet`) debe cerrarse automáticamente al hacer clic en un enlace de navegación. DONE
 2.  **UX Inputs Salarios**:
-    - Eliminar el `0` inicial por defecto. El campo debe mostrarse vacío (placeholder) si el valor es 0 o nulo.✅
+    * Eliminar el `0` inicial por defecto. El campo debe mostrarse vacío (placeholder) si el valor es 0 o nulo. DONE
 3.  **Traducciones (Contact Info)**:
-    - Traducir etiquetas restantes en el formulario (Phone, Address, City, State, Zip Code, Contact Info).✅
+    * Traducir etiquetas restantes en el formulario (Phone, Address, City, State, Zip Code, Contact Info). DONE
 4.  **Mejora Date/Time Picker (Entrevistas)**:
-    - **Formato**: Cambiar selector de hora a formato **24 horas**.
-    - **Intervalos**: Restringir los minutos a incrementos de **15 minutos** (00, 15, 30, 45).
+    * **Formato**: Cambiar selector de hora a formato **24 horas**. not feasible
+    * **Intervalos**: Restringir los minutos a incrementos de **15 minutos** (00, 15, 30, 45). not feasible
 5.  **Bug Zona Horaria en Tabla**:
-    - Corregir la visualización de la "Fecha de Entrevista" en la tabla de postulaciones. Actualmente muestra la hora desplazada (probablemente UTC) en lugar de la hora local seleccionada por el usuario.✅
+    * Corregir la visualización de la "Fecha de Entrevista" en la tabla de postulaciones. Actualmente muestra la hora desplazada (probablemente UTC) en lugar de la hora local seleccionada por el usuario. DONE
 
 ## 🎨 Fase 2: Contenido y Estilo (Polish)
 
