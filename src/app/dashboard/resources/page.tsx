@@ -27,8 +27,8 @@ const resources = [
       href: "/dashboard/resources/technical-interviews",
     },
     {
-      title: "CV y Portfolio",
-      description: "Crea un CV impactante y un portfolio que destaque tus mejores proyectos.",
+      title: "CV de Alto Impacto",
+      description: "Crea un CV de alto impacto que destaque tus mejores proyectos.",
       icon: <FileText className="w-6 h-6 text-primary" />,
       href: "/dashboard/resources/cv-portfolio",
     },
