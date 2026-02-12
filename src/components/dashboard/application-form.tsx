@@ -96,9 +96,11 @@ export function ApplicationForm({
       status: application?.status || 'Aplicado',
       interviewStage: application?.interviewStage || '',
       offerStage: application?.offerStage || '',
+      // Avoid using server-side Date() during SSR to prevent hydration
+      // mismatches. Initialize empty and set today's date on client.
       date: application?.date
         ? new Date(application.date + 'T00:00:00').toISOString().split('T')[0]
-        : new Date().toISOString().split('T')[0],
+        : '',
       interviewDate: application?.interviewDate
         ? format(new Date(application.interviewDate), "yyyy-MM-dd'T'HH:mm")
         : '',
@@ -131,6 +133,14 @@ export function ApplicationForm({
 
   const status = watch('status');
 
+  // Set today's date only on client to avoid SSR/client mismatch
+  useEffect(() => {
+    if (!application?.date && !form.getValues('date')) {
+      form.setValue('date', new Date().toISOString().split('T')[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Set default values when status changes
   useEffect(() => {
     if (status === 'Entrevista' && !form.getValues('interviewStage')) {
@@ -146,7 +156,7 @@ export function ApplicationForm({
       'Form Submitted. Status:',
       data.status,
       'Prev Status:',
-      application?.status
+      application?.status,
     );
     startTransition(async () => {
       try {
@@ -551,8 +561,8 @@ export function ApplicationForm({
           {isPending
             ? 'Guardando...'
             : application
-            ? 'Guardar Cambios'
-            : 'Crear Postulación'}
+              ? 'Guardar Cambios'
+              : 'Crear Postulación'}
         </Button>
       </div>
     </form>
