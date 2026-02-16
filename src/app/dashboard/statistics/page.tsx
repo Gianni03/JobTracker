@@ -155,7 +155,7 @@ export default async function StatisticsPage({
             <div className="text-3xl font-bold tracking-tight">
               {rejections}
             </div>
-            <p className="text-xs text-muted-foreground mt-1 italic italic">
+            <p className="text-xs text-muted-foreground mt-1 italic">
               Keep going, it&apos;s a funnel.
             </p>
           </CardContent>

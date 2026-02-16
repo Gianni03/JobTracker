@@ -126,7 +126,7 @@ export function ApplicationsTable({
   const handleDeleteClick = (
     e: React.MouseEvent,
     id: string,
-    company: string
+    company: string,
   ) => {
     e.stopPropagation();
     setApplicationToDelete({ id, company });
@@ -192,11 +192,13 @@ export function ApplicationsTable({
                           {app.role}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          {format(
-                            new Date(app.date + 'T00:00:00'),
-                            'd MMM yyyy',
-                            { locale: es }
-                          )}
+                          <span suppressHydrationWarning>
+                            {format(
+                              new Date(app.date + 'T00:00:00'),
+                              'd MMM yyyy',
+                              { locale: es },
+                            )}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -221,13 +223,15 @@ export function ApplicationsTable({
                     )}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {app.interviewDate
-                      ? format(
-                          new Date(app.interviewDate),
-                          'd MMM yyyy, HH:mm',
-                          { locale: es }
-                        )
-                      : '-'}
+                    <span suppressHydrationWarning>
+                      {app.interviewDate
+                        ? format(
+                            new Date(app.interviewDate),
+                            'd MMM yyyy, HH:mm',
+                            { locale: es },
+                          )
+                        : '-'}
+                    </span>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     <div className="text-sm space-y-0.5">
