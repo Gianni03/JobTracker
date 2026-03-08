@@ -13,6 +13,15 @@ export type ApplicationStatus =
   | 'Rechazado'
   | 'Ghosted';
 
+export type ApplicationSalaryFrequency = 'hour' | 'month' | 'year';
+
+export type ApplicationSalary = {
+  desired: number;
+  expressed?: number;
+  offer?: number;
+  frequency?: ApplicationSalaryFrequency;
+};
+
 export type Application = {
   id: string;
   company: string;
@@ -24,11 +33,7 @@ export type Application = {
   interviewDate?: string;
   platform: 'LinkedIn' | 'Web de la Empresa' | 'Referido' | 'Indeed' | 'Otro';
   link: string;
-  salary: {
-    desired: number;
-    expressed?: number;
-    offer?: number;
-  };
+  salary: ApplicationSalary;
   contact: {
     name?: string;
     method?: string;

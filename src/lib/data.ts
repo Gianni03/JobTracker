@@ -39,6 +39,7 @@ export async function fetchUserApplications() {
       desired: app.salary_desired,
       expressed: app.salary_expressed,
       offer: app.salary_offer,
+      frequency: app.salary_frequency || 'year',
     },
     contact: {
       name: app.contact_name,
@@ -88,6 +89,7 @@ export async function getApplicationById(id: string) {
       desired: app.salary_desired,
       expressed: app.salary_expressed,
       offer: app.salary_offer,
+      frequency: app.salary_frequency || 'year',
     },
     contact: {
       name: app.contact_name,

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { Application, ApplicationStatus } from '@/lib/definitions';
+import type { Application, ApplicationStatus, ApplicationSalaryFrequency } from '@/lib/definitions';
 import {
   MoreHorizontal,
   Trash2,
@@ -47,6 +47,28 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+
+const formatSalaryWithFrequency = (
+  amount: number,
+  frequency?: ApplicationSalaryFrequency
+): string => {
+  const formatted = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+    maximumFractionDigits: 0,
+  }).format(amount);
+
+  if (!frequency) return formatted;
+
+  const suffix: Record<ApplicationSalaryFrequency, string> = {
+    hour: '/hour',
+    month: '/month',
+    year: '/year',
+  };
+
+  return `${formatted}${suffix[frequency]}`;
+};
 
 const StatusBadge = ({
   status,
@@ -240,12 +262,10 @@ export function ApplicationsTable({
                           Pretendido:{' '}
                         </span>
                         <span className="font-medium text-foreground">
-                          {new Intl.NumberFormat('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            notation: 'compact',
-                            maximumFractionDigits: 0,
-                          }).format(app.salary.desired)}
+                          {formatSalaryWithFrequency(
+                            app.salary.desired,
+                            app.salary.frequency
+                          )}
                         </span>
                       </div>
                       {app.salary.expressed && (
@@ -254,12 +274,10 @@ export function ApplicationsTable({
                             Expresado:{' '}
                           </span>
                           <span className="font-medium text-foreground">
-                            {new Intl.NumberFormat('en-US', {
-                              style: 'currency',
-                              currency: 'USD',
-                              notation: 'compact',
-                              maximumFractionDigits: 0,
-                            }).format(app.salary.expressed)}
+                            {formatSalaryWithFrequency(
+                              app.salary.expressed,
+                              app.salary.frequency
+                            )}
                           </span>
                         </div>
                       )}
@@ -269,12 +287,10 @@ export function ApplicationsTable({
                             Oferta:{' '}
                           </span>
                           <span className="font-medium text-green-600 dark:text-green-400">
-                            {new Intl.NumberFormat('en-US', {
-                              style: 'currency',
-                              currency: 'USD',
-                              notation: 'compact',
-                              maximumFractionDigits: 0,
-                            }).format(app.salary.offer)}
+                            {formatSalaryWithFrequency(
+                              app.salary.offer,
+                              app.salary.frequency
+                            )}
                           </span>
                         </div>
                       )}

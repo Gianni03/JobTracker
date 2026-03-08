@@ -47,6 +47,7 @@ export async function createApplication(data: any) {
     salary_desired: data.salary?.desired || 0,
     salary_expressed: data.salary?.expressed || null,
     salary_offer: data.salary?.offer || null,
+    salary_frequency: data.salary?.frequency || 'year',
     contact_name: data.contact?.name || null,
     contact_method: data.contact?.method || null,
     notes_general: data.notes?.general
@@ -95,6 +96,7 @@ export async function updateApplication(id: string, data: any) {
       salary_desired: data.salary?.desired || 0,
       salary_expressed: data.salary?.expressed || null,
       salary_offer: data.salary?.offer || null,
+      salary_frequency: data.salary?.frequency || 'year',
       contact_name: data.contact?.name || null,
       contact_method: data.contact?.method || null,
       notes_general: data.notes?.general

@@ -50,9 +50,10 @@ const formSchema = z.object({
     .max(10000, 'La descripción no puede superar los 10000 caracteres.')
     .optional(),
   salary: z.object({
-    desired: z.coerce.number().min(0, 'El salario debe ser positivo.'),
-    expressed: z.coerce.number().min(0).optional(),
-    offer: z.coerce.number().min(0).optional(),
+    desired: z.coerce.number().min(0, 'El salario debe ser positivo.').nullable(),
+    expressed: z.coerce.number().min(0).nullable().optional(),
+    offer: z.coerce.number().min(0).nullable().optional(),
+    frequency: z.enum(['hour', 'month', 'year']).optional(),
   }),
   notes: z
     .object({
@@ -112,9 +113,10 @@ export function ApplicationForm({
       },
       description: application?.description || '',
       salary: {
-        desired: application?.salary?.desired || 0,
-        expressed: application?.salary?.expressed || 0,
-        offer: application?.salary?.offer || 0,
+        desired: application?.salary?.desired || null,
+        expressed: application?.salary?.expressed || null,
+        offer: application?.salary?.offer || null,
+        frequency: application?.salary?.frequency || 'year',
       },
       notes: {
         general: application?.notes?.general || '',
@@ -460,7 +462,7 @@ export function ApplicationForm({
         <CardHeader>
           <CardTitle>Información Salarial</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-4">
           <div>
             <Label htmlFor="salary.desired">Sueldo Pretendido</Label>
             <div className="relative">
@@ -513,6 +515,28 @@ export function ApplicationForm({
               </div>
             </div>
           )}
+          <div>
+            <Label>Frecuencia</Label>
+            <Controller
+              control={control}
+              name="salary.frequency"
+              render={({ field }) => (
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Frecuencia" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="hour">Por Hora</SelectItem>
+                    <SelectItem value="month">Mensual</SelectItem>
+                    <SelectItem value="year">Anual</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
         </CardContent>
       </Card>
 
