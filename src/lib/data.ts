@@ -1,6 +1,49 @@
 import { createClient } from '@/utils/supabase/server';
 import { Application } from './definitions';
 
+// Días después de los cuales una postulación en "Aplicado" pasa a "Ghosted"
+const GHOSTED_THRESHOLD_DAYS = 14;
+
+/**
+ * Actualiza automáticamente aplicaciones que llevan mucho tiempo en "Aplicado"
+ * a estado "Ghosted" después de X días sin respuesta
+ */
+export async function autoMarkAsGhosted(applications: Application[]): Promise<void> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const now = new Date();
+  const applicationsToGhost: string[] = [];
+
+  for (const app of applications) {
+    if (app.status !== 'Aplicado') continue;
+
+    const applicationDate = new Date(app.date);
+    const daysDiff = Math.floor((now.getTime() - applicationDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (daysDiff >= GHOSTED_THRESHOLD_DAYS) {
+      applicationsToGhost.push(app.id);
+    }
+  }
+
+  if (applicationsToGhost.length === 0) return;
+
+  // Actualizar en batch
+  const { error } = await supabase
+    .from('applications')
+    .update({ status: 'Ghosted' })
+    .in('id', applicationsToGhost)
+    .eq('user_id', user.id);
+
+  if (error) {
+    console.error('Error auto-marking as ghosted:', error);
+  }
+}
+
 export async function fetchUserApplications() {
   const supabase = await createClient();
 

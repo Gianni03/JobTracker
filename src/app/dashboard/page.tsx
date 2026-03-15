@@ -10,7 +10,7 @@ import {
 import { StatCard } from '@/components/dashboard/stat-card';
 import { ApplicationsTable } from '@/components/dashboard/applications-table';
 import { DateRangeFilter } from '@/components/dashboard/date-range-filter';
-import { fetchUserApplications } from '@/lib/data';
+import { fetchUserApplications, autoMarkAsGhosted } from '@/lib/data';
 import { filterApplicationsByDate } from '@/lib/date-utils';
 import { differenceInDays } from 'date-fns';
 
@@ -19,7 +19,14 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const applications = await fetchUserApplications();
+  let applications = await fetchUserApplications();
+  
+  // Auto-mark aplicaciones antiguas en "Aplicado" como "Ghosted"
+  await autoMarkAsGhosted(applications);
+  
+  // Refrescar datos después de actualizar ghosted
+  applications = await fetchUserApplications();
+  
   const params = await searchParams;
 
   const range = (params?.range as string) || '30d';

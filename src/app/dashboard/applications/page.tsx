@@ -1,11 +1,17 @@
-import { fetchUserApplications } from '@/lib/data';
+import { fetchUserApplications, autoMarkAsGhosted } from '@/lib/data';
 import { ApplicationsFilterableTable } from '@/components/dashboard/applications-filterable-table';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function AllApplicationsPage() {
-  const applications = await fetchUserApplications();
+  let applications = await fetchUserApplications();
+  
+  // Auto-mark aplicaciones antiguas en "Aplicado" como "Ghosted"
+  await autoMarkAsGhosted(applications);
+  
+  // Refrescar datos después de actualizar ghosted
+  applications = await fetchUserApplications();
 
   return (
     <div className="space-y-8">
