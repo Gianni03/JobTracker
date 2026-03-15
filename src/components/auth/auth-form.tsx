@@ -14,11 +14,13 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { login, signup, signInWithGoogle } from '@/app/auth/actions';
 
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
 
   // Manejador para Login
   async function handleLogin(formData: FormData) {
@@ -34,7 +36,15 @@ export function AuthForm() {
     setIsLoading(true);
     const result = await signup(formData);
     setIsLoading(false);
-    if (result?.error) console.log(result.error);
+    
+    if (result?.error) {
+      console.log(result.error);
+      return;
+    }
+
+    if (result?.emailConfirmationRequired) {
+      setRegisterSuccess(true);
+    }
   }
 
   return (
@@ -113,7 +123,28 @@ export function AuthForm() {
 
           {/* REGISTER TAB */}
           <TabsContent value="register" className="space-y-4">
-            <form action={handleRegister}>
+            {registerSuccess ? (
+              <Alert className="bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800">
+                <AlertDescription className="text-green-700 dark:text-green-400">
+                  <p className="font-semibold mb-2">✅ Cuenta creada exitosamente</p>
+                  <p className="text-sm">
+                    Te hemos enviado un email de confirmación a tu bandeja de entrada, del remitente Supabase.
+                    Por favor, revisá tu correo (incluyendo la carpeta de spam) y hacé clic en el enlace para activar tu cuenta.
+                  </p>
+                  <p className="text-sm mt-2">
+                    Una vez confirmado, ya podés iniciar sesión con tus credenciales.
+                  </p>
+                  <Button
+                    variant="link"
+                    className="text-green-600 dark:text-green-400 p-0 h-auto mt-2"
+                    onClick={() => setRegisterSuccess(false)}
+                  >
+                    ← Volver al formulario
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <form action={handleRegister}>
               <div className="grid gap-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
@@ -163,6 +194,7 @@ export function AuthForm() {
                 </Button>
               </div>
             </form>
+            )}
           </TabsContent>
         </Tabs>
 

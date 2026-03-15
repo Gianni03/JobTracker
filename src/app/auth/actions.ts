@@ -53,8 +53,10 @@ export async function signup(formData: FormData) {
     return { error: error.message };
   }
 
-  revalidatePath('/', 'layout');
-  redirect('/dashboard');
+  // El signup fue exitoso pero el email requiere confirmación
+  // No redirigimos - el usuario debe confirmar su email primero
+  // Retornamos un flag para que la UI muestre el mensaje correspondiente
+  return { success: true, emailConfirmationRequired: true };
 }
 
 export async function signInWithGoogle() {
