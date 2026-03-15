@@ -15,10 +15,15 @@ export type ApplicationStatus =
 
 export type ApplicationSalaryFrequency = 'hour' | 'month' | 'year';
 
+export type ApplicationCurrency = 'ARS' | 'USD' | 'EUR' | 'GBP' | 'BRL' | 'MXN' | 'COP' | 'CLP';
+
 export type ApplicationSalary = {
-  desired: number;
+  desired?: number;
+  desiredMax?: number;
   expressed?: number;
+  expressedMax?: number;
   offer?: number;
+  currency?: ApplicationCurrency;
   frequency?: ApplicationSalaryFrequency;
 };
 

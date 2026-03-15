@@ -50,9 +50,12 @@ const formSchema = z.object({
     .max(10000, 'La descripción no puede superar los 10000 caracteres.')
     .optional(),
   salary: z.object({
-    desired: z.coerce.number().min(0, 'El salario debe ser positivo.').nullable(),
+    desired: z.coerce.number().min(0).nullable().optional(),
+    desiredMax: z.coerce.number().min(0).nullable().optional(),
     expressed: z.coerce.number().min(0).nullable().optional(),
+    expressedMax: z.coerce.number().min(0).nullable().optional(),
     offer: z.coerce.number().min(0).nullable().optional(),
+    currency: z.enum(['ARS', 'USD', 'EUR', 'GBP', 'BRL', 'MXN', 'COP', 'CLP']).optional(),
     frequency: z.enum(['hour', 'month', 'year']).optional(),
   }),
   notes: z
@@ -114,8 +117,11 @@ export function ApplicationForm({
       description: application?.description || '',
       salary: {
         desired: application?.salary?.desired || null,
+        desiredMax: application?.salary?.desiredMax || null,
         expressed: application?.salary?.expressed || null,
+        expressedMax: application?.salary?.expressedMax || null,
         offer: application?.salary?.offer || null,
+        currency: application?.salary?.currency || 'USD',
         frequency: application?.salary?.frequency || 'year',
       },
       notes: {
@@ -462,80 +468,139 @@ export function ApplicationForm({
         <CardHeader>
           <CardTitle>Información Salarial</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-4">
-          <div>
-            <Label htmlFor="salary.desired">Sueldo Pretendido</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                $
-              </span>
-              <Input
-                id="salary.desired"
-                type="number"
-                {...register('salary.desired')}
-                className="pl-7"
-                placeholder="120000"
-              />
-            </div>
-            {errors.salary?.desired && (
-              <p className="text-destructive text-sm mt-1">
-                {errors.salary.desired.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="salary.expressed">Sueldo Expresado</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                $
-              </span>
-              <Input
-                id="salary.expressed"
-                type="number"
-                {...register('salary.expressed')}
-                className="pl-7"
-                placeholder="115000"
-              />
-            </div>
-          </div>
-          {status === 'Oferta' && (
+        <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Columna 1: Pretendido + Expresado */}
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="salary.offer">Sueldo de Oferta</Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  $
-                </span>
-                <Input
-                  id="salary.offer"
-                  type="number"
-                  {...register('salary.offer')}
-                  className="pl-7"
-                  placeholder="125000"
-                />
+              <Label>Sueldo Pretendido</Label>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                    Min
+                  </span>
+                  <Input
+                    id="salary.desired"
+                    type="number"
+                    {...register('salary.desired')}
+                    className="pl-12"
+                    placeholder="80000"
+                  />
+                </div>
+                <span className="text-muted-foreground">-</span>
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                    Max
+                  </span>
+                  <Input
+                    id="salary.desiredMax"
+                    type="number"
+                    {...register('salary.desiredMax')}
+                    className="pl-12"
+                    placeholder="120000"
+                  />
+                </div>
               </div>
             </div>
-          )}
-          <div>
-            <Label>Frecuencia</Label>
-            <Controller
-              control={control}
-              name="salary.frequency"
-              render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Frecuencia" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="hour">Por Hora</SelectItem>
-                    <SelectItem value="month">Mensual</SelectItem>
-                    <SelectItem value="year">Anual</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
+
+            <div>
+              <Label>Sueldo Expresado</Label>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                    Min
+                  </span>
+                  <Input
+                    id="salary.expressed"
+                    type="number"
+                    {...register('salary.expressed')}
+                    className="pl-12"
+                    placeholder="75000"
+                  />
+                </div>
+                <span className="text-muted-foreground">-</span>
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                    Max
+                  </span>
+                  <Input
+                    id="salary.expressedMax"
+                    type="number"
+                    {...register('salary.expressedMax')}
+                    className="pl-12"
+                    placeholder="100000"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Columna 2: Moneda + Frecuencia + Oferta */}
+          <div className="space-y-4">
+            <div>
+              <Label>Moneda</Label>
+              <Controller
+                control={control}
+                name="salary.currency"
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Moneda" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ARS">🇦🇷 ARS</SelectItem>
+                      <SelectItem value="USD">🇺🇸 USD</SelectItem>
+                      <SelectItem value="EUR">🇪🇺 EUR</SelectItem>
+                      <SelectItem value="GBP">🇬🇧 GBP</SelectItem>
+                      <SelectItem value="BRL">🇧🇷 BRL</SelectItem>
+                      <SelectItem value="MXN">🇲🇽 MXN</SelectItem>
+                      <SelectItem value="COP">🇨🇴 COP</SelectItem>
+                      <SelectItem value="CLP">🇨🇱 CLP</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+
+            <div>
+              <Label>Frecuencia</Label>
+              <Controller
+                control={control}
+                name="salary.frequency"
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Frecuencia" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="hour">Por Hora</SelectItem>
+                      <SelectItem value="month">Mensual</SelectItem>
+                      <SelectItem value="year">Anual</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+
+            {status === 'Oferta' && (
+              <div>
+                <Label>Sueldo de Oferta</Label>
+                <div className="relative mt-1 max-w-xs">
+                  <Input
+                    id="salary.offer"
+                    type="number"
+                    {...register('salary.offer')}
+                    className="pl-7"
+                    placeholder="125000"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

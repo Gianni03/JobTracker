@@ -37,8 +37,11 @@ export async function fetchUserApplications() {
     interviewDate: app.interview_date,
     salary: {
       desired: app.salary_desired,
+      desiredMax: app.salary_desired_max,
       expressed: app.salary_expressed,
+      expressedMax: app.salary_expressed_max,
       offer: app.salary_offer,
+      currency: app.salary_currency || 'USD',
       frequency: app.salary_frequency || 'year',
     },
     contact: {
@@ -87,8 +90,11 @@ export async function getApplicationById(id: string) {
     interviewDate: app.interview_date,
     salary: {
       desired: app.salary_desired,
+      desiredMax: app.salary_desired_max,
       expressed: app.salary_expressed,
+      expressedMax: app.salary_expressed_max,
       offer: app.salary_offer,
+      currency: app.salary_currency || 'USD',
       frequency: app.salary_frequency || 'year',
     },
     contact: {

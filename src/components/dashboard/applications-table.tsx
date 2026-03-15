@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { Application, ApplicationStatus, ApplicationSalaryFrequency } from '@/lib/definitions';
+import type { Application, ApplicationStatus, ApplicationSalaryFrequency, ApplicationCurrency } from '@/lib/definitions';
 import {
   MoreHorizontal,
   Trash2,
@@ -33,10 +33,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { CompanyAvatar } from '@/components/ui/company-avatar';
 import { deleteApplication } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
-import { useState, useTransition } from 'react';
-import { CompanyAvatar } from '@/components/ui/company-avatar';
+import { useTransition, useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -48,26 +48,37 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-const formatSalaryWithFrequency = (
-  amount: number,
+const formatSalaryRange = (
+  min: number | null | undefined,
+  max: number | null | undefined,
+  currency: ApplicationCurrency = 'USD',
   frequency?: ApplicationSalaryFrequency
 ): string => {
-  const formatted = new Intl.NumberFormat('en-US', {
+  if (!min && !max) return '-';
+  
+  const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: currency,
     notation: 'compact',
     maximumFractionDigits: 0,
-  }).format(amount);
-
-  if (!frequency) return formatted;
+  });
 
   const suffix: Record<ApplicationSalaryFrequency, string> = {
-    hour: '/hour',
-    month: '/month',
-    year: '/year',
+    hour: '/hr',
+    month: '/mes',
+    year: '/año',
   };
+  const suffixStr = frequency ? suffix[frequency] : '';
 
-  return `${formatted}${suffix[frequency]}`;
+  if (min && max) {
+    return `${formatter.format(min)} - ${formatter.format(max)}${suffixStr}`;
+  } else if (min) {
+    return `${formatter.format(min)}${suffixStr}`;
+  } else if (max) {
+    return `${formatter.format(max)}${suffixStr}`;
+  }
+  
+  return '-';
 };
 
 const StatusBadge = ({
@@ -257,38 +268,45 @@ export function ApplicationsTable({
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     <div className="text-sm space-y-0.5">
-                      <div>
-                        <span className="text-muted-foreground">
-                          Pretendido:{' '}
-                        </span>
-                        <span className="font-medium text-foreground">
-                          {formatSalaryWithFrequency(
-                            app.salary.desired,
-                            app.salary.frequency
-                          )}
-                        </span>
-                      </div>
-                      {app.salary.expressed && (
+                      {/* Pretendido */}
+                      {app.salary.desired || app.salary.desiredMax ? (
                         <div>
-                          <span className="text-muted-foreground">
-                            Expresado:{' '}
-                          </span>
+                          <span className="text-muted-foreground">Pretendido: </span>
                           <span className="font-medium text-foreground">
-                            {formatSalaryWithFrequency(
-                              app.salary.expressed,
+                            {formatSalaryRange(
+                              app.salary.desired ?? app.salary.desiredMax ?? null,
+                              app.salary.desired && app.salary.desiredMax ? app.salary.desiredMax : null,
+                              app.salary.currency,
                               app.salary.frequency
                             )}
                           </span>
                         </div>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
                       )}
+                      {/* Expresado */}
+                      {app.salary.expressed || app.salary.expressedMax ? (
+                        <div>
+                          <span className="text-muted-foreground">Expresado: </span>
+                          <span className="font-medium text-foreground">
+                            {formatSalaryRange(
+                              app.salary.expressed ?? app.salary.expressedMax ?? null,
+                              app.salary.expressed && app.salary.expressedMax ? app.salary.expressedMax : null,
+                              app.salary.currency,
+                              app.salary.frequency
+                            )}
+                          </span>
+                        </div>
+                      ) : null}
+                      {/* Oferta */}
                       {app.salary.offer && app.status === 'Oferta' && (
                         <div>
-                          <span className="text-green-600 dark:text-green-400">
-                            Oferta:{' '}
-                          </span>
+                          <span className="text-green-600 dark:text-green-400">Oferta: </span>
                           <span className="font-medium text-green-600 dark:text-green-400">
-                            {formatSalaryWithFrequency(
+                            {formatSalaryRange(
                               app.salary.offer,
+                              null,
+                              app.salary.currency,
                               app.salary.frequency
                             )}
                           </span>
