@@ -87,7 +87,7 @@ const CustomSankeyNode = ({ x, y, width, height, index, payload }: any) => {
   const isLeft = x < 200;
   const isRight = x > 600;
 
-  let textAnchor = 'middle';
+  let textAnchor: 'start' | 'middle' | 'end' = 'middle';
   let textX = x + width / 2;
 
   if (isLeft) {

@@ -1,0 +1,63 @@
+{
+	"subagents": {
+		"agentOverrides": {
+			"sdd-init": {
+				"model": "opencode/kimi-k2.5"
+			},
+			"sdd-explore": {
+				"model": "opencode/nemotron-3-super-free"
+			},
+			"sdd-proposal": {
+				"model": "opencode/glm-5"
+			},
+			"sdd-spec": {
+				"model": "opencode/mimo-v2.5-free"
+			},
+			"sdd-design": {
+				"model": "opencode/kimi-k2.5"
+			},
+			"sdd-tasks": {
+				"model": "opencode/nemotron-3-super-free"
+			},
+			"sdd-apply": {
+				"model": "mistral/codestral-latest"
+			},
+			"sdd-verify": {
+				"model": "opencode/nemotron-3-super-free"
+			},
+			"sdd-sync": {
+				"model": "mistral/mistral-large-latest"
+			},
+			"sdd-archive": {
+				"model": "opencode/mimo-v2.5-free"
+			},
+			"context-builder": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"delegate": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"oracle": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"planner": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"researcher": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"reviewer": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"scout": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"sdd-onboard": {
+				"model": "opencode/deepseek-v4-flash-free"
+			},
+			"worker": {
+				"model": "opencode/deepseek-v4-flash-free"
+			}
+		}
+	}
+}
