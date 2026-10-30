@@ -10,7 +10,8 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { Application, ApplicationStatus, ApplicationSalaryFrequency, ApplicationCurrency } from '@/lib/definitions';
+import type { Application, ApplicationStatus } from '@/lib/definitions';
+import { formatSalaryRange } from '@/lib/format';
 import {
   MoreHorizontal,
   Trash2,
@@ -47,39 +48,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-
-const formatSalaryRange = (
-  min: number | null | undefined,
-  max: number | null | undefined,
-  currency: ApplicationCurrency = 'USD',
-  frequency?: ApplicationSalaryFrequency
-): string => {
-  if (!min && !max) return '-';
-  
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-    notation: 'compact',
-    maximumFractionDigits: 0,
-  });
-
-  const suffix: Record<ApplicationSalaryFrequency, string> = {
-    hour: '/hr',
-    month: '/mes',
-    year: '/año',
-  };
-  const suffixStr = frequency ? suffix[frequency] : '';
-
-  if (min && max) {
-    return `${formatter.format(min)} - ${formatter.format(max)}${suffixStr}`;
-  } else if (min) {
-    return `${formatter.format(min)}${suffixStr}`;
-  } else if (max) {
-    return `${formatter.format(max)}${suffixStr}`;
-  }
-  
-  return '-';
-};
 
 const StatusBadge = ({
   status,
