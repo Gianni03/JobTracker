@@ -37,7 +37,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className={cn(inter.className, "font-body antialiased")}>
+      {/* Browser extensions such as Grammarly inject attributes into body before hydration. */}
+      <body
+        className={cn(inter.className, "font-body antialiased")}
+        suppressHydrationWarning
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
