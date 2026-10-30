@@ -36,7 +36,13 @@ export type Application = {
   offerStage?: string;
   date: string; // ISO 8601 format
   interviewDate?: string;
-  platform: 'LinkedIn' | 'Web de la Empresa' | 'Referido' | 'Indeed' | 'Otro';
+  platform:
+    | 'LinkedIn'
+    | 'Web de la Empresa'
+    | 'Referido'
+    | 'Indeed'
+    | 'Portal de empleo'
+    | 'Otro';
   link: string;
   salary: ApplicationSalary;
   contact: {

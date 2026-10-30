@@ -36,8 +36,9 @@ const formSchema = z.object({
     'Web de la Empresa',
     'Referido',
     'Indeed',
+    'Portal de empleo',
     'Otro',
-  ]),
+  ], { error: 'Selecciona una plataforma válida.' }),
   link: z.string().url('Debe ser una URL válida.').or(z.literal('')).optional(),
   contact: z
     .object({
@@ -400,6 +401,7 @@ export function ApplicationForm({
                       Web de la Empresa
                     </SelectItem>
                     <SelectItem value="Referido">Referido</SelectItem>
+                    <SelectItem value="Indeed">Indeed</SelectItem>
                     <SelectItem value="Portal de empleo">
                       Portal de empleo
                     </SelectItem>
@@ -408,6 +410,11 @@ export function ApplicationForm({
                 </Select>
               )}
             />
+            {errors.platform && (
+              <p className="text-destructive text-sm mt-1">
+                {errors.platform.message}
+              </p>
+            )}
           </div>
           <div className="md:col-span-2">
             <Label htmlFor="link">Link a la Oferta</Label>
