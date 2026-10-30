@@ -12,6 +12,7 @@ import {
   Settings,
   LogOut,
   ListChecks,
+  Sparkles,
 } from 'lucide-react';
 import { User } from '@/lib/definitions';
 import { signOut } from '@/lib/actions';
@@ -29,6 +30,7 @@ import { ThemeToggle } from '../theme-toggle';
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/dashboard/applications', icon: ListChecks, label: 'Postulaciones' },
+  { href: '/dashboard/skills', icon: Sparkles, label: 'Skills para IA' },
   { href: '/dashboard/statistics', icon: BarChart3, label: 'Estadísticas' },
   { href: '/dashboard/resources', icon: BookOpen, label: 'Recursos' },
   // { href: '/dashboard/analyzer', icon: MessageSquare, label: 'AI Feedback' },
