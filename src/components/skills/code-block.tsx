@@ -4,19 +4,30 @@ import { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 interface CodeBlockProps {
   code: string;
   label?: string;
   className?: string;
+  analyticsContext?: string;
 }
 
-export function CodeBlock({ code, label, className }: CodeBlockProps) {
+export function CodeBlock({
+  code,
+  label,
+  className,
+  analyticsContext,
+}: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(code);
+      trackEvent('copy_command', {
+        context: analyticsContext ?? 'general',
+        label: label ?? 'unnamed',
+      });
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {

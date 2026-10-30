@@ -16,6 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { login, signup, signInWithGoogle } from '@/app/auth/actions';
+import { trackEvent } from '@/lib/analytics';
 
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,9 +27,13 @@ export function AuthForm() {
   async function handleLogin(formData: FormData) {
     setIsLoading(true);
     formData.append('rememberMe', rememberMe.toString());
+    window.sessionStorage.setItem('auth_intent', 'email');
     const result = await login(formData);
     setIsLoading(false);
-    if (result?.error) console.log(result.error);
+    if (result?.error) {
+      window.sessionStorage.removeItem('auth_intent');
+      console.log(result.error);
+    }
   }
 
   // Manejador para Registro
@@ -41,6 +46,8 @@ export function AuthForm() {
       console.log(result.error);
       return;
     }
+
+    trackEvent('sign_up', { method: 'email' });
 
     if (result?.emailConfirmationRequired) {
       setRegisterSuccess(true);
@@ -211,7 +218,10 @@ export function AuthForm() {
         </div>
 
         {/* BOTÓN DE GOOGLE */}
-        <form action={signInWithGoogle}>
+        <form
+          action={signInWithGoogle}
+          onSubmit={() => window.sessionStorage.setItem('auth_intent', 'google')}
+        >
           <Button
             variant="outline"
             type="submit"

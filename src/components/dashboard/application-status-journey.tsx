@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 import { ArrowRight, Check, Loader2, Plus } from 'lucide-react';
 import { changeApplicationStatus } from '@/lib/actions';
+import { trackEvent } from '@/lib/analytics';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -61,6 +62,17 @@ export function ApplicationStatusJourney({
     startTransition(async () => {
       try {
         await changeApplicationStatus(id, newStatus);
+
+        trackEvent('change_status', {
+          from_status: status,
+          to_status: newStatus,
+        });
+
+        if (newStatus === 'Entrevista') {
+          trackEvent('advance_to_interview', { from_status: status });
+        } else if (newStatus === 'Oferta') {
+          trackEvent('advance_to_offer', { from_status: status });
+        }
 
         if (newStatus === 'Oferta' || newStatus === 'Entrevista') {
           confetti({

@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check, Loader2, MessageSquareQuote, Pencil, X } from 'lucide-react';
 import { updateApplicationFeedback } from '@/lib/actions';
+import { trackEvent } from '@/lib/analytics';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,6 +39,11 @@ export function ApplicationFeedbackCard({
     startTransition(async () => {
       try {
         await updateApplicationFeedback(id, value);
+        const length = value.trim().length;
+        trackEvent('add_feedback', {
+          length_bucket:
+            length < 200 ? 'short' : length < 1000 ? 'medium' : 'long',
+        });
         toast({
           title: 'Feedback guardado',
           description: 'El feedback de la postulación se actualizó.',

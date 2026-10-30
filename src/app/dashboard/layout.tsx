@@ -4,6 +4,7 @@ import { AppSidebar } from '@/components/layout/app-sidebar';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { AuthAnalytics } from '@/components/analytics/auth-analytics';
 import { redirect } from 'next/navigation';
 
 export default async function DashboardLayout({
@@ -33,6 +34,7 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider>
+      <AuthAnalytics />
       <AppSidebar user={realUser} />
       <div className="flex-1 flex flex-col">
         {/* También lo pasamos al Header si lo necesita */}

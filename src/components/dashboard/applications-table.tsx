@@ -36,6 +36,7 @@ import {
 } from '@/components/ui/select';
 import { CompanyAvatar } from '@/components/ui/company-avatar';
 import { deleteApplication } from '@/lib/actions';
+import { trackEvent } from '@/lib/analytics';
 import { useToast } from '@/hooks/use-toast';
 import { useTransition, useState } from 'react';
 import {
@@ -139,6 +140,7 @@ export function ApplicationsTable({
     startTransition(async () => {
       try {
         await deleteApplication(applicationToDelete.id);
+        trackEvent('delete_application');
         toast({
           title: 'Postulación eliminada',
           description: `La postulación en ${applicationToDelete.company} ha sido eliminada exitosamente.`,
