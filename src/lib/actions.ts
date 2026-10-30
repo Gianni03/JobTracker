@@ -3,6 +3,8 @@
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import type { ApplicationStatus } from '@/lib/definitions';
+import { STATUS_OPTIONS } from '@/lib/status';
 
 // OJO: Asumimos que recibís el objeto del formulario ya formateado
 // Si usas FormData directo es más complejo, pero como usas React Hook Form
@@ -124,6 +126,99 @@ export async function updateApplication(id: string, data: any) {
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
   revalidatePath(`/dashboard/applications/${id}`);
+
+  return { success: true };
+}
+
+export async function changeApplicationStatus(
+  id: string,
+  nextStatus: ApplicationStatus,
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('No autorizado');
+
+  const { data: current, error: fetchError } = await supabase
+    .from('applications')
+    .select('status, interview_stage, offer_stage')
+    .eq('id', id)
+    .eq('user_id', user.id)
+    .single();
+
+  if (fetchError || !current) {
+    throw new Error('No se encontró la postulación');
+  }
+
+  const currentStatus = current.status as ApplicationStatus;
+
+  if (!STATUS_OPTIONS.includes(nextStatus)) {
+    throw new Error('Estado no válido');
+  }
+
+  if (currentStatus === nextStatus) {
+    throw new Error('La postulación ya está en ese estado');
+  }
+
+  const update: Record<string, string> = { status: nextStatus };
+
+  if (
+    !current.interview_stage &&
+    (nextStatus === 'Entrevista' || currentStatus === 'Entrevista')
+  ) {
+    update.interview_stage = 'Recruiter';
+  }
+
+  if (nextStatus === 'Oferta' && !current.offer_stage) {
+    update.offer_stage = 'Analisis';
+  }
+
+  const { error } = await supabase
+    .from('applications')
+    .update(update)
+    .eq('id', id)
+    .eq('user_id', user.id);
+
+  if (error) {
+    console.error('Error al cambiar el estado:', error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/applications');
+  revalidatePath(`/dashboard/applications/${id}`);
+  revalidatePath(`/dashboard/applications/${id}/edit`);
+
+  return { success: true, status: nextStatus };
+}
+
+export async function updateApplicationFeedback(id: string, feedback: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('No autorizado');
+
+  const cleanFeedback = feedback.trim().slice(0, 10000);
+
+  const { error } = await supabase
+    .from('applications')
+    .update({ feedback: cleanFeedback || null })
+    .eq('id', id)
+    .eq('user_id', user.id);
+
+  if (error) {
+    console.error('Error al guardar el feedback:', error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/applications');
+  revalidatePath(`/dashboard/applications/${id}`);
+  revalidatePath(`/dashboard/applications/${id}/edit`);
 
   return { success: true };
 }
