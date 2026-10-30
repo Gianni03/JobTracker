@@ -18,32 +18,55 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { login, signup, signInWithGoogle } from '@/app/auth/actions';
 import { trackEvent } from '@/lib/analytics';
 
+function setAuthIntent(intent: 'email' | 'google') {
+  try {
+    window.sessionStorage.setItem('auth_intent', intent);
+  } catch {
+    // Storage can be unavailable in restricted browser contexts.
+  }
+}
+
+function clearAuthIntent() {
+  try {
+    window.sessionStorage.removeItem('auth_intent');
+  } catch {
+    // Storage can be unavailable in restricted browser contexts.
+  }
+}
+
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   // Manejador para Login
   async function handleLogin(formData: FormData) {
     setIsLoading(true);
+    setAuthError(null);
     formData.append('rememberMe', rememberMe.toString());
-    window.sessionStorage.setItem('auth_intent', 'email');
+    setAuthIntent('email');
     const result = await login(formData);
     setIsLoading(false);
     if (result?.error) {
-      window.sessionStorage.removeItem('auth_intent');
-      console.log(result.error);
+      clearAuthIntent();
+      console.error(result.error);
+      setAuthError('Email o contraseña incorrectos. Probá de nuevo.');
     }
   }
 
   // Manejador para Registro
   async function handleRegister(formData: FormData) {
     setIsLoading(true);
+    setAuthError(null);
     const result = await signup(formData);
     setIsLoading(false);
-    
+
     if (result?.error) {
-      console.log(result.error);
+      console.error(result.error);
+      setAuthError(
+        'No pudimos crear la cuenta. Revisá los datos o probá con otro email.',
+      );
       return;
     }
 
@@ -51,6 +74,19 @@ export function AuthForm() {
 
     if (result?.emailConfirmationRequired) {
       setRegisterSuccess(true);
+    }
+  }
+
+  async function handleGoogle() {
+    setIsLoading(true);
+    setAuthError(null);
+    setAuthIntent('google');
+    const result = await signInWithGoogle();
+    setIsLoading(false);
+    if (result?.error) {
+      clearAuthIntent();
+      console.error(result.error);
+      setAuthError('No pudimos iniciar sesión con Google. Intentá de nuevo.');
     }
   }
 
@@ -65,7 +101,16 @@ export function AuthForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="login" className="w-full">
+        {authError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{authError}</AlertDescription>
+          </Alert>
+        )}
+        <Tabs
+          defaultValue="login"
+          className="w-full"
+          onValueChange={() => setAuthError(null)}
+        >
           <TabsList className="grid w-full grid-cols-2 mb-6">
             <TabsTrigger value="login">Ingresar</TabsTrigger>
             <TabsTrigger value="register">Registrarse</TabsTrigger>
@@ -218,10 +263,7 @@ export function AuthForm() {
         </div>
 
         {/* BOTÓN DE GOOGLE */}
-        <form
-          action={signInWithGoogle}
-          onSubmit={() => window.sessionStorage.setItem('auth_intent', 'google')}
-        >
+        <form action={handleGoogle}>
           <Button
             variant="outline"
             type="submit"

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
+import { getRequestOrigin } from '@/lib/auth-url';
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -62,7 +63,7 @@ export async function signup(formData: FormData) {
 export async function signInWithGoogle() {
   const supabase = await createClient();
 
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const origin = await getRequestOrigin();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -73,10 +74,12 @@ export async function signInWithGoogle() {
 
   if (error) {
     console.error('Error con Google:', error.message);
-    return;
+    return { error: 'No pudimos iniciar sesión con Google. Intentá de nuevo.' };
   }
 
   if (data.url) {
     redirect(data.url);
   }
+
+  return { error: 'No pudimos iniciar sesión con Google. Intentá de nuevo.' };
 }

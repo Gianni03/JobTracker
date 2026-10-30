@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import type { ApplicationStatus } from '@/lib/definitions';
 import { STATUS_OPTIONS } from '@/lib/status';
+import { getRequestOrigin } from '@/lib/auth-url';
 
 // OJO: Asumimos que recibís el objeto del formulario ya formateado
 // Si usas FormData directo es más complejo, pero como usas React Hook Form
@@ -225,14 +226,24 @@ export async function updateApplicationFeedback(id: string, feedback: string) {
 
 export async function deleteApplication(id: string) {
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const { error } = await supabase.from('applications').delete().eq('id', id);
+  if (!user) throw new Error('No autorizado');
+
+  const { error } = await supabase
+    .from('applications')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', user.id);
 
   if (error) {
     throw new Error(error.message);
   }
 
   revalidatePath('/dashboard');
+  revalidatePath('/dashboard/applications');
   return { success: true };
 }
 
@@ -250,8 +261,10 @@ export async function resetPassword(formData: FormData) {
 
     if (!email) return { error: 'El email es requerido' };
 
+    const origin = await getRequestOrigin();
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/dashboard/settings`,
+      redirectTo: `${origin}/auth/callback?next=/dashboard/settings`,
     });
 
     if (error) return { error: error.message };
