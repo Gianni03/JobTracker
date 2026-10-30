@@ -33,6 +33,7 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CodeBlock } from '@/components/skills/code-block';
+import { SkillsAnalytics } from '@/components/skills/skills-analytics';
 
 type SkillCommand = {
   label: string;
@@ -467,6 +468,7 @@ function DotList({ items }: { items: string[] }) {
 export default function SkillsPage() {
   return (
     <div className="space-y-12 pb-12">
+      <SkillsAnalytics />
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="max-w-3xl space-y-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -643,7 +645,10 @@ export default function SkillsPage() {
               <p className="text-sm text-muted-foreground">
                 Necesitás git. El repo es público.
               </p>
-              <CodeBlock code={'git clone https://github.com/Gianni03/gianni-skills.git\ncd gianni-skills'} />
+              <CodeBlock
+                code={'git clone https://github.com/Gianni03/gianni-skills.git\ncd gianni-skills'}
+                analyticsContext="install"
+              />
             </CardContent>
           </Card>
 
@@ -661,8 +666,15 @@ export default function SkillsPage() {
                 Detecta OpenCode, Claude Code, Gemini CLI, Cursor, Kiro y
                 Windsurf. Podés forzar uno y reemplazar lo existente.
               </p>
-              <CodeBlock code={'chmod +x install.sh\n./install.sh'} />
-              <CodeBlock code={'./install.sh --agent opencode\n./install.sh --force'} label="Opciones" />
+              <CodeBlock
+                code={'chmod +x install.sh\n./install.sh'}
+                analyticsContext="install"
+              />
+              <CodeBlock
+                code={'./install.sh --agent opencode\n./install.sh --force'}
+                label="Opciones"
+                analyticsContext="install"
+              />
             </CardContent>
           </Card>
 
@@ -878,6 +890,7 @@ export default function SkillsPage() {
                             key={command.label}
                             label={command.label}
                             code={command.code}
+                            analyticsContext={skill.name}
                           />
                         ))}
                       </CardContent>
@@ -929,6 +942,7 @@ export default function SkillsPage() {
                             <CodeBlock
                               code={step.code}
                               label={step.codeLabel}
+                              analyticsContext={skill.name}
                             />
                           )}
                         </div>

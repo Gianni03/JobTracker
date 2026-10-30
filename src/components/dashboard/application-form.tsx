@@ -18,6 +18,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { createApplication, updateApplication } from '@/lib/actions';
+import { trackEvent } from '@/lib/analytics';
 import { useTransition, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { useToast } from '@/hooks/use-toast';
@@ -200,6 +201,10 @@ export function ApplicationForm({
               ? new Date(data.interviewDate).toISOString()
               : null,
           });
+          trackEvent('update_application', {
+            status: data.status,
+            platform: data.platform,
+          });
         } else {
           // New application direct to Interview or Offer (unlikely but possible)
           if (data.status === 'Entrevista' || data.status === 'Oferta') {
@@ -211,6 +216,18 @@ export function ApplicationForm({
             interviewDate: data.interviewDate
               ? new Date(data.interviewDate).toISOString()
               : null,
+          });
+          trackEvent('create_application', {
+            status: data.status,
+            platform: data.platform,
+            has_salary: Boolean(
+              data.salary?.desired ||
+                data.salary?.desiredMax ||
+                data.salary?.expressed ||
+                data.salary?.expressedMax ||
+                data.salary?.offer,
+            ),
+            has_description: Boolean(data.description),
           });
         }
 
