@@ -30,9 +30,9 @@ function DetailRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-start gap-3">
+    <div className="flex min-w-0 items-start gap-3">
       <span className="text-muted-foreground mt-0.5">{icon}</span>
-      <div className="space-y-0.5">
+      <div className="min-w-0 space-y-0.5 break-words">
         <p className="text-xs uppercase tracking-wide text-muted-foreground">
           {label}
         </p>
@@ -130,11 +130,13 @@ export default async function ApplicationDetailPage({
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold font-headline text-foreground">
+          <div className="min-w-0 space-y-2">
+            <h1 className="break-words text-2xl font-bold font-headline text-foreground sm:text-3xl">
               {application.company}
             </h1>
-            <p className="text-lg text-muted-foreground">{application.role}</p>
+            <p className="break-words text-base text-muted-foreground sm:text-lg">
+              {application.role}
+            </p>
             <ApplicationStatusJourney
               id={application.id}
               status={application.status}
@@ -144,7 +146,7 @@ export default async function ApplicationDetailPage({
             />
           </div>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href={editHref}>
             <Pencil className="mr-2 h-4 w-4" />
             Editar
@@ -159,7 +161,7 @@ export default async function ApplicationDetailPage({
             icon={<StickyNote className="h-5 w-5 text-primary" />}
           >
             {application.description ? (
-              <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+              <p className="break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground">
                 {application.description}
               </p>
             ) : (
@@ -177,7 +179,7 @@ export default async function ApplicationDetailPage({
                   Generales
                 </p>
                 {application.notes?.general ? (
-                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+                  <p className="break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground">
                     {application.notes.general}
                   </p>
                 ) : (
@@ -190,7 +192,7 @@ export default async function ApplicationDetailPage({
                   Entrevista
                 </p>
                 {application.notes?.interview ? (
-                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+                  <p className="break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground">
                     {application.notes.interview}
                   </p>
                 ) : (
@@ -299,10 +301,10 @@ export default async function ApplicationDetailPage({
                 {salaryRows.map((row) => (
                   <div
                     key={row.label}
-                    className="flex items-center justify-between gap-4 text-sm"
+                    className="flex flex-wrap items-center justify-between gap-1 text-sm"
                   >
                     <span className="text-muted-foreground">{row.label}</span>
-                    <span className="font-medium text-foreground">
+                    <span className="min-w-0 break-words text-right font-medium text-foreground">
                       {row.value}
                     </span>
                   </div>

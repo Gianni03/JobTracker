@@ -36,7 +36,7 @@ export default async function DashboardLayout({
     <SidebarProvider>
       <AuthAnalytics />
       <AppSidebar user={realUser} />
-      <div className="flex-1 flex flex-col">
+      <div className="flex min-w-0 flex-1 flex-col">
         {/* También lo pasamos al Header si lo necesita */}
         <Header />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-background">

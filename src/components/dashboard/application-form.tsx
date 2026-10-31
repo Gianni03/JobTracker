@@ -497,7 +497,7 @@ export function ApplicationForm({
           <div className="space-y-4">
             <div>
               <Label>Sueldo Pretendido</Label>
-              <div className="flex items-center gap-2 mt-1">
+              <div className="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                 <div className="relative flex-1">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
                     Min
@@ -510,7 +510,7 @@ export function ApplicationForm({
                     placeholder="80000"
                   />
                 </div>
-                <span className="text-muted-foreground">-</span>
+                <span className="hidden text-muted-foreground sm:block">-</span>
                 <div className="relative flex-1">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
                     Max
@@ -528,7 +528,7 @@ export function ApplicationForm({
 
             <div>
               <Label>Sueldo Expresado</Label>
-              <div className="flex items-center gap-2 mt-1">
+              <div className="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                 <div className="relative flex-1">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
                     Min
@@ -541,7 +541,7 @@ export function ApplicationForm({
                     placeholder="75000"
                   />
                 </div>
-                <span className="text-muted-foreground">-</span>
+                <span className="hidden text-muted-foreground sm:block">-</span>
                 <div className="relative flex-1">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
                     Max
@@ -666,11 +666,20 @@ export function ApplicationForm({
         </CardContent>
       </Card>
 
-      <div className="flex justify-end space-x-4">
-        <Button variant="outline" type="button" onClick={() => router.back()}>
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <Button
+          variant="outline"
+          type="button"
+          onClick={() => router.back()}
+          className="w-full sm:w-auto"
+        >
           Cancelar
         </Button>
-        <Button type="submit" disabled={isPending}>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full sm:w-auto"
+        >
           {isPending
             ? 'Guardando...'
             : application

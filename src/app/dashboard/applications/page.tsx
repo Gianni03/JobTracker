@@ -15,16 +15,16 @@ export default async function AllApplicationsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold font-headline text-foreground">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="break-words text-2xl font-bold font-headline text-foreground sm:text-3xl">
             Todas las Postulaciones
           </h1>
-          <p className="text-muted-foreground">
+          <p className="break-words text-sm text-muted-foreground sm:text-base">
             Filtra y gestiona el historial completo de tus postulaciones.
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href="/dashboard/applications/new?from=applications">
             <Plus className="mr-2 h-4 w-4" /> Nueva Postulación
           </Link>

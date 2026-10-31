@@ -88,11 +88,11 @@ export default async function DashboardPage({
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold font-headline text-foreground">
+        <div className="min-w-0">
+          <h1 className="break-words text-2xl font-bold font-headline text-foreground sm:text-3xl">
             Dashboard
           </h1>
-          <p className="text-muted-foreground">
+          <p className="break-words text-sm text-muted-foreground sm:text-base">
             Gestiona y realiza seguimiento de tus postulaciones
           </p>
         </div>

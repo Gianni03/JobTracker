@@ -15,9 +15,11 @@ function DonateButton() {
         href="https://cafecito.app/gianni03"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Apoyar con un Cafecito"
       >
-        <Heart className="mr-2 h-4 w-4" />
-        Apóyame con un Cafecito
+        <Heart className="h-4 w-4 sm:mr-2" />
+        <span className="hidden sm:inline">Apóyame con un Cafecito</span>
+        <span className="sm:hidden">Cafecito</span>
       </Link>
     </Button>
   );
