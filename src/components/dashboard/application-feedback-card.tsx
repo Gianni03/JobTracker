@@ -63,7 +63,7 @@ export function ApplicationFeedbackCard({
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0">
+      <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2 text-lg">
           <MessageSquareQuote className="h-5 w-5 text-primary" />
           Feedback recibido
@@ -121,7 +121,7 @@ export function ApplicationFeedbackCard({
             </div>
           </div>
         ) : feedback ? (
-          <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+          <p className="break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground">
             {feedback}
           </p>
         ) : (

@@ -92,6 +92,155 @@ const StatusBadge = ({
   );
 };
 
+function MobileApplicationCard({
+  app,
+  onOpen,
+  onDelete,
+  isPending,
+}: {
+  app: Application;
+  onOpen: () => void;
+  onDelete: (e: React.MouseEvent, id: string, company: string) => void;
+  isPending: boolean;
+}) {
+  const stage =
+    app.status === 'Entrevista'
+      ? app.interviewStage
+      : app.status === 'Oferta'
+        ? app.offerStage
+        : undefined;
+
+  const desired =
+    app.salary.desired || app.salary.desiredMax
+      ? formatSalaryRange(
+          app.salary.desired ?? app.salary.desiredMax ?? null,
+          app.salary.desired && app.salary.desiredMax
+            ? app.salary.desiredMax
+            : null,
+          app.salary.currency,
+          app.salary.frequency,
+        )
+      : null;
+
+  const expressed =
+    app.salary.expressed || app.salary.expressedMax
+      ? formatSalaryRange(
+          app.salary.expressed ?? app.salary.expressedMax ?? null,
+          app.salary.expressed && app.salary.expressedMax
+            ? app.salary.expressedMax
+            : null,
+          app.salary.currency,
+          app.salary.frequency,
+        )
+      : null;
+
+  const offer =
+    app.salary.offer && app.status === 'Oferta'
+      ? formatSalaryRange(
+          app.salary.offer,
+          null,
+          app.salary.currency,
+          app.salary.frequency,
+        )
+      : null;
+
+  return (
+    <div
+      onClick={onOpen}
+      className="cursor-pointer rounded-xl border bg-card p-4 shadow-sm transition hover:shadow-md"
+    >
+      <div className="flex items-start gap-3">
+        <CompanyAvatar name={app.company} />
+        <div className="min-w-0 flex-1">
+          <p className="break-words font-medium text-foreground">
+            {app.company}
+          </p>
+          <p className="break-words text-sm text-muted-foreground">
+            {app.role}
+          </p>
+          <p className="text-xs text-muted-foreground" suppressHydrationWarning>
+            {format(new Date(app.date + 'T00:00:00'), 'd MMM yyyy', {
+              locale: es,
+            })}
+          </p>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="h-8 w-8 shrink-0 p-0"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="sr-only">Abrir menú</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              className="text-destructive"
+              onClick={(e) => onDelete(e, app.id, app.company)}
+              disabled={isPending}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Eliminar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <StatusBadge status={app.status} />
+        {stage && (
+          <Badge variant="outline" className="font-normal">
+            {stage}
+          </Badge>
+        )}
+        {app.interviewDate && (
+          <span
+            className="text-xs text-muted-foreground"
+            suppressHydrationWarning
+          >
+            {format(new Date(app.interviewDate), 'd MMM yyyy, HH:mm', {
+              locale: es,
+            })}
+          </span>
+        )}
+      </div>
+
+      {(desired || expressed || offer) && (
+        <div className="mt-3 space-y-1 border-t pt-3 text-sm">
+          {desired && (
+            <div className="flex flex-wrap justify-between gap-1">
+              <span className="text-muted-foreground">Pretendido</span>
+              <span className="break-words text-right font-medium">
+                {desired}
+              </span>
+            </div>
+          )}
+          {expressed && (
+            <div className="flex flex-wrap justify-between gap-1">
+              <span className="text-muted-foreground">Expresado</span>
+              <span className="break-words text-right font-medium">
+                {expressed}
+              </span>
+            </div>
+          )}
+          {offer && (
+            <div className="flex flex-wrap justify-between gap-1">
+              <span className="text-green-600 dark:text-green-400">
+                Oferta
+              </span>
+              <span className="break-words text-right font-medium text-green-600 dark:text-green-400">
+                {offer}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface ApplicationsTableProps {
   applications: Application[];
   showPagination?: boolean;
@@ -163,7 +312,25 @@ export function ApplicationsTable({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border bg-card text-card-foreground shadow">
+      <div className="space-y-3 md:hidden">
+        {applications.length > 0 ? (
+          applications.map((app) => (
+            <MobileApplicationCard
+              key={app.id}
+              app={app}
+              onOpen={() => handleRowClick(app.id)}
+              onDelete={handleDeleteClick}
+              isPending={isPending}
+            />
+          ))
+        ) : (
+          <div className="rounded-xl border bg-card p-6 text-center text-sm text-muted-foreground">
+            Todavía no postulaste a ninguna oferta. Animate a hacerlo y
+            éxitos!!!
+          </div>
+        )}
+      </div>
+      <div className="hidden rounded-xl border bg-card text-card-foreground shadow md:block">
         <Table>
           <TableHeader>
             <TableRow>
@@ -324,12 +491,12 @@ export function ApplicationsTable({
         </Table>
       </div>
       {showPagination && totalPages > 1 && (
-        <div className="flex items-center justify-between px-2">
+        <div className="flex flex-col gap-3 px-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm text-muted-foreground">
             Total de {totalApplications} postulaciones.
           </div>
-          <div className="flex items-center space-x-6 lg:space-x-8">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-6">
+            <div className="flex items-center gap-2">
               <p className="text-sm font-medium">Filas por página</p>
               <Select
                 value={`${itemsPerPage}`}
@@ -347,10 +514,10 @@ export function ApplicationsTable({
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            <div className="flex items-center justify-center text-sm font-medium whitespace-nowrap">
               Página {currentPage} de {totalPages}
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 className="h-8 w-8 p-0"

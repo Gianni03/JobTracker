@@ -443,9 +443,9 @@ function BulletList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2 text-sm text-muted-foreground">
       {items.map((item) => (
-        <li key={item} className="flex gap-2">
+        <li key={item} className="flex min-w-0 gap-2">
           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-          <span>{item}</span>
+          <span className="min-w-0 break-words">{item}</span>
         </li>
       ))}
     </ul>
@@ -456,9 +456,9 @@ function DotList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2 text-sm text-muted-foreground">
       {items.map((item) => (
-        <li key={item} className="flex gap-2">
+        <li key={item} className="flex min-w-0 gap-2">
           <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
-          <span>{item}</span>
+          <span className="min-w-0 break-words">{item}</span>
         </li>
       ))}
     </ul>
@@ -632,7 +632,7 @@ export function SkillsGuide() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <Card>
+          <Card className="min-w-0">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
@@ -652,7 +652,7 @@ export function SkillsGuide() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="min-w-0">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
@@ -678,7 +678,7 @@ export function SkillsGuide() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="min-w-0">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
@@ -696,7 +696,7 @@ export function SkillsGuide() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="min-w-0">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
@@ -728,28 +728,43 @@ export function SkillsGuide() {
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Agente</TableHead>
-                    <TableHead>Ruta</TableHead>
-                    <TableHead className="hidden md:table-cell">Nota</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {agents.map((agent) => (
-                    <TableRow key={agent.name}>
-                      <TableCell className="font-medium">{agent.name}</TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {agent.path}
-                      </TableCell>
-                      <TableCell className="hidden text-muted-foreground md:table-cell">
-                        {agent.note}
-                      </TableCell>
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Agente</TableHead>
+                      <TableHead>Ruta</TableHead>
+                      <TableHead className="hidden md:table-cell">Nota</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {agents.map((agent) => (
+                      <TableRow key={agent.name}>
+                        <TableCell className="font-medium">{agent.name}</TableCell>
+                        <TableCell className="break-all font-mono text-xs">
+                          {agent.path}
+                        </TableCell>
+                        <TableCell className="hidden text-muted-foreground md:table-cell">
+                          {agent.note}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <div className="space-y-3 p-4 md:hidden">
+                {agents.map((agent) => (
+                  <div key={agent.name} className="rounded-lg border p-3">
+                    <p className="font-medium">{agent.name}</p>
+                    <p className="mt-1 break-all font-mono text-xs text-muted-foreground">
+                      {agent.path}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {agent.note}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
 
@@ -829,7 +844,7 @@ export function SkillsGuide() {
                 <CardHeader>
                   <div className="flex flex-wrap items-center gap-2">
                     <skill.icon className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-2xl font-headline">
+                    <CardTitle className="break-words text-2xl font-headline">
                       {skill.name}
                     </CardTitle>
                     <Badge variant="secondary" className="font-normal">
@@ -853,8 +868,8 @@ export function SkillsGuide() {
                 </CardContent>
               </Card>
 
-              <div className="grid gap-6 lg:grid-cols-3">
-                <div className="space-y-6 lg:col-span-2">
+              <div className="grid min-w-0 gap-6 lg:grid-cols-3">
+                <div className="min-w-0 space-y-6 lg:col-span-2">
                   <Card>
                     <CardHeader>
                       <CardTitle className="text-lg">Qué hace</CardTitle>
@@ -863,12 +878,12 @@ export function SkillsGuide() {
                       {skill.modes.map((mode) => (
                         <div
                           key={mode.title}
-                          className="rounded-lg border bg-muted/30 p-4"
+                          className="min-w-0 rounded-lg border bg-muted/30 p-4"
                         >
-                          <p className="font-mono text-sm font-medium">
+                          <p className="break-words font-mono text-sm font-medium">
                             {mode.title}
                           </p>
-                          <p className="mt-1 text-sm text-muted-foreground">
+                          <p className="mt-1 break-words text-sm text-muted-foreground">
                             {mode.description}
                           </p>
                         </div>
@@ -923,7 +938,7 @@ export function SkillsGuide() {
                   </Card>
                 </div>
 
-                <div className="space-y-6">
+                <div className="min-w-0 space-y-6">
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-lg">
@@ -998,12 +1013,14 @@ export function SkillsGuide() {
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {faqs.map((faq) => (
-            <Card key={faq.question}>
+            <Card key={faq.question} className="min-w-0">
               <CardHeader>
-                <CardTitle className="text-base">{faq.question}</CardTitle>
+                <CardTitle className="break-words text-base">
+                  {faq.question}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm leading-relaxed text-muted-foreground">
+                <p className="break-words text-sm leading-relaxed text-muted-foreground">
                   {faq.answer}
                 </p>
               </CardContent>

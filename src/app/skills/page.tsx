@@ -15,12 +15,14 @@ export default function PublicSkillsPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-8">
           <Link href="/" className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
               <Briefcase className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-headline text-xl font-bold">JobTracker</span>
+            <span className="text-lg font-bold font-headline sm:text-xl">
+              JobTracker
+            </span>
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />

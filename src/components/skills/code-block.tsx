@@ -36,14 +36,19 @@ export function CodeBlock({
   };
 
   return (
-    <div className={cn('relative rounded-lg border bg-muted/40', className)}>
+    <div
+      className={cn(
+        'relative min-w-0 max-w-full overflow-hidden rounded-lg border bg-muted/40',
+        className,
+      )}
+    >
       {label && (
         <div className="border-b px-3 py-1.5 text-xs font-medium text-muted-foreground">
           {label}
         </div>
       )}
       <div className="flex items-start gap-2 p-3">
-        <pre className="min-w-0 flex-1 overflow-x-auto font-mono text-sm leading-relaxed">
+        <pre className="min-w-0 max-w-full flex-1 overflow-x-auto font-mono text-sm leading-relaxed">
           <code>{code}</code>
         </pre>
         <Button

@@ -62,7 +62,7 @@ export function ApplicationsFilterableTable({
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-start space-x-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <Select
           value={statusFilter}
           onValueChange={(statusFilter) => {
@@ -70,7 +70,7 @@ export function ApplicationsFilterableTable({
             setCurrentPage(1);
           }}
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="Filtrar por estado" />
           </SelectTrigger>
           <SelectContent>
@@ -89,7 +89,7 @@ export function ApplicationsFilterableTable({
             setCurrentPage(1);
           }}
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="Filtrar por fecha" />
           </SelectTrigger>
           <SelectContent>
