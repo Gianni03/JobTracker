@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google'
-import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] })
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
+import { AnalyticsConsentProvider } from '@/components/analytics/analytics-consent-provider';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -48,23 +48,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster />
+          <AnalyticsConsentProvider>
+            {children}
+            <Toaster />
+          </AnalyticsConsentProvider>
         </ThemeProvider>
-        
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-XXH598M857"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-XXH598M857');
-          `}
-        </Script>
       </body>
     </html>
   );

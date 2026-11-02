@@ -1,6 +1,12 @@
+import { hasAnalyticsConsent } from '@/lib/analytics-consent';
+
 type AnalyticsValue = string | number | boolean | undefined;
 
 export type AnalyticsParams = Record<string, AnalyticsValue>;
+
+export const GOOGLE_ANALYTICS_ID = 'G-XXH598M857';
+
+let googleAnalyticsConfigured = false;
 
 declare global {
   interface Window {
@@ -9,18 +15,31 @@ declare global {
   }
 }
 
+export function initializeGoogleAnalytics() {
+  if (typeof window === 'undefined' || !hasAnalyticsConsent()) return false;
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag =
+    window.gtag ||
+    function gtag() {
+      window.dataLayer?.push(arguments);
+    };
+
+  if (!googleAnalyticsConfigured) {
+    window.gtag('js', new Date());
+    window.gtag('config', GOOGLE_ANALYTICS_ID);
+    googleAnalyticsConfigured = true;
+  }
+
+  return true;
+}
+
 export function trackEvent(name: string, params: AnalyticsParams = {}) {
-  if (typeof window === 'undefined') return;
+  if (!initializeGoogleAnalytics()) return;
 
   const cleanParams = Object.fromEntries(
     Object.entries(params).filter(([, value]) => value !== undefined),
   );
 
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', name, cleanParams);
-    return;
-  }
-
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: name, ...cleanParams });
+  window.gtag?.('event', name, cleanParams);
 }
