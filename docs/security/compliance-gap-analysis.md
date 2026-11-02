@@ -1,10 +1,11 @@
 # JobTracker — Análisis de brechas de seguridad y privacidad
 
 - **Fecha:** 2026-11-02
-- **Alcance:** aplicación web JobTracker (Next.js 15.1.11, React 18, Supabase, Vercel, GA4, GitHub)
+- **Alcance:** aplicación web JobTracker (Next.js 15.5.28, React 18, Supabase, Vercel, GA4, GitHub)
 - **Tipo:** autoevaluación técnica y de gobernanza; no es una auditoría formal ni asesoramiento legal
 - **Dueño:** Gianni Pasquinelli
 - **Base técnica:** auditoría de seguridad previa del repositorio y revisión del estado de producción
+- **Estado:** análisis inicial y P0 técnico en curso en la rama `security/p0-hardening`
 
 ---
 
@@ -28,8 +29,9 @@ Para **SOC 2, ISO 27001 o ISO 27701 no está listo todavía**. Lo que falta no e
 
 ### Lo crítico
 
-- Next.js **15.1.11** con CVEs críticos conocidos; `pnpm audit --prod` reporta **101 vulnerabilidades: 7 críticas, 41 altas, 46 moderadas y 7 bajas**.
-- Sin CI, sin tests automatizados y sin escaneo de dependencias en el pipeline.
+- **Estado inicial:** Next.js **15.1.11** con CVEs críticos conocidos; `pnpm audit --prod` reportaba **101 vulnerabilidades: 7 críticas, 41 altas, 46 moderadas y 7 bajas**.
+- **Estado actual de esta rama:** Next.js **15.5.28**; se removieron `genkit`, `@genkit-ai/google-genai`, `dotenv` y `sweetalert2`; `pnpm audit --prod` queda en **3 vulnerabilidades moderadas, 0 altas y 0 críticas**. Ver sección 11.
+- Sin tests automatizados de aplicación; el CI agregado cubre lint, tipos, audit y build.
 - Sin monitoreo de errores, alertas, logs de auditoría ni seguimiento de disponibilidad.
 - Sin prueba documentada de restauración de backups ni RPO/RTO.
 - Sin política de privacidad, términos reales, consentimiento de GA4, retención, borrado de cuenta ni proceso de derechos de titulares.
@@ -95,10 +97,10 @@ Estados: **OK** = control presente y razonable; **Parcial** = existe pero falta 
 | 1 | Autenticación y sesión | Parcial | Supabase Auth; sin MFA de usuarios, sin política de sesión documentada, sin alertas de login | P1 |
 | 2 | Autorización y aislamiento | OK | RLS verificado; scope server-side por `user_id`; sin `service_role` en cliente | — |
 | 3 | Validación de entrada | Parcial | Zod en formularios/acciones; no hay esquema centralizado ni tests de validación | P1 |
-| 4 | Gestión de vulnerabilidades | Falta | Next 15.1.11; 101 vulnerabilidades (7 críticas, 41 altas); sin escaneo en CI | P0 |
-| 5 | CI/CD y gestión de cambios | Falta | Sin CI, sin tests, PRs sin aprobaciones; solo check de Vercel | P0 |
+| 4 | Gestión de vulnerabilidades | Parcial | Next 15.5.28; 3 moderadas, 0 altas/críticas; CI con audit; falta proceso periódico y revisión de hallazgos | P1 |
+| 5 | CI/CD y gestión de cambios | Parcial | CI con lint, typecheck, audit y build; sin tests de aplicación ni aprobaciones | P1 |
 | 6 | Secretos y claves | Parcial | Variables en Vercel/.env.local; sin rotación, sin secret scanning, sin inventario | P0 |
-| 7 | Hardening web | Falta | Sin CSP/HSTS/X-Frame-Options/Referrer-Policy; sin rate limiting propio | P0 |
+| 7 | Hardening web | Parcial | Headers seguros en `next.config.ts`; CSP y rate limiting app-level pendientes | P1 |
 | 8 | Logs y monitoreo | Falta | Sin logs de auditoría, alertas, error tracking ni uptime | P0 |
 | 9 | Backups y restore | Parcial | Backups del proveedor; sin prueba de restauración, RPO/RTO ni evidencia | P0 |
 | 10 | Continuidad (BCP/DR) | Falta | Sin plan, contactos, escenarios ni simulacros | P1 |
@@ -264,3 +266,31 @@ Para un producto con 48 usuarios y donaciones, la certificación no tiene retorn
 - NIST Cybersecurity Framework 2.0 (útil como mapa de madurez).
 - OWASP ASVS y OWASP Top 10.
 - Trust centers y DPAs de Vercel, Supabase y Google.
+
+---
+
+## 11. Estado de remediación en esta rama
+
+Esta sección registra lo aplicado en `security/p0-hardening`; las secciones 4–8 describen el punto de partida y el roadmap.
+
+Aplicado:
+
+- Next.js actualizado de **15.1.11 a 15.5.28**.
+- Eliminados `genkit`, `@genkit-ai/google-genai`, `dotenv` y `sweetalert2`, junto con el código muerto de `src/ai`.
+- `pnpm audit --prod`: **3 vulnerabilidades moderadas, 0 altas, 0 críticas** (con override de `postcss` a 8.5.18).
+- CI con instalación con lockfile, lint, typecheck, audit y build.
+- Dependabot para npm y GitHub Actions.
+- Headers de seguridad en `next.config.ts` y `poweredByHeader: false`.
+- `SECURITY.md` con canal de reporte privado.
+- Script `typecheck` y este análisis.
+
+Pendiente para cerrar el P0:
+
+- MFA en Vercel, Supabase y GitHub, y revisión de accesos.
+- Monitoreo de errores, uptime y alertas.
+- Prueba de restauración de backup y RPO/RTO.
+- Política de privacidad, términos, consentimiento GA4, borrado de cuenta, exportación y DSAR.
+- CSP y rate limiting app-level.
+- Ejecución del CI en GitHub y revisión del PR.
+- Tests de aplicación; el CI actual no reemplaza tests de flujos críticos.
+
