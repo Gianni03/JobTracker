@@ -22,6 +22,8 @@ export function initializeGoogleAnalytics() {
   window.gtag =
     window.gtag ||
     function gtag() {
+      // Google Tag queues the arguments object as each dataLayer command.
+      // eslint-disable-next-line prefer-rest-params
       window.dataLayer?.push(arguments);
     };
 
