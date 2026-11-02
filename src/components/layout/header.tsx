@@ -11,7 +11,7 @@ function DonateButton() {
       asChild
       className="bg-primary text-primary-foreground hover:bg-primary/90 animate-beat shadow-lg"
     >
-      <Link href="/donar" aria-label="Doná al proyecto">
+      <Link href="/dashboard/donar" aria-label="Doná al proyecto">
         <Heart className="h-4 w-4 sm:mr-2" />
         <span className="hidden sm:inline">Doná al proyecto</span>
         <span className="sm:hidden">Doná</span>

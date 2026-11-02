@@ -2,15 +2,16 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/utils/supabase/middleware';
 
 const CANONICAL_HOST = 'www.jobtracker.com.ar';
+const LEGACY_VERCEL_HOSTS = new Set(['job-tracker-one-eta.vercel.app']);
 
 export async function middleware(request: NextRequest) {
   const host = request.headers.get('host')?.split(':')[0] ?? '';
+  const isLegacyHost = LEGACY_VERCEL_HOSTS.has(host);
   const isProductionVercelAlias =
-    process.env.VERCEL_ENV === 'production' &&
-    host.endsWith('.vercel.app') &&
-    host !== CANONICAL_HOST;
+    isLegacyHost ||
+    (process.env.VERCEL_ENV === 'production' && host.endsWith('.vercel.app'));
 
-  if (isProductionVercelAlias) {
+  if (isProductionVercelAlias && host !== CANONICAL_HOST) {
     const url = new URL(request.url);
     url.protocol = 'https:';
     url.host = CANONICAL_HOST;
