@@ -13,6 +13,7 @@ import {
   LogOut,
   ListChecks,
   Sparkles,
+  Heart,
 } from 'lucide-react';
 import { User } from '@/lib/definitions';
 import { signOut } from '@/lib/actions';
@@ -33,6 +34,7 @@ const navItems = [
   { href: '/dashboard/skills', icon: Sparkles, label: 'Skills para IA' },
   { href: '/dashboard/statistics', icon: BarChart3, label: 'Estadísticas' },
   { href: '/dashboard/resources', icon: BookOpen, label: 'Recursos' },
+  { href: '/donar', icon: Heart, label: 'Doná al proyecto' },
   // { href: '/dashboard/analyzer', icon: MessageSquare, label: 'AI Feedback' },
   { href: '/dashboard/settings', icon: Settings, label: 'Configuración' },
 ];
