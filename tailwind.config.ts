@@ -119,5 +119,7 @@ export default {
   		}
   	}
   },
+  // Tailwind loads plugins through CommonJS; this file is config, not app code.
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config;
