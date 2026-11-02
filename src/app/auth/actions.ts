@@ -13,7 +13,7 @@ export async function login(formData: FormData) {
   // rememberMe está disponible en formData pero Supabase ya persiste sesiones por defecto
   // const rememberMe = formData.get('rememberMe') === 'true';
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -22,12 +22,30 @@ export async function login(formData: FormData) {
     return { error: error.message };
   }
 
+  let redirectTo = '/dashboard';
+
+  try {
+    const user = data.user;
+    const currentCount = Number(user?.user_metadata?.login_count ?? 0);
+    const nextCount = currentCount + 1;
+
+    const { error: countError } = await supabase.auth.updateUser({
+      data: { ...(user?.user_metadata ?? {}), login_count: nextCount },
+    });
+
+    if (!countError && nextCount % 10 === 0) {
+      redirectTo = '/dashboard/donar';
+    }
+  } catch (countError) {
+    console.error('Error updating login count:', countError);
+  }
+
   // Nota: Supabase por defecto persiste las sesiones mediante cookies HTTP-only
   // que duran 7 días. El checkbox "Recordarme" proporciona claridad al usuario
   // sobre este comportamiento, pero la funcionalidad ya está implementada.
 
   revalidatePath('/', 'layout');
-  redirect('/dashboard');
+  redirect(redirectTo);
 }
 
 export async function signup(formData: FormData) {

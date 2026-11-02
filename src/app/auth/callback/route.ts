@@ -8,9 +8,32 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+      let redirectPath = next;
+
+      try {
+        const user = data.user;
+        const currentCount = Number(user?.user_metadata?.login_count ?? 0);
+        const nextCount = currentCount + 1;
+
+        const { error: countError } = await supabase.auth.updateUser({
+          data: { ...(user?.user_metadata ?? {}), login_count: nextCount },
+        });
+
+        if (
+          !countError &&
+          nextCount % 10 === 0 &&
+          next === '/dashboard'
+        ) {
+          redirectPath = '/dashboard/donar';
+        }
+      } catch (countError) {
+        console.error('Error updating login count:', countError);
+      }
+
+      return NextResponse.redirect(`${origin}${redirectPath}`);
     }
   }
   return NextResponse.redirect(`${origin}/auth/auth-error`);
