@@ -511,7 +511,15 @@ export default function LandingPage() {
       <footer className="border-t py-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 text-sm text-muted-foreground sm:flex-row sm:px-8">
           <p>© {new Date().getFullYear()} JobTracker.</p>
-          <p>Hecho para ordenar la búsqueda.</p>
+          <p>
+            Hecho para ordenar la búsqueda.{' '}
+            <Link
+              href="/donar"
+              className="font-medium text-primary hover:underline"
+            >
+              Apoyá el proyecto
+            </Link>
+          </p>
         </div>
       </footer>
     </div>

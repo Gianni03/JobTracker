@@ -12,10 +12,8 @@ function DonateButton() {
       className="bg-primary text-primary-foreground hover:bg-primary/90 animate-beat shadow-lg"
     >
       <Link
-        href="https://cafecito.app/gianni03"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Apoyar con un Cafecito"
+        href="/donar"
+        aria-label="Apoyar el proyecto"
       >
         <Heart className="h-4 w-4 sm:mr-2" />
         <span className="hidden sm:inline">Apóyame con un Cafecito</span>
