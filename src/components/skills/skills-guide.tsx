@@ -2,6 +2,7 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Bot,
   CheckCircle2,
+  ChevronDown,
   Download,
   ExternalLink,
   FileText,
@@ -541,7 +542,7 @@ export function SkillsGuide() {
         </CardContent>
       </Card>
 
-      <section className="space-y-6">
+      <section id="apps" className="scroll-mt-6 space-y-6">
         <div className="space-y-1">
           <h2 className="flex items-center gap-2 text-2xl font-bold font-headline">
             <Sparkles className="h-5 w-5 text-primary" />
@@ -554,22 +555,32 @@ export function SkillsGuide() {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
           {apps.map((app) => (
-            <Card key={app.name} className="flex flex-col">
-              <CardHeader>
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <CardTitle className="text-base">{app.name}</CardTitle>
-                  <Badge
-                    variant="outline"
-                    className={`font-normal ${levelClass[app.level]}`}
-                  >
-                    {app.level}
-                  </Badge>
+            <details
+              key={app.name}
+              className="group min-w-0 rounded-xl border bg-card text-card-foreground shadow-sm transition hover:shadow-md [&[open]>summary>svg]:rotate-180"
+            >
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-3 p-6 [&::-webkit-details-marker]:hidden">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="break-words text-base font-semibold">
+                      {app.name}
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className={`font-normal ${levelClass[app.level]}`}
+                    >
+                      {app.level}
+                    </Badge>
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {app.type}
+                  </p>
                 </div>
-                <CardDescription>{app.type}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-1 flex-col gap-3">
+                <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-transform" />
+              </summary>
+              <div className="space-y-3 border-t p-6 pt-4">
                 <p className="text-sm text-muted-foreground">
                   {app.description}
                 </p>
@@ -577,11 +588,9 @@ export function SkillsGuide() {
                   <p className="font-medium">Cómo se usa</p>
                   <p className="mt-1 text-muted-foreground">{app.how}</p>
                 </div>
-                <p className="mt-auto text-xs text-muted-foreground">
-                  {app.caveat}
-                </p>
-              </CardContent>
-            </Card>
+                <p className="text-xs text-muted-foreground">{app.caveat}</p>
+              </div>
+            </details>
           ))}
         </div>
 
