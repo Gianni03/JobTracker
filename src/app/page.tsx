@@ -517,7 +517,7 @@ export default function LandingPage() {
               href="/donar"
               className="font-medium text-primary hover:underline"
             >
-              Apoyá el proyecto
+              Doná al proyecto
             </Link>
           </p>
         </div>

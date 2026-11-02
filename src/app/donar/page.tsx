@@ -42,7 +42,7 @@ const mercadopagoOneTimeUrl =
 export const metadata: Metadata = {
   title: 'Doná a JobTracker — Mantené el proyecto online',
   description:
-    'JobTracker es gratis y sin anuncios. Si te sirve, podés invitarme un cafecito o donar por Mercado Pago para mantener la infraestructura y el desarrollo.',
+    'JobTracker es gratis y sin anuncios. Si te sirve, podés donar con Cafecito o Mercado Pago para mantener la infraestructura y el desarrollo.',
 };
 
 const costs = [
@@ -149,8 +149,8 @@ export default function DonatePage() {
                   className="break-words text-4xl font-semibold leading-[0.98] tracking-tight sm:text-5xl xl:text-6xl"
                   style={{ fontFamily: 'var(--font-fraunces)' }}
                 >
-                  Mantené JobTracker online con un{' '}
-                  <span className="italic text-[#E07A5F]">cafecito.</span>
+                  Mantené JobTracker online con una{' '}
+                  <span className="italic text-[#E07A5F]">donación.</span>
                 </h1>
                 <p className="max-w-xl text-base leading-relaxed text-[#F4F3F0]/75 sm:text-lg">
                   Sin anuncios, sin planes pagos y sin vender tus datos.
@@ -171,7 +171,7 @@ export default function DonatePage() {
                     rel="noopener noreferrer"
                   >
                     <Coffee className="mr-2 h-4 w-4" />
-                    Invitame un cafecito
+                    Doná con Cafecito
                     <ExternalLink className="ml-2 h-3.5 w-3.5" />
                   </a>
                 </Button>
@@ -219,7 +219,7 @@ export default function DonatePage() {
                   </div>
                   <div>
                     <CardTitle className="text-xl">
-                      Un cafecito, un proyecto que sigue
+                      Una donación, un proyecto que sigue
                     </CardTitle>
                     <CardDescription>
                       Simple, directo y sin vueltas.
@@ -278,7 +278,7 @@ export default function DonatePage() {
               Dos formas, el mismo gracias.
             </h2>
             <p className="text-muted-foreground">
-              Podés invitarme un cafecito o suscribirte por Mercado Pago con el
+              Podés donar con Cafecito o suscribirte por Mercado Pago con el
               monto que elijas. Si preferís una sola vez, también hay pago
               único.
             </p>
@@ -297,7 +297,7 @@ export default function DonatePage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Elegís un cafecito y listo. Es la forma más directa de decir
+                  Elegís un monto y listo. Es la forma más directa de decir
                   “gracias, seguí con esto”.
                 </p>
                 <Button asChild className="w-full">
@@ -306,7 +306,7 @@ export default function DonatePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Invitame un cafecito
+                    Donar con Cafecito
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
@@ -484,8 +484,7 @@ export default function DonatePage() {
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
               Ojalá que la próxima oferta que aparezca sea la tuya. Y si
-              JobTracker te ayudó en el camino, ya sabés dónde está el
-              cafecito.
+              JobTracker te ayudó en el camino, ya sabés dónde donar.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Button asChild size="lg">
@@ -495,7 +494,7 @@ export default function DonatePage() {
                   rel="noopener noreferrer"
                 >
                   <Coffee className="mr-2 h-4 w-4" />
-                  Invitame un cafecito
+                  Doná con Cafecito
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg">
