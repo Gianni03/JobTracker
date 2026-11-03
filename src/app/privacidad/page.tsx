@@ -4,7 +4,7 @@ import { AnalyticsPreferencesButton } from '@/components/analytics/analytics-con
 
 export const metadata: Metadata = {
   title: 'Política de privacidad | JobTracker',
-  description: 'Borrador de política de privacidad de JobTracker.',
+  description: 'Política de privacidad de JobTracker.',
 };
 
 export default function PrivacyPage() {
@@ -26,22 +26,18 @@ export default function PrivacyPage() {
             Política de privacidad
           </h1>
           <p className="text-muted-foreground">JobTracker</p>
+          <p className="max-w-2xl text-sm text-muted-foreground">
+            JobTracker es un proyecto personal operado por Gianni Pasquinelli,
+            sin una sociedad ni empresa patrocinadora.
+          </p>
         </header>
-
-        <aside className="mb-8 rounded-lg border border-amber-500/40 bg-amber-50 p-4 text-sm text-amber-950 dark:bg-amber-950/30 dark:text-amber-100">
-          <strong>Borrador para revisión.</strong> Antes de publicar hay que
-          confirmar el responsable y su domicilio legal, la región de los
-          proveedores y los plazos de retención. Este texto no es asesoramiento
-          jurídico.
-        </aside>
 
         <div className="space-y-8 leading-7 text-foreground">
           <section className="space-y-3">
             <h2 className="text-xl font-semibold">1. Responsable y contacto</h2>
             <p>
-              Responsable indicado para este borrador: Gianni Pasquinelli. La
-              identidad legal definitiva y el domicilio legal deben confirmarse
-              antes de publicar esta política.
+              El responsable del tratamiento es Gianni Pasquinelli, quien opera
+              JobTracker como proyecto personal.
             </p>
             <p>
               Para ejercer derechos sobre tus datos personales, escribir a{' '}
@@ -102,9 +98,9 @@ export default function PrivacyPage() {
               JobTracker utiliza Supabase para autenticación y base de datos,
               Vercel para alojamiento y Google para el inicio de sesión y Google
               Analytics. Estos proveedores pueden procesar datos desde países
-              distintos de Argentina. Las regiones concretas, los contratos de
-              tratamiento y las salvaguardas de transferencias deben verificarse
-              antes de publicar la versión final.
+              distintos de Argentina. La ubicación concreta depende de la
+              configuración del servicio utilizado y de las políticas de cada
+              proveedor.
             </p>
             <p>
               Los enlaces de donación llevan a sitios externos. Los datos de
@@ -135,9 +131,9 @@ export default function PrivacyPage() {
               Los datos se conservan mientras la cuenta esté activa y sean
               necesarios para prestar el servicio. Podés solicitar acceso,
               rectificación, actualización o supresión escribiendo al contacto
-              indicado. El plazo de conservación de copias de respaldo y el
-              procedimiento operativo de baja deben confirmarse antes de
-              publicar la versión final.
+              indicado; las solicitudes se gestionan manualmente. Las copias de
+              respaldo pueden conservarse hasta su rotación según los ciclos de
+              los proveedores. No hay un plazo fijo publicado para esas copias.
             </p>
           </section>
 
@@ -174,8 +170,7 @@ export default function PrivacyPage() {
             </p>
             <p>
               Esta política se actualizará cuando cambien las prácticas de
-              tratamiento. La fecha de vigencia se completará al aprobar y
-              publicar la versión final.
+              tratamiento. Última actualización: 3 de noviembre de 2026.
             </p>
           </section>
 

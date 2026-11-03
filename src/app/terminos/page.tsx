@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Términos y condiciones | JobTracker',
-  description: 'Borrador de términos y condiciones de JobTracker.',
+  description: 'Términos y condiciones de JobTracker.',
 };
 
 export default function TermsPage() {
@@ -25,13 +25,11 @@ export default function TermsPage() {
             Términos y condiciones
           </h1>
           <p className="text-muted-foreground">JobTracker</p>
+          <p className="max-w-2xl text-sm text-muted-foreground">
+            Proyecto personal operado por Gianni Pasquinelli. JobTracker no es
+            una agencia de empleo y no garantiza resultados de contratación.
+          </p>
         </header>
-
-        <aside className="mb-8 rounded-lg border border-amber-500/40 bg-amber-50 p-4 text-sm text-amber-950 dark:bg-amber-950/30 dark:text-amber-100">
-          <strong>Borrador para revisión.</strong> No publicar hasta confirmar
-          quién opera legalmente el servicio, completar el domicilio legal y
-          revisar el texto con asesoramiento jurídico.
-        </aside>
 
         <div className="space-y-8 leading-7 text-foreground">
           <section className="space-y-3">
@@ -154,8 +152,7 @@ export default function TermsPage() {
               >
                 giannipasquinelli@gmail.com
               </a>
-              . La fecha de vigencia se completará al aprobar y publicar la
-              versión final.
+              . Última actualización: 3 de noviembre de 2026.
             </p>
           </section>
         </div>
