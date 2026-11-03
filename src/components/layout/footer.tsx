@@ -1,5 +1,6 @@
 import { Github, Mail, Bug, Linkedin } from 'lucide-react';
 import Link from 'next/link';
+import { AnalyticsPreferencesButton } from '@/components/analytics/analytics-consent-provider';
 
 export function Footer() {
   return (
@@ -20,6 +21,22 @@ export function Footer() {
           <span className="hidden md:inline">•</span>
           <span>© {new Date().getFullYear()}</span>
         </div>
+
+        <nav aria-label="Información legal" className="flex items-center gap-4">
+          <Link
+            href="/terminos"
+            className="hover:text-foreground transition-colors"
+          >
+            Términos
+          </Link>
+          <Link
+            href="/privacidad"
+            className="hover:text-foreground transition-colors"
+          >
+            Privacidad
+          </Link>
+          <AnalyticsPreferencesButton />
+        </nav>
 
         <div className="flex items-center gap-6">
           <Link
