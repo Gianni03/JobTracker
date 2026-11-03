@@ -294,7 +294,20 @@ export function AuthForm() {
       </CardContent>
       <CardFooter>
         <p className="text-center text-xs text-muted-foreground w-full">
-          Al continuar, aceptas nuestros términos y condiciones.
+          Al continuar, aceptas los{' '}
+          <Link
+            href="/terminos"
+            className="text-primary underline underline-offset-2"
+          >
+            Términos y Condiciones
+          </Link>{' '}y reconoces la{' '}
+          <Link
+            href="/privacidad"
+            className="text-primary underline underline-offset-2"
+          >
+            Política de Privacidad
+          </Link>
+          .
         </p>
       </CardFooter>
     </Card>
