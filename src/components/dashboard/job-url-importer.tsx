@@ -68,13 +68,7 @@ export function JobUrlImporter({ onImported }: JobUrlImporterProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            handleImport();
-          }}
-          className="space-y-3"
-        >
+        <div className="space-y-3">
           <div className="space-y-2">
             <Label htmlFor="job-url">URL de la oferta</Label>
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -86,13 +80,20 @@ export function JobUrlImporter({ onImported }: JobUrlImporterProps) {
                   inputMode="url"
                   value={url}
                   onChange={(event) => setUrl(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleImport();
+                    }
+                  }}
                   placeholder="https://www.linkedin.com/jobs/view/..."
                   className="pl-9"
                   disabled={isPending}
                 />
               </div>
               <Button
-                type="submit"
+                type="button"
+                onClick={handleImport}
                 disabled={isPending || !url.trim()}
                 className="sm:w-auto"
               >
@@ -122,7 +123,7 @@ export function JobUrlImporter({ onImported }: JobUrlImporterProps) {
             Solo funcionan páginas públicas. Algunos portales bloquean la
             lectura automática: en ese caso podés cargar los datos a mano.
           </p>
-        </form>
+        </div>
       </CardContent>
     </Card>
   );

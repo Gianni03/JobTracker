@@ -159,12 +159,6 @@ export function ApplicationForm({
   };
 
   const onSubmit: SubmitHandler<ApplicationFormValues> = (data) => {
-    console.log(
-      'Form Submitted. Status:',
-      data.status,
-      'Prev Status:',
-      application?.status,
-    );
     startTransition(async () => {
       try {
         let isUpgrade = false;
@@ -229,7 +223,6 @@ export function ApplicationForm({
         }
 
         if (isUpgrade) {
-          console.log('Upgrade detected! Triggering effects...');
           confetti({
             particleCount: data.status === 'Oferta' ? 400 : 200,
             spread: 170,

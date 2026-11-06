@@ -82,14 +82,14 @@ All application mutations must validate their input on the server with the same 
 
 | ID | Spec | Route | Status | Commit |
 | --- | --- | --- | --- | --- |
-| T1 | S7 | inline | pending | — |
-| T2 | S1, S2 | inline | pending | — |
-| T3 | S10 | inline | pending | — |
-| T4 | S9 | inline | pending | — |
-| T5 | S11, S4 | inline | pending | — |
-| T6 | S5, S8 | inline | pending | — |
-| T7 | S6, S3 | inline | pending | — |
-| T8 | all | inline | pending | — |
+| T1 | S7 | inline | done | 69f938a |
+| T2 | S1, S2 | inline | done | d5123a7 |
+| T3 | S10 | inline | done | db7e49b |
+| T4 | S9 | inline | done | 148694b |
+| T5 | S11, S4 | inline | done | 1d46d0d |
+| T6 | S5, S8 | inline | done | 66766b2 |
+| T7 | S6, S3 | inline | done | 1090393 |
+| T8 | all | inline | done | this commit |
 
 ## Log
 
@@ -108,3 +108,23 @@ Referenced scope (from the prior assistant message):
 - S3 execution and S7 CRUD E2E are environmental blockers, not silently skipped.
 - S9 requires the user to apply `docs/sql/application-events.sql` in Supabase; code degrades gracefully until then.
 - S11 avoids FX rates because none are available or verifiable; comparisons stay within one currency.
+
+### L3 — Decisions and fixes during implementation
+
+- The date-range test exposed a real bug: preset ranges (`30d`, `3m`, `6m`, `1y`) included future-dated applications. Fixed in `src/lib/date-utils.ts` and pinned by tests.
+- Quick-add was implemented without adding an HTML parser dependency: OpenGraph + `<title>` + JSON-LD `JobPosting` via focused parsing. Unsupported salary currencies are ignored instead of converted or guessed.
+- SSRF protection resolves and validates every host before each redirect, rejects credentials/private IPs/odd ports, caps the body and times out at 5s. A determined DNS rebinding between validation and fetch remains a residual risk; the strict URL shape and response caps keep it low for this app.
+- Timeline events are best-effort: before the migration is applied, the detail page renders a derived timeline and mutations never fail because the event insert failed.
+- Bulk status changes preserve existing interview/offer stages, set defaults only when missing, and record one event per app whose status actually changed.
+- The URL importer originally rendered a nested `<form>` inside the application form; it was converted to a plain `<div>` with Enter-key handling before final verification.
+
+### L4 — Verification evidence
+
+- `pnpm test`: 11 files, 77 tests passing.
+- `pnpm typecheck`: pass.
+- `pnpm lint`: pass.
+- `pnpm build`: pass (27 routes generated; `/dashboard/applications`, `/dashboard/statistics`, `/dashboard/settings` compile as dynamic).
+- URL import network smoke test against `https://example.com` could not run in this sandbox (direct DNS/fetch unavailable). Fetch behavior is covered with mocked DNS/fetch tests; one manual import check against a real job URL is still recommended after deploy.
+- RLS verification was not executed against Supabase (no credentials in this runtime). `docs/sql/verify-rls.sql` is ready to run.
+- CRUD E2E remains pending because it needs a seeded Supabase test user/project. It is not claimed as passing.
+- Manual auth check still recommended after deploy: profile save, password change, and one URL import.

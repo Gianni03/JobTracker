@@ -23,13 +23,14 @@ order by tablename, cmd, policyname;
 
 -- 2) RLS enabled and forced
 select
-  relname as table_name,
-  relrowsecurity as rls_enabled,
-  relforcerowsecurity as rls_forced
-from pg_class
-where schemaname = 'public'
-  and relname in ('applications', 'application_events')
-order by relname;
+  c.relname as table_name,
+  c.relrowsecurity as rls_enabled,
+  c.relforcerowsecurity as rls_forced
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where n.nspname = 'public'
+  and c.relname in ('applications', 'application_events')
+order by c.relname;
 
 -- 3) Table grants: authenticated should be able to use the table only
 --    through RLS; anon should not have broad access.

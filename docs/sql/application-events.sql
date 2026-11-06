@@ -48,7 +48,15 @@ create policy "application_events_select_own"
 create policy "application_events_insert_own"
   on public.application_events
   for insert
-  with check (auth.uid() = user_id);
+  with check (
+    auth.uid() = user_id
+    and exists (
+      select 1
+      from public.applications a
+      where a.id = application_id
+        and a.user_id = auth.uid()
+    )
+  );
 
 create policy "application_events_delete_own"
   on public.application_events

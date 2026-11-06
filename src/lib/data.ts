@@ -1,10 +1,40 @@
 import { createClient } from '@/utils/supabase/server';
 import type {
   Application,
+  ApplicationCurrency,
   ApplicationEvent,
   ApplicationEventType,
+  ApplicationSalaryFrequency,
   ApplicationStatus,
 } from './definitions';
+
+type ApplicationRow = {
+  id: string;
+  company: string;
+  role: string;
+  status: ApplicationStatus;
+  date: string;
+  platform: Application['platform'];
+  link: string | null;
+  description: string | null;
+  interview_stage: string | null;
+  offer_stage: string | null;
+  interview_date: string | null;
+  salary_desired: number | null;
+  salary_desired_max: number | null;
+  salary_expressed: number | null;
+  salary_expressed_max: number | null;
+  salary_offer: number | null;
+  salary_currency: ApplicationCurrency | null;
+  salary_frequency: ApplicationSalaryFrequency | null;
+  contact_name: string | null;
+  contact_method: string | null;
+  notes_general: string | null;
+  notes_interview: string | null;
+  feedback: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
 
 // Días después de los cuales una postulación en "Aplicado" pasa a "Ghosted"
 export const GHOSTED_THRESHOLD_DAYS = 14;
@@ -66,8 +96,7 @@ export async function fetchUserApplications() {
   }
 
   // Mapeamos los datos planos de la DB a nuestra interfaz anidada Application
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (data as any[]).map((app) => ({
+  return (data as ApplicationRow[]).map((app) => ({
     id: app.id,
     company: app.company,
     role: app.role,
@@ -121,7 +150,7 @@ export async function getApplicationById(id: string) {
     return null;
   }
 
-  const app = data;
+  const app = data as ApplicationRow;
   return {
     id: app.id,
     company: app.company,
