@@ -62,10 +62,9 @@ export function filterApplicationsByDate(
   // Since app.date is usually YYYY-MM-DD (string), let's parse it and compare.
 
   return applications.filter((app) => {
-    // app.date is YYYY-MM-DD.
-    // We treat it as local date or UTC? Usually YYYY-MM-DD is plain date.
-    // Let's parse it to a date object.
+    // app.date is YYYY-MM-DD. Preset windows are "last N", so future-dated
+    // applications must not sneak into the range.
     const appDate = parseISO(app.date);
-    return isAfter(appDate, cutoffDate);
+    return isAfter(appDate, cutoffDate) && !isAfter(appDate, now);
   });
 }
