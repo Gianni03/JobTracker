@@ -22,6 +22,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { createApplication, updateApplication } from '@/lib/actions';
+import { JobUrlImporter } from '@/components/dashboard/job-url-importer';
+import type { ImportedJob } from '@/lib/job-import/types';
 import { trackEvent } from '@/lib/analytics';
 import { useTransition, useEffect } from 'react';
 import confetti from 'canvas-confetti';
@@ -111,6 +113,50 @@ export function ApplicationForm({
       form.setValue('offerStage', 'Analisis');
     }
   }, [status, form]);
+
+  const handleImportedJob = (job: ImportedJob) => {
+    if (job.company) {
+      form.setValue('company', job.company, { shouldValidate: true });
+    }
+    if (job.role) {
+      form.setValue('role', job.role, { shouldValidate: true });
+    }
+    if (job.link) {
+      form.setValue('link', job.link, { shouldValidate: true });
+    }
+    form.setValue('platform', job.platform, { shouldValidate: true });
+    if (job.description) {
+      form.setValue('description', job.description, { shouldValidate: true });
+    }
+    if (job.salary?.desired !== undefined) {
+      form.setValue('salary.desired', job.salary.desired, {
+        shouldValidate: true,
+      });
+    }
+    if (job.salary?.desiredMax !== undefined) {
+      form.setValue('salary.desiredMax', job.salary.desiredMax, {
+        shouldValidate: true,
+      });
+    }
+    if (job.salary?.currency) {
+      form.setValue('salary.currency', job.salary.currency, {
+        shouldValidate: true,
+      });
+    }
+    if (job.salary?.frequency) {
+      form.setValue('salary.frequency', job.salary.frequency, {
+        shouldValidate: true,
+      });
+    }
+
+    if (!job.company || !job.role) {
+      toast({
+        title: 'Importación parcial',
+        description:
+          'No pudimos detectar empresa o puesto. Completalos manualmente.',
+      });
+    }
+  };
 
   const onSubmit: SubmitHandler<ApplicationFormValues> = (data) => {
     console.log(
@@ -212,6 +258,8 @@ export function ApplicationForm({
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      {!application && <JobUrlImporter onImported={handleImportedJob} />}
+
       <Card>
         <CardHeader>
           <CardTitle>Información Básica</CardTitle>
