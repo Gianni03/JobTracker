@@ -6,14 +6,16 @@ import {
   ArrowLeft,
   CalendarDays,
   ExternalLink,
+  History,
   MessageSquareQuote,
   Pencil,
   StickyNote,
   User,
   Wallet,
 } from 'lucide-react';
-import { getApplicationById } from '@/lib/data';
+import { fetchApplicationEvents, getApplicationById } from '@/lib/data';
 import { ApplicationStatusJourney } from '@/components/dashboard/application-status-journey';
+import { ApplicationTimeline } from '@/components/dashboard/application-timeline';
 import { ApplicationFeedbackCard } from '@/components/dashboard/application-feedback-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -82,6 +84,8 @@ export default async function ApplicationDetailPage({
   if (!application) {
     notFound();
   }
+
+  const events = await fetchApplicationEvents(application.id);
 
   const backHref =
     from === 'dashboard' ? '/dashboard' : '/dashboard/applications';
@@ -167,6 +171,13 @@ export default async function ApplicationDetailPage({
             ) : (
               <EmptyState>Sin descripción cargada.</EmptyState>
             )}
+          </SectionCard>
+
+          <SectionCard
+            title="Timeline"
+            icon={<History className="h-5 w-5 text-primary" />}
+          >
+            <ApplicationTimeline application={application} events={events} />
           </SectionCard>
 
           <SectionCard

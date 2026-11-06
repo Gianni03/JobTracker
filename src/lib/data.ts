@@ -1,5 +1,10 @@
 import { createClient } from '@/utils/supabase/server';
-import { Application } from './definitions';
+import type {
+  Application,
+  ApplicationEvent,
+  ApplicationEventType,
+  ApplicationStatus,
+} from './definitions';
 
 // Días después de los cuales una postulación en "Aplicado" pasa a "Ghosted"
 const GHOSTED_THRESHOLD_DAYS = 14;
@@ -97,6 +102,8 @@ export async function fetchUserApplications() {
       interview: app.notes_interview,
     },
     feedback: app.feedback, // Por si existe la columna
+    createdAt: app.created_at,
+    updatedAt: app.updated_at,
   })) as Application[];
 }
 
@@ -150,5 +157,45 @@ export async function getApplicationById(id: string) {
       interview: app.notes_interview,
     },
     feedback: app.feedback,
+    createdAt: app.created_at,
+    updatedAt: app.updated_at,
   } as Application;
+}
+
+export async function fetchApplicationEvents(
+  applicationId: string,
+): Promise<ApplicationEvent[]> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return [];
+
+  const { data, error } = await supabase
+    .from('application_events')
+    .select(
+      'id, application_id, type, from_status, to_status, detail, created_at',
+    )
+    .eq('application_id', applicationId)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    // The timeline table is optional until the migration is applied.
+    if (error.code !== '42P01' && error.code !== 'PGRST205') {
+      console.error('Error fetching application events:', error);
+    }
+    return [];
+  }
+
+  return (data ?? []).map((event) => ({
+    id: event.id,
+    applicationId: event.application_id,
+    type: event.type as ApplicationEventType,
+    fromStatus: (event.from_status as ApplicationStatus | null) ?? undefined,
+    toStatus: (event.to_status as ApplicationStatus | null) ?? undefined,
+    detail: event.detail ?? undefined,
+    createdAt: event.created_at,
+  }));
 }

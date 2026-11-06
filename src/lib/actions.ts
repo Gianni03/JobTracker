@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import type { ApplicationStatus } from '@/lib/definitions';
 import { getRequestOrigin } from '@/lib/auth-url';
+import { recordApplicationEvent } from '@/lib/events';
 import {
   APPLICATION_STATUSES,
   applicationFormSchema,
@@ -88,11 +89,23 @@ export async function createApplication(input: unknown) {
     feedback: data.feedback ? data.feedback.slice(0, 10000) : null,
   };
 
-  const { error } = await supabase.from('applications').insert([cleanData]);
+  const { data: inserted, error } = await supabase
+    .from('applications')
+    .insert([cleanData])
+    .select('id')
+    .single();
 
   if (error) {
     console.error('DETALLE ERROR SUPABASE:', error); // Esto lo verás en tu TERMINAL
     throw new Error(error.message);
+  }
+
+  if (inserted) {
+    await recordApplicationEvent(supabase, user.id, {
+      applicationId: inserted.id,
+      type: 'created',
+      toStatus: data.status,
+    });
   }
 
   revalidatePath('/dashboard');
@@ -109,6 +122,13 @@ export async function updateApplication(id: string, input: unknown) {
   } = await supabase.auth.getUser();
 
   if (!user) throw new Error('No autorizado');
+
+  const { data: current } = await supabase
+    .from('applications')
+    .select('status')
+    .eq('id', applicationId)
+    .eq('user_id', user.id)
+    .single();
 
   const { error } = await supabase
     .from('applications')
@@ -146,6 +166,15 @@ export async function updateApplication(id: string, input: unknown) {
   if (error) {
     console.error('Error en update:', error);
     throw error;
+  }
+
+  if (current && current.status !== data.status) {
+    await recordApplicationEvent(supabase, user.id, {
+      applicationId,
+      type: 'status_changed',
+      fromStatus: current.status as ApplicationStatus,
+      toStatus: data.status,
+    });
   }
 
   revalidatePath('/dashboard');
@@ -214,6 +243,13 @@ export async function changeApplicationStatus(
     throw new Error(error.message);
   }
 
+  await recordApplicationEvent(supabase, user.id, {
+    applicationId,
+    type: 'status_changed',
+    fromStatus: currentStatus,
+    toStatus: nextStatus,
+  });
+
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
   revalidatePath(`/dashboard/applications/${applicationId}`);
@@ -244,6 +280,13 @@ export async function updateApplicationFeedback(id: string, feedback: string) {
 
   const cleanFeedback = feedbackResult.data.trim();
 
+  const { data: current } = await supabase
+    .from('applications')
+    .select('feedback')
+    .eq('id', applicationId)
+    .eq('user_id', user.id)
+    .single();
+
   const { error } = await supabase
     .from('applications')
     .update({ feedback: cleanFeedback || null })
@@ -253,6 +296,13 @@ export async function updateApplicationFeedback(id: string, feedback: string) {
   if (error) {
     console.error('Error al guardar el feedback:', error);
     throw new Error(error.message);
+  }
+
+  if (current && (current.feedback ?? '') !== cleanFeedback) {
+    await recordApplicationEvent(supabase, user.id, {
+      applicationId,
+      type: 'feedback_updated',
+    });
   }
 
   revalidatePath('/dashboard');
