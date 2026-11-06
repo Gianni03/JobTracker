@@ -1,14 +1,60 @@
 import { createClient } from '@/utils/supabase/server';
-import { Application } from './definitions';
+import type {
+  Application,
+  ApplicationCurrency,
+  ApplicationEvent,
+  ApplicationEventType,
+  ApplicationSalaryFrequency,
+  ApplicationStatus,
+} from './definitions';
+
+type ApplicationRow = {
+  id: string;
+  company: string;
+  role: string;
+  status: ApplicationStatus;
+  date: string;
+  platform: Application['platform'];
+  link: string | null;
+  description: string | null;
+  interview_stage: string | null;
+  offer_stage: string | null;
+  interview_date: string | null;
+  salary_desired: number | null;
+  salary_desired_max: number | null;
+  salary_expressed: number | null;
+  salary_expressed_max: number | null;
+  salary_offer: number | null;
+  salary_currency: ApplicationCurrency | null;
+  salary_frequency: ApplicationSalaryFrequency | null;
+  contact_name: string | null;
+  contact_method: string | null;
+  notes_general: string | null;
+  notes_interview: string | null;
+  feedback: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
 
 // Días después de los cuales una postulación en "Aplicado" pasa a "Ghosted"
-const GHOSTED_THRESHOLD_DAYS = 14;
+export const GHOSTED_THRESHOLD_DAYS = 14;
+
+export function getGhostedCutoffDate(now = new Date()): string {
+  const cutoff = new Date(now);
+  cutoff.setDate(cutoff.getDate() - GHOSTED_THRESHOLD_DAYS);
+
+  const year = cutoff.getFullYear();
+  const month = String(cutoff.getMonth() + 1).padStart(2, '0');
+  const day = String(cutoff.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 
 /**
- * Actualiza automáticamente aplicaciones que llevan mucho tiempo en "Aplicado"
- * a estado "Ghosted" después de X días sin respuesta
+ * Marca como "Ghosted" las postulaciones que llevan demasiado tiempo en
+ * "Aplicado" con un único UPDATE acotado al usuario actual.
  */
-export async function autoMarkAsGhosted(applications: Application[]): Promise<void> {
+export async function autoMarkAsGhosted(): Promise<void> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -16,28 +62,12 @@ export async function autoMarkAsGhosted(applications: Application[]): Promise<vo
 
   if (!user) return;
 
-  const now = new Date();
-  const applicationsToGhost: string[] = [];
-
-  for (const app of applications) {
-    if (app.status !== 'Aplicado') continue;
-
-    const applicationDate = new Date(app.date);
-    const daysDiff = Math.floor((now.getTime() - applicationDate.getTime()) / (1000 * 60 * 60 * 24));
-
-    if (daysDiff >= GHOSTED_THRESHOLD_DAYS) {
-      applicationsToGhost.push(app.id);
-    }
-  }
-
-  if (applicationsToGhost.length === 0) return;
-
-  // Actualizar en batch
   const { error } = await supabase
     .from('applications')
     .update({ status: 'Ghosted' })
-    .in('id', applicationsToGhost)
-    .eq('user_id', user.id);
+    .eq('user_id', user.id)
+    .eq('status', 'Aplicado')
+    .lte('date', getGhostedCutoffDate());
 
   if (error) {
     console.error('Error auto-marking as ghosted:', error);
@@ -66,8 +96,7 @@ export async function fetchUserApplications() {
   }
 
   // Mapeamos los datos planos de la DB a nuestra interfaz anidada Application
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (data as any[]).map((app) => ({
+  return (data as ApplicationRow[]).map((app) => ({
     id: app.id,
     company: app.company,
     role: app.role,
@@ -97,6 +126,8 @@ export async function fetchUserApplications() {
       interview: app.notes_interview,
     },
     feedback: app.feedback, // Por si existe la columna
+    createdAt: app.created_at,
+    updatedAt: app.updated_at,
   })) as Application[];
 }
 
@@ -119,7 +150,7 @@ export async function getApplicationById(id: string) {
     return null;
   }
 
-  const app = data;
+  const app = data as ApplicationRow;
   return {
     id: app.id,
     company: app.company,
@@ -150,5 +181,45 @@ export async function getApplicationById(id: string) {
       interview: app.notes_interview,
     },
     feedback: app.feedback,
+    createdAt: app.created_at,
+    updatedAt: app.updated_at,
   } as Application;
+}
+
+export async function fetchApplicationEvents(
+  applicationId: string,
+): Promise<ApplicationEvent[]> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return [];
+
+  const { data, error } = await supabase
+    .from('application_events')
+    .select(
+      'id, application_id, type, from_status, to_status, detail, created_at',
+    )
+    .eq('application_id', applicationId)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    // The timeline table is optional until the migration is applied.
+    if (error.code !== '42P01' && error.code !== 'PGRST205') {
+      console.error('Error fetching application events:', error);
+    }
+    return [];
+  }
+
+  return (data ?? []).map((event) => ({
+    id: event.id,
+    applicationId: event.application_id,
+    type: event.type as ApplicationEventType,
+    fromStatus: (event.from_status as ApplicationStatus | null) ?? undefined,
+    toStatus: (event.to_status as ApplicationStatus | null) ?? undefined,
+    detail: event.detail ?? undefined,
+    createdAt: event.created_at,
+  }));
 }

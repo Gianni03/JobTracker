@@ -19,14 +19,11 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  let applications = await fetchUserApplications();
-  
   // Auto-mark aplicaciones antiguas en "Aplicado" como "Ghosted"
-  await autoMarkAsGhosted(applications);
-  
-  // Refrescar datos después de actualizar ghosted
-  applications = await fetchUserApplications();
-  
+  await autoMarkAsGhosted();
+
+  const applications = await fetchUserApplications();
+
   const params = await searchParams;
 
   const range = (params?.range as string) || '30d';

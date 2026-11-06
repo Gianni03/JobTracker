@@ -1,9 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { SettingsForms } from '@/components/dashboard/settings-forms';
 
 // Ya no necesitamos recibir props, la página busca sus propios datos
 export default async function SettingsPage() {
@@ -16,15 +13,22 @@ export default async function SettingsPage() {
     redirect('/');
   }
 
-  // Preparamos los datos del usuario real
+  const fullName = String(user.user_metadata?.full_name ?? '').trim();
+  const nameParts = fullName.split(/\s+/).filter(Boolean);
+
   const userData = {
-    firstName: user.user_metadata?.full_name?.split(' ')[0] || '',
-    lastName: user.user_metadata?.full_name?.split(' ')[1] || '',
+    firstName:
+      String(user.user_metadata?.first_name ?? '').trim() ||
+      nameParts[0] ||
+      '',
+    lastName:
+      String(user.user_metadata?.last_name ?? '').trim() ||
+      nameParts.slice(1).join(' '),
     email: user.email || '',
   };
 
   return (
-    <div className="space-y-8 max-w-3xl mx-auto">
+    <div className="mx-auto max-w-3xl space-y-8">
       <div>
         <h1 className="text-3xl font-bold font-headline text-foreground">
           Configuración
@@ -34,95 +38,11 @@ export default async function SettingsPage() {
         </p>
       </div>
 
-      {/* NOTA: Para que este formulario funcione y guarde cambios, 
-          en el futuro deberás agregarle una Server Action en el 'action={...}'.
-          Por ahora es visual.
-      */}
-      <form className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Información Personal</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">Nombre</Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  defaultValue={userData.firstName}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Apellido</Label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  defaultValue={userData.lastName}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                defaultValue={userData.email}
-                disabled
-                className="bg-muted"
-              />
-              <p className="text-[0.8rem] text-muted-foreground">
-                El email no se puede cambiar por seguridad.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* <Card>
-          <CardHeader>
-            <CardTitle>Preferencias</CardTitle>
-            <CardDescription>
-              Gestiona tus notificaciones y recordatorios.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="divide-y">
-            <PreferenceItem
-              title="Notificaciones por Email"
-              description="Recibe actualizaciones sobre tus postulaciones"
-              defaultChecked
-            />
-            <PreferenceItem
-              title="Recordatorios de Seguimiento"
-              description="Recibe recordatorios para hacer seguimiento"
-              defaultChecked
-            />
-            <PreferenceItem
-              title="Estadísticas Semanales"
-              description="Recibe un resumen semanal de tu progreso"
-            />
-          </CardContent>
-        </Card> */}
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Seguridad</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col sm:flex-row gap-2">
-            <Button variant="outline" type="button">
-              Cambiar Contraseña
-            </Button>
-            {/* Aquí podrías conectar la acción de signOut que creamos antes
-            <Button variant="destructive" type="button">
-              Cerrar Sesión
-            </Button> */}
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-end">
-          <Button type="submit">Guardar Cambios</Button>
-        </div>
-      </form>
+      <SettingsForms
+        firstName={userData.firstName}
+        lastName={userData.lastName}
+        email={userData.email}
+      />
     </div>
   );
 }

@@ -4,6 +4,10 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getRequestOrigin } from '@/lib/auth-url';
+import {
+  passwordUpdateSchema,
+  profileSchema,
+} from '@/lib/validation/profile';
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -76,6 +80,77 @@ export async function signup(formData: FormData) {
   // No redirigimos - el usuario debe confirmar su email primero
   // Retornamos un flag para que la UI muestre el mensaje correspondiente
   return { success: true, emailConfirmationRequired: true };
+}
+
+export async function updateProfile(input: unknown) {
+  const parsed = profileSchema.safeParse(input);
+
+  if (!parsed.success) {
+    return {
+      error: parsed.error.issues[0]?.message ?? 'Datos de perfil inválidos.',
+    };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return { error: 'Tu sesión expiró. Volvé a iniciar sesión.' };
+  }
+
+  const { firstName, lastName } = parsed.data;
+  const fullName = [firstName, lastName].filter(Boolean).join(' ');
+
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      ...(user.user_metadata ?? {}),
+      first_name: firstName,
+      last_name: lastName,
+      full_name: fullName,
+    },
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath('/', 'layout');
+  revalidatePath('/dashboard/settings');
+
+  return { success: true, fullName };
+}
+
+export async function updatePassword(input: unknown) {
+  const parsed = passwordUpdateSchema.safeParse(input);
+
+  if (!parsed.success) {
+    return {
+      error: parsed.error.issues[0]?.message ?? 'Contraseña inválida.',
+    };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return { error: 'Tu sesión expiró. Volvé a iniciar sesión.' };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: parsed.data.password,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: true };
 }
 
 export async function signInWithGoogle() {

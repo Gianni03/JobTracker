@@ -1,18 +1,58 @@
 'use server';
 
+import { z } from 'zod';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import type { ApplicationStatus } from '@/lib/definitions';
-import { STATUS_OPTIONS } from '@/lib/status';
 import { getRequestOrigin } from '@/lib/auth-url';
+import {
+  recordApplicationEvent,
+  recordApplicationEvents,
+} from '@/lib/events';
+import {
+  APPLICATION_STATUSES,
+  applicationFormSchema,
+  applicationIdSchema,
+  applicationIdsSchema,
+  type ApplicationFormValues,
+} from '@/lib/validation/application';
 
-// OJO: Asumimos que recibís el objeto del formulario ya formateado
-// Si usas FormData directo es más complejo, pero como usas React Hook Form
-// probablemente envíes el JSON.
+function parseApplicationInput(input: unknown): ApplicationFormValues {
+  const parsed = applicationFormSchema.safeParse(input);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function createApplication(data: any) {
+  if (!parsed.success) {
+    const message = parsed.error.issues[0]?.message ?? 'Datos inválidos';
+    throw new Error(message);
+  }
+
+  return parsed.data;
+}
+
+function parseApplicationId(id: string): string {
+  const parsed = applicationIdSchema.safeParse(id);
+
+  if (!parsed.success) {
+    throw new Error('Postulación no válida');
+  }
+
+  return parsed.data;
+}
+
+function parseApplicationIds(input: unknown): string[] {
+  const parsed = applicationIdsSchema.safeParse(input);
+
+  if (!parsed.success) {
+    throw new Error(
+      parsed.error.issues[0]?.message ?? 'Postulaciones no válidas',
+    );
+  }
+
+  return parsed.data;
+}
+
+export async function createApplication(input: unknown) {
+  const data = parseApplicationInput(input);
   const supabase = await createClient();
 
   const {
@@ -65,11 +105,23 @@ export async function createApplication(data: any) {
     feedback: data.feedback ? data.feedback.slice(0, 10000) : null,
   };
 
-  const { error } = await supabase.from('applications').insert([cleanData]);
+  const { data: inserted, error } = await supabase
+    .from('applications')
+    .insert([cleanData])
+    .select('id')
+    .single();
 
   if (error) {
     console.error('DETALLE ERROR SUPABASE:', error); // Esto lo verás en tu TERMINAL
     throw new Error(error.message);
+  }
+
+  if (inserted) {
+    await recordApplicationEvent(supabase, user.id, {
+      applicationId: inserted.id,
+      type: 'created',
+      toStatus: data.status,
+    });
   }
 
   revalidatePath('/dashboard');
@@ -77,14 +129,22 @@ export async function createApplication(data: any) {
   return { success: true };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function updateApplication(id: string, data: any) {
+export async function updateApplication(id: string, input: unknown) {
+  const applicationId = parseApplicationId(id);
+  const data = parseApplicationInput(input);
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) throw new Error('No autorizado');
+
+  const { data: current } = await supabase
+    .from('applications')
+    .select('status')
+    .eq('id', applicationId)
+    .eq('user_id', user.id)
+    .single();
 
   const { error } = await supabase
     .from('applications')
@@ -116,7 +176,7 @@ export async function updateApplication(id: string, data: any) {
         : null,
       feedback: data.feedback ? data.feedback.slice(0, 10000) : null,
     })
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
@@ -124,9 +184,18 @@ export async function updateApplication(id: string, data: any) {
     throw error;
   }
 
+  if (current && current.status !== data.status) {
+    await recordApplicationEvent(supabase, user.id, {
+      applicationId,
+      type: 'status_changed',
+      fromStatus: current.status as ApplicationStatus,
+      toStatus: data.status,
+    });
+  }
+
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
-  revalidatePath(`/dashboard/applications/${id}`);
+  revalidatePath(`/dashboard/applications/${applicationId}`);
 
   return { success: true };
 }
@@ -135,6 +204,13 @@ export async function changeApplicationStatus(
   id: string,
   nextStatus: ApplicationStatus,
 ) {
+  const applicationId = parseApplicationId(id);
+  const statusResult = z.enum(APPLICATION_STATUSES).safeParse(nextStatus);
+
+  if (!statusResult.success) {
+    throw new Error('Estado no válido');
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -145,7 +221,7 @@ export async function changeApplicationStatus(
   const { data: current, error: fetchError } = await supabase
     .from('applications')
     .select('status, interview_stage, offer_stage')
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id)
     .single();
 
@@ -154,10 +230,6 @@ export async function changeApplicationStatus(
   }
 
   const currentStatus = current.status as ApplicationStatus;
-
-  if (!STATUS_OPTIONS.includes(nextStatus)) {
-    throw new Error('Estado no válido');
-  }
 
   if (currentStatus === nextStatus) {
     throw new Error('La postulación ya está en ese estado');
@@ -179,7 +251,7 @@ export async function changeApplicationStatus(
   const { error } = await supabase
     .from('applications')
     .update(update)
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
@@ -187,15 +259,34 @@ export async function changeApplicationStatus(
     throw new Error(error.message);
   }
 
+  await recordApplicationEvent(supabase, user.id, {
+    applicationId,
+    type: 'status_changed',
+    fromStatus: currentStatus,
+    toStatus: nextStatus,
+  });
+
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
-  revalidatePath(`/dashboard/applications/${id}`);
-  revalidatePath(`/dashboard/applications/${id}/edit`);
+  revalidatePath(`/dashboard/applications/${applicationId}`);
+  revalidatePath(`/dashboard/applications/${applicationId}/edit`);
 
   return { success: true, status: nextStatus };
 }
 
 export async function updateApplicationFeedback(id: string, feedback: string) {
+  const applicationId = parseApplicationId(id);
+  const feedbackResult = z
+    .string()
+    .max(10000, 'El feedback no puede superar los 10000 caracteres.')
+    .safeParse(feedback);
+
+  if (!feedbackResult.success) {
+    throw new Error(
+      feedbackResult.error.issues[0]?.message ?? 'Feedback no válido',
+    );
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -203,12 +294,19 @@ export async function updateApplicationFeedback(id: string, feedback: string) {
 
   if (!user) throw new Error('No autorizado');
 
-  const cleanFeedback = feedback.trim().slice(0, 10000);
+  const cleanFeedback = feedbackResult.data.trim();
+
+  const { data: current } = await supabase
+    .from('applications')
+    .select('feedback')
+    .eq('id', applicationId)
+    .eq('user_id', user.id)
+    .single();
 
   const { error } = await supabase
     .from('applications')
     .update({ feedback: cleanFeedback || null })
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
@@ -216,15 +314,23 @@ export async function updateApplicationFeedback(id: string, feedback: string) {
     throw new Error(error.message);
   }
 
+  if (current && (current.feedback ?? '') !== cleanFeedback) {
+    await recordApplicationEvent(supabase, user.id, {
+      applicationId,
+      type: 'feedback_updated',
+    });
+  }
+
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
-  revalidatePath(`/dashboard/applications/${id}`);
-  revalidatePath(`/dashboard/applications/${id}/edit`);
+  revalidatePath(`/dashboard/applications/${applicationId}`);
+  revalidatePath(`/dashboard/applications/${applicationId}/edit`);
 
   return { success: true };
 }
 
 export async function deleteApplication(id: string) {
+  const applicationId = parseApplicationId(id);
   const supabase = await createClient();
   const {
     data: { user },
@@ -235,7 +341,7 @@ export async function deleteApplication(id: string) {
   const { error } = await supabase
     .from('applications')
     .delete()
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
@@ -245,6 +351,121 @@ export async function deleteApplication(id: string) {
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
   return { success: true };
+}
+
+export async function bulkChangeStatus(
+  idsInput: unknown,
+  statusInput: unknown,
+) {
+  const ids = parseApplicationIds(idsInput);
+  const statusResult = z.enum(APPLICATION_STATUSES).safeParse(statusInput);
+
+  if (!statusResult.success) {
+    throw new Error('Estado no válido');
+  }
+
+  const nextStatus = statusResult.data;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('No autorizado');
+
+  const { data: ownedRows, error: fetchError } = await supabase
+    .from('applications')
+    .select('id, status, interview_stage, offer_stage')
+    .in('id', ids)
+    .eq('user_id', user.id);
+
+  if (fetchError) {
+    throw new Error(fetchError.message);
+  }
+
+  if (!ownedRows?.length) {
+    throw new Error('No se encontraron postulaciones para actualizar');
+  }
+
+  const ownedIds = ownedRows.map((row) => row.id);
+  const { error } = await supabase
+    .from('applications')
+    .update({ status: nextStatus })
+    .in('id', ownedIds)
+    .eq('user_id', user.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (nextStatus === 'Entrevista') {
+    const missingStage = ownedRows
+      .filter((row) => !row.interview_stage)
+      .map((row) => row.id);
+
+    if (missingStage.length > 0) {
+      await supabase
+        .from('applications')
+        .update({ interview_stage: 'Recruiter' })
+        .in('id', missingStage)
+        .eq('user_id', user.id);
+    }
+  }
+
+  if (nextStatus === 'Oferta') {
+    const missingStage = ownedRows
+      .filter((row) => !row.offer_stage)
+      .map((row) => row.id);
+
+    if (missingStage.length > 0) {
+      await supabase
+        .from('applications')
+        .update({ offer_stage: 'Analisis' })
+        .in('id', missingStage)
+        .eq('user_id', user.id);
+    }
+  }
+
+  const events = ownedRows
+    .filter((row) => row.status !== nextStatus)
+    .map((row) => ({
+      applicationId: row.id,
+      type: 'status_changed' as const,
+      fromStatus: row.status as ApplicationStatus,
+      toStatus: nextStatus,
+    }));
+
+  await recordApplicationEvents(supabase, user.id, events);
+
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/applications');
+
+  return { success: true, updated: ownedIds.length };
+}
+
+export async function bulkDeleteApplications(idsInput: unknown) {
+  const ids = parseApplicationIds(idsInput);
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('No autorizado');
+
+  const { data: deleted, error } = await supabase
+    .from('applications')
+    .delete()
+    .in('id', ids)
+    .eq('user_id', user.id)
+    .select('id');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/applications');
+
+  return { success: true, deleted: deleted?.length ?? 0 };
 }
 
 export async function signOut() {

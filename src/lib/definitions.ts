@@ -27,6 +27,23 @@ export type ApplicationSalary = {
   frequency?: ApplicationSalaryFrequency;
 };
 
+export type ApplicationEventType =
+  | 'created'
+  | 'status_changed'
+  | 'interview_scheduled'
+  | 'offer_received'
+  | 'feedback_updated';
+
+export type ApplicationEvent = {
+  id: string;
+  applicationId: string;
+  type: ApplicationEventType;
+  fromStatus?: ApplicationStatus;
+  toStatus?: ApplicationStatus;
+  detail?: string;
+  createdAt: string;
+};
+
 export type Application = {
   id: string;
   company: string;
@@ -55,4 +72,6 @@ export type Application = {
     interview?: string;
   };
   feedback?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };

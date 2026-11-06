@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { CompanyAvatar } from '@/components/ui/company-avatar';
+import { Checkbox } from '@/components/ui/checkbox';
 import { deleteApplication } from '@/lib/actions';
 import { trackEvent } from '@/lib/analytics';
 import { useToast } from '@/hooks/use-toast';
@@ -97,11 +98,17 @@ function MobileApplicationCard({
   onOpen,
   onDelete,
   isPending,
+  selectable = false,
+  selected = false,
+  onToggleSelect = () => {},
 }: {
   app: Application;
   onOpen: () => void;
   onDelete: (e: React.MouseEvent, id: string, company: string) => void;
   isPending: boolean;
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: (id: string) => void;
 }) {
   const stage =
     app.status === 'Entrevista'
@@ -150,6 +157,18 @@ function MobileApplicationCard({
       className="cursor-pointer rounded-xl border bg-card p-4 shadow-sm transition hover:shadow-md"
     >
       <div className="flex items-start gap-3">
+        {selectable && (
+          <div
+            className="pt-1"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <Checkbox
+              checked={selected}
+              onCheckedChange={() => onToggleSelect(app.id)}
+              aria-label={`Seleccionar ${app.company}`}
+            />
+          </div>
+        )}
         <CompanyAvatar name={app.company} />
         <div className="min-w-0 flex-1">
           <p className="break-words font-medium text-foreground">
@@ -250,6 +269,13 @@ interface ApplicationsTableProps {
   onPageChange?: (page: number) => void;
   onItemsPerPageChange?: (value: string) => void;
   from?: string;
+  selectable?: boolean;
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string) => void;
+  onToggleAll?: () => void;
+  allSelected?: boolean;
+  someSelected?: boolean;
+  onAfterDelete?: () => void;
 }
 
 export function ApplicationsTable({
@@ -261,6 +287,13 @@ export function ApplicationsTable({
   onPageChange = () => {},
   onItemsPerPageChange = () => {},
   from = 'dashboard',
+  selectable = false,
+  selectedIds = new Set<string>(),
+  onToggleSelect = () => {},
+  onToggleAll = () => {},
+  allSelected = false,
+  someSelected = false,
+  onAfterDelete,
 }: ApplicationsTableProps) {
   const router = useRouter();
   const { toast } = useToast();
@@ -304,6 +337,7 @@ export function ApplicationsTable({
         });
       } finally {
         setApplicationToDelete(null);
+        onAfterDelete?.();
       }
     });
   };
@@ -321,6 +355,9 @@ export function ApplicationsTable({
               onOpen={() => handleRowClick(app.id)}
               onDelete={handleDeleteClick}
               isPending={isPending}
+              selectable={selectable}
+              selected={selectedIds.has(app.id)}
+              onToggleSelect={onToggleSelect}
             />
           ))
         ) : (
@@ -334,6 +371,21 @@ export function ApplicationsTable({
         <Table>
           <TableHeader>
             <TableRow>
+              {selectable && (
+                <TableHead className="w-10">
+                  <Checkbox
+                    checked={
+                      allSelected
+                        ? true
+                        : someSelected
+                          ? 'indeterminate'
+                          : false
+                    }
+                    onCheckedChange={() => onToggleAll()}
+                    aria-label="Seleccionar página"
+                  />
+                </TableHead>
+              )}
               <TableHead>Empresa / Puesto</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead className="hidden md:table-cell">
@@ -351,6 +403,18 @@ export function ApplicationsTable({
                   onClick={() => handleRowClick(app.id)}
                   className="cursor-pointer"
                 >
+                  {selectable && (
+                    <TableCell
+                      className="w-10"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      <Checkbox
+                        checked={selectedIds.has(app.id)}
+                        onCheckedChange={() => onToggleSelect(app.id)}
+                        aria-label={`Seleccionar ${app.company}`}
+                      />
+                    </TableCell>
+                  )}
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <CompanyAvatar name={app.company} />
@@ -481,7 +545,10 @@ export function ApplicationsTable({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell
+                  colSpan={selectable ? 6 : 5}
+                  className="h-24 text-center"
+                >
                   Todavia no postulaste a ninguna oferta. Animate a hacerlo y
                   éxitos!!!
                 </TableCell>
