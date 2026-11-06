@@ -73,7 +73,7 @@ type Skill = {
   limits: string[];
 };
 
-const repoUrl = 'https://github.com/Gianni03/gianni-skills';
+const repoUrl = 'https://github.com/Gianni03/jobtracker-skills';
 
 const skills: Skill[] = [
   {
@@ -655,7 +655,7 @@ export function SkillsGuide() {
                 Necesitás git. El repo es público.
               </p>
               <CodeBlock
-                code={'git clone https://github.com/Gianni03/gianni-skills.git\ncd gianni-skills'}
+                code={'git clone https://github.com/Gianni03/jobtracker-skills.git\ncd jobtracker-skills'}
                 analyticsContext="install"
               />
             </CardContent>
@@ -1046,7 +1046,7 @@ export function SkillsGuide() {
           rel="noopener noreferrer"
           className="font-medium text-primary hover:underline"
         >
-          github.com/Gianni03/gianni-skills
+          github.com/Gianni03/jobtracker-skills
         </a>
         {' '}— licencia Apache-2.0.
       </div>
