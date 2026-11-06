@@ -18,6 +18,8 @@ import { StatusChart } from '@/components/charts/status-chart';
 import { MonthlyChart } from '@/components/charts/monthly-chart';
 import { ConversionRates } from '@/components/charts/conversion-rates';
 import { SankeyChart } from '@/components/charts/sankey-chart';
+import { PlatformPerformance } from '@/components/charts/platform-performance';
+import { SalaryInsights } from '@/components/charts/salary-insights';
 import { DateRangeFilter } from '@/components/dashboard/date-range-filter';
 import { filterApplicationsByDate } from '@/lib/date-utils';
 import { Badge } from '@/components/ui/badge';
@@ -198,6 +200,32 @@ export default async function StatisticsPage({
           </CardHeader>
           <CardContent className="pt-6">
             <MonthlyChart applications={applications} />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Source & Salary Insights */}
+      <div className="grid gap-8 lg:grid-cols-2">
+        <Card className="rounded-[2.5rem] border-primary/5 overflow-hidden shadow-sm">
+          <CardHeader className="border-b bg-muted/20 pb-4">
+            <CardTitle className="text-lg">Rendimiento por Plataforma</CardTitle>
+            <CardDescription>
+              Dónde vale la pena invertir tu tiempo de búsqueda.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <PlatformPerformance applications={applications} />
+          </CardContent>
+        </Card>
+        <Card className="rounded-[2.5rem] border-primary/5 overflow-hidden shadow-sm">
+          <CardHeader className="border-b bg-muted/20 pb-4">
+            <CardTitle className="text-lg">Comparativa Salarial</CardTitle>
+            <CardDescription>
+              Deseado, expresado y oferta, normalizados a valores anuales.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <SalaryInsights applications={applications} />
           </CardContent>
         </Card>
       </div>
