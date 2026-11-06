@@ -2,8 +2,12 @@
 
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import type { Application } from '@/lib/definitions';
+import {
+  applicationFormSchema,
+  type ApplicationFormInput,
+  type ApplicationFormValues,
+} from '@/lib/validation/application';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -24,62 +28,6 @@ import confetti from 'canvas-confetti';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
-const formSchema = z.object({
-  company: z.string().min(1, 'El nombre de la empresa es requerido.'),
-  role: z.string().min(1, 'El puesto es requerido.'),
-  status: z.enum(['Aplicado', 'Entrevista', 'Oferta', 'Rechazado', 'Ghosted']),
-  interviewStage: z.string().optional(),
-  offerStage: z.string().optional(),
-  date: z.string().min(1, 'La fecha es requerida.'),
-  interviewDate: z.string().optional(),
-  platform: z.enum([
-    'LinkedIn',
-    'Web de la Empresa',
-    'Referido',
-    'Indeed',
-    'Portal de empleo',
-    'Otro',
-  ], { error: 'Selecciona una plataforma válida.' }),
-  link: z.string().url('Debe ser una URL válida.').or(z.literal('')).optional(),
-  contact: z
-    .object({
-      name: z.string().optional(),
-      method: z.string().optional(),
-    })
-    .optional(),
-  description: z
-    .string()
-    .max(10000, 'La descripción no puede superar los 10000 caracteres.')
-    .optional(),
-  salary: z.object({
-    desired: z.coerce.number().min(0).nullable().optional(),
-    desiredMax: z.coerce.number().min(0).nullable().optional(),
-    expressed: z.coerce.number().min(0).nullable().optional(),
-    expressedMax: z.coerce.number().min(0).nullable().optional(),
-    offer: z.coerce.number().min(0).nullable().optional(),
-    currency: z.enum(['ARS', 'USD', 'EUR', 'GBP', 'BRL', 'MXN', 'COP', 'CLP']).optional(),
-    frequency: z.enum(['hour', 'month', 'year']).optional(),
-  }),
-  notes: z
-    .object({
-      general: z
-        .string()
-        .max(10000, 'Las notas no pueden superar los 10000 caracteres.')
-        .optional(),
-      interview: z
-        .string()
-        .max(10000, 'Las notas no pueden superar los 10000 caracteres.')
-        .optional(),
-    })
-    .optional(),
-  feedback: z
-    .string()
-    .max(10000, 'El feedback no puede superar los 10000 caracteres.')
-    .optional(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
 interface ApplicationFormProps {
   application?: Application;
   redirectTo?: string;
@@ -93,9 +41,12 @@ export function ApplicationForm({
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<FormValues>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(formSchema) as any,
+  const form = useForm<
+    ApplicationFormInput,
+    unknown,
+    ApplicationFormValues
+  >({
+    resolver: zodResolver(applicationFormSchema),
     defaultValues: {
       company: application?.company || '',
       role: application?.role || '',
@@ -161,7 +112,7 @@ export function ApplicationForm({
     }
   }, [status, form]);
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<ApplicationFormValues> = (data) => {
     console.log(
       'Form Submitted. Status:',
       data.status,

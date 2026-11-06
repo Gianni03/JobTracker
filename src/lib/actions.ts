@@ -1,18 +1,41 @@
 'use server';
 
+import { z } from 'zod';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import type { ApplicationStatus } from '@/lib/definitions';
-import { STATUS_OPTIONS } from '@/lib/status';
 import { getRequestOrigin } from '@/lib/auth-url';
+import {
+  APPLICATION_STATUSES,
+  applicationFormSchema,
+  applicationIdSchema,
+  type ApplicationFormValues,
+} from '@/lib/validation/application';
 
-// OJO: Asumimos que recibís el objeto del formulario ya formateado
-// Si usas FormData directo es más complejo, pero como usas React Hook Form
-// probablemente envíes el JSON.
+function parseApplicationInput(input: unknown): ApplicationFormValues {
+  const parsed = applicationFormSchema.safeParse(input);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function createApplication(data: any) {
+  if (!parsed.success) {
+    const message = parsed.error.issues[0]?.message ?? 'Datos inválidos';
+    throw new Error(message);
+  }
+
+  return parsed.data;
+}
+
+function parseApplicationId(id: string): string {
+  const parsed = applicationIdSchema.safeParse(id);
+
+  if (!parsed.success) {
+    throw new Error('Postulación no válida');
+  }
+
+  return parsed.data;
+}
+
+export async function createApplication(input: unknown) {
+  const data = parseApplicationInput(input);
   const supabase = await createClient();
 
   const {
@@ -77,8 +100,9 @@ export async function createApplication(data: any) {
   return { success: true };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function updateApplication(id: string, data: any) {
+export async function updateApplication(id: string, input: unknown) {
+  const applicationId = parseApplicationId(id);
+  const data = parseApplicationInput(input);
   const supabase = await createClient();
   const {
     data: { user },
@@ -116,7 +140,7 @@ export async function updateApplication(id: string, data: any) {
         : null,
       feedback: data.feedback ? data.feedback.slice(0, 10000) : null,
     })
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
@@ -126,7 +150,7 @@ export async function updateApplication(id: string, data: any) {
 
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
-  revalidatePath(`/dashboard/applications/${id}`);
+  revalidatePath(`/dashboard/applications/${applicationId}`);
 
   return { success: true };
 }
@@ -135,6 +159,13 @@ export async function changeApplicationStatus(
   id: string,
   nextStatus: ApplicationStatus,
 ) {
+  const applicationId = parseApplicationId(id);
+  const statusResult = z.enum(APPLICATION_STATUSES).safeParse(nextStatus);
+
+  if (!statusResult.success) {
+    throw new Error('Estado no válido');
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -145,7 +176,7 @@ export async function changeApplicationStatus(
   const { data: current, error: fetchError } = await supabase
     .from('applications')
     .select('status, interview_stage, offer_stage')
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id)
     .single();
 
@@ -154,10 +185,6 @@ export async function changeApplicationStatus(
   }
 
   const currentStatus = current.status as ApplicationStatus;
-
-  if (!STATUS_OPTIONS.includes(nextStatus)) {
-    throw new Error('Estado no válido');
-  }
 
   if (currentStatus === nextStatus) {
     throw new Error('La postulación ya está en ese estado');
@@ -179,7 +206,7 @@ export async function changeApplicationStatus(
   const { error } = await supabase
     .from('applications')
     .update(update)
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
@@ -189,13 +216,25 @@ export async function changeApplicationStatus(
 
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
-  revalidatePath(`/dashboard/applications/${id}`);
-  revalidatePath(`/dashboard/applications/${id}/edit`);
+  revalidatePath(`/dashboard/applications/${applicationId}`);
+  revalidatePath(`/dashboard/applications/${applicationId}/edit`);
 
   return { success: true, status: nextStatus };
 }
 
 export async function updateApplicationFeedback(id: string, feedback: string) {
+  const applicationId = parseApplicationId(id);
+  const feedbackResult = z
+    .string()
+    .max(10000, 'El feedback no puede superar los 10000 caracteres.')
+    .safeParse(feedback);
+
+  if (!feedbackResult.success) {
+    throw new Error(
+      feedbackResult.error.issues[0]?.message ?? 'Feedback no válido',
+    );
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -203,12 +242,12 @@ export async function updateApplicationFeedback(id: string, feedback: string) {
 
   if (!user) throw new Error('No autorizado');
 
-  const cleanFeedback = feedback.trim().slice(0, 10000);
+  const cleanFeedback = feedbackResult.data.trim();
 
   const { error } = await supabase
     .from('applications')
     .update({ feedback: cleanFeedback || null })
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
@@ -218,13 +257,14 @@ export async function updateApplicationFeedback(id: string, feedback: string) {
 
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
-  revalidatePath(`/dashboard/applications/${id}`);
-  revalidatePath(`/dashboard/applications/${id}/edit`);
+  revalidatePath(`/dashboard/applications/${applicationId}`);
+  revalidatePath(`/dashboard/applications/${applicationId}/edit`);
 
   return { success: true };
 }
 
 export async function deleteApplication(id: string) {
+  const applicationId = parseApplicationId(id);
   const supabase = await createClient();
   const {
     data: { user },
@@ -235,7 +275,7 @@ export async function deleteApplication(id: string) {
   const { error } = await supabase
     .from('applications')
     .delete()
-    .eq('id', id)
+    .eq('id', applicationId)
     .eq('user_id', user.id);
 
   if (error) {
