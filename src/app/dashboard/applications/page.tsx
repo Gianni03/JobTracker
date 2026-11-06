@@ -5,13 +5,10 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function AllApplicationsPage() {
-  let applications = await fetchUserApplications();
-  
   // Auto-mark aplicaciones antiguas en "Aplicado" como "Ghosted"
-  await autoMarkAsGhosted(applications);
-  
-  // Refrescar datos después de actualizar ghosted
-  applications = await fetchUserApplications();
+  await autoMarkAsGhosted();
+
+  const applications = await fetchUserApplications();
 
   return (
     <div className="space-y-8">

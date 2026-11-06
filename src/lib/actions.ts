@@ -6,11 +6,15 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import type { ApplicationStatus } from '@/lib/definitions';
 import { getRequestOrigin } from '@/lib/auth-url';
-import { recordApplicationEvent } from '@/lib/events';
+import {
+  recordApplicationEvent,
+  recordApplicationEvents,
+} from '@/lib/events';
 import {
   APPLICATION_STATUSES,
   applicationFormSchema,
   applicationIdSchema,
+  applicationIdsSchema,
   type ApplicationFormValues,
 } from '@/lib/validation/application';
 
@@ -30,6 +34,18 @@ function parseApplicationId(id: string): string {
 
   if (!parsed.success) {
     throw new Error('Postulación no válida');
+  }
+
+  return parsed.data;
+}
+
+function parseApplicationIds(input: unknown): string[] {
+  const parsed = applicationIdsSchema.safeParse(input);
+
+  if (!parsed.success) {
+    throw new Error(
+      parsed.error.issues[0]?.message ?? 'Postulaciones no válidas',
+    );
   }
 
   return parsed.data;
@@ -335,6 +351,121 @@ export async function deleteApplication(id: string) {
   revalidatePath('/dashboard');
   revalidatePath('/dashboard/applications');
   return { success: true };
+}
+
+export async function bulkChangeStatus(
+  idsInput: unknown,
+  statusInput: unknown,
+) {
+  const ids = parseApplicationIds(idsInput);
+  const statusResult = z.enum(APPLICATION_STATUSES).safeParse(statusInput);
+
+  if (!statusResult.success) {
+    throw new Error('Estado no válido');
+  }
+
+  const nextStatus = statusResult.data;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('No autorizado');
+
+  const { data: ownedRows, error: fetchError } = await supabase
+    .from('applications')
+    .select('id, status, interview_stage, offer_stage')
+    .in('id', ids)
+    .eq('user_id', user.id);
+
+  if (fetchError) {
+    throw new Error(fetchError.message);
+  }
+
+  if (!ownedRows?.length) {
+    throw new Error('No se encontraron postulaciones para actualizar');
+  }
+
+  const ownedIds = ownedRows.map((row) => row.id);
+  const { error } = await supabase
+    .from('applications')
+    .update({ status: nextStatus })
+    .in('id', ownedIds)
+    .eq('user_id', user.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (nextStatus === 'Entrevista') {
+    const missingStage = ownedRows
+      .filter((row) => !row.interview_stage)
+      .map((row) => row.id);
+
+    if (missingStage.length > 0) {
+      await supabase
+        .from('applications')
+        .update({ interview_stage: 'Recruiter' })
+        .in('id', missingStage)
+        .eq('user_id', user.id);
+    }
+  }
+
+  if (nextStatus === 'Oferta') {
+    const missingStage = ownedRows
+      .filter((row) => !row.offer_stage)
+      .map((row) => row.id);
+
+    if (missingStage.length > 0) {
+      await supabase
+        .from('applications')
+        .update({ offer_stage: 'Analisis' })
+        .in('id', missingStage)
+        .eq('user_id', user.id);
+    }
+  }
+
+  const events = ownedRows
+    .filter((row) => row.status !== nextStatus)
+    .map((row) => ({
+      applicationId: row.id,
+      type: 'status_changed' as const,
+      fromStatus: row.status as ApplicationStatus,
+      toStatus: nextStatus,
+    }));
+
+  await recordApplicationEvents(supabase, user.id, events);
+
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/applications');
+
+  return { success: true, updated: ownedIds.length };
+}
+
+export async function bulkDeleteApplications(idsInput: unknown) {
+  const ids = parseApplicationIds(idsInput);
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('No autorizado');
+
+  const { data: deleted, error } = await supabase
+    .from('applications')
+    .delete()
+    .in('id', ids)
+    .eq('user_id', user.id)
+    .select('id');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/applications');
+
+  return { success: true, deleted: deleted?.length ?? 0 };
 }
 
 export async function signOut() {

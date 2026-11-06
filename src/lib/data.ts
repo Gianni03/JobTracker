@@ -7,13 +7,24 @@ import type {
 } from './definitions';
 
 // Días después de los cuales una postulación en "Aplicado" pasa a "Ghosted"
-const GHOSTED_THRESHOLD_DAYS = 14;
+export const GHOSTED_THRESHOLD_DAYS = 14;
+
+export function getGhostedCutoffDate(now = new Date()): string {
+  const cutoff = new Date(now);
+  cutoff.setDate(cutoff.getDate() - GHOSTED_THRESHOLD_DAYS);
+
+  const year = cutoff.getFullYear();
+  const month = String(cutoff.getMonth() + 1).padStart(2, '0');
+  const day = String(cutoff.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 
 /**
- * Actualiza automáticamente aplicaciones que llevan mucho tiempo en "Aplicado"
- * a estado "Ghosted" después de X días sin respuesta
+ * Marca como "Ghosted" las postulaciones que llevan demasiado tiempo en
+ * "Aplicado" con un único UPDATE acotado al usuario actual.
  */
-export async function autoMarkAsGhosted(applications: Application[]): Promise<void> {
+export async function autoMarkAsGhosted(): Promise<void> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -21,28 +32,12 @@ export async function autoMarkAsGhosted(applications: Application[]): Promise<vo
 
   if (!user) return;
 
-  const now = new Date();
-  const applicationsToGhost: string[] = [];
-
-  for (const app of applications) {
-    if (app.status !== 'Aplicado') continue;
-
-    const applicationDate = new Date(app.date);
-    const daysDiff = Math.floor((now.getTime() - applicationDate.getTime()) / (1000 * 60 * 60 * 24));
-
-    if (daysDiff >= GHOSTED_THRESHOLD_DAYS) {
-      applicationsToGhost.push(app.id);
-    }
-  }
-
-  if (applicationsToGhost.length === 0) return;
-
-  // Actualizar en batch
   const { error } = await supabase
     .from('applications')
     .update({ status: 'Ghosted' })
-    .in('id', applicationsToGhost)
-    .eq('user_id', user.id);
+    .eq('user_id', user.id)
+    .eq('status', 'Aplicado')
+    .lte('date', getGhostedCutoffDate());
 
   if (error) {
     console.error('Error auto-marking as ghosted:', error);
