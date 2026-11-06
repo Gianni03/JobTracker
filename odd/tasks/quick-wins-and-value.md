@@ -89,7 +89,7 @@ All application mutations must validate their input on the server with the same 
 | T5 | S11, S4 | inline | done | 1d46d0d |
 | T6 | S5, S8 | inline | done | 66766b2 |
 | T7 | S6, S3 | inline | done | 1090393 |
-| T8 | all | inline | done | this commit |
+| T8 | all | inline | done | f4e896d |
 
 ## Log
 
